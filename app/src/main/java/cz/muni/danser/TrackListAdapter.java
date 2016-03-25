@@ -29,7 +29,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset.get(position).name);
+        holder.mTextView.setText(mDataset.get(position).track_name);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     static Api api = new Api();
-    static List<Track> tracks;
+    static List<Track> tracks = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        tracks = new ArrayList();
 
         // specify an adapter (see also next example)
         mAdapter = new TrackListAdapter(tracks);
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
-                tracks = response.body();
+                tracks.addAll(response.body());
                 mAdapter.notifyDataSetChanged();
             }
 
