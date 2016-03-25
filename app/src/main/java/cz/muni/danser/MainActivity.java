@@ -2,10 +2,14 @@ package cz.muni.danser;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     @Bind(R.id.my_recycler_view) RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
@@ -51,6 +55,28 @@ public class MainActivity extends AppCompatActivity {
         loadTracks();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
     public void loadTracks(){
         Call<List<Track>> call = api.getTrackService().getAllTracks();
         call.enqueue(new Callback<List<Track>>() {
@@ -68,7 +94,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
 }
