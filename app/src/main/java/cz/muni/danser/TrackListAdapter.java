@@ -14,9 +14,16 @@ import java.util.List;
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.ViewHolder> {
 
     private List<Track> mDataset;
+    private OnItemClickListener listener;
 
-    public TrackListAdapter(List<Track> dataset){
+    public TrackListAdapter(List<Track> dataset, OnItemClickListener listener){
+        this.listener = listener;
         this.mDataset = dataset;
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(Track track);
     }
 
     @Override
@@ -29,7 +36,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset.get(position).track_name);
+        holder.bind(mDataset.get(position), listener);
     }
 
     @Override
@@ -38,10 +45,21 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         public TextView mTextView;
+
         public ViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.list_item_text_view);
+        }
+
+        public void bind(final Track item, final OnItemClickListener listener) {
+            mTextView.setText(item.getTrackName());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
         }
     }
 }

@@ -1,5 +1,7 @@
 package cz.muni.danser;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +39,14 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TrackListAdapter(tracks);
+        mAdapter = new TrackListAdapter(tracks, new TrackListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Track track){
+                Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
+                intent.putExtra("track",track);
+                startActivity(intent);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
         loadTracks();
     }
