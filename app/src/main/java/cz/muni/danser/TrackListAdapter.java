@@ -1,5 +1,6 @@
 package cz.muni.danser;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,15 +48,17 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mTextView;
+        public CardView mCardView;
 
         public ViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.list_item_text_view);
+            mCardView = (CardView) v.findViewById(R.id.card_view);
         }
 
         public void bind(final Track item, final OnItemClickListener listener) {
             mTextView.setText(item.getTrackName());
-            itemView.setOnClickListener(new View.OnClickListener() {
+            mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(item);
                 }
