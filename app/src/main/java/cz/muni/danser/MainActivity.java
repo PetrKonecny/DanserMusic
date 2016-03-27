@@ -11,6 +11,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -46,11 +47,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         ButterKnife.bind(this);
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
         Intent intent = this.getIntent();
         if(intent.hasExtra("dance")){
+            mLayoutManager = new LinearLayoutManager(this);
             Dance dance = intent.getExtras().getParcelable("dance");
             mAdapter = new TrackListAdapter(tracks, new TrackListAdapter.OnItemClickListener() {
                 @Override
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             loadTracks(dance);
         }
         else if(intent.hasExtra("danceCategory")){
+            mLayoutManager = new GridLayoutManager(this,2);
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
             mAdapter = new DanceListAdapter(dances, new DanceListAdapter.OnItemClickListener() {
                 @Override
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             loadDances(danceCategory);
         }
         else{
+            mLayoutManager = new GridLayoutManager(this,2);
             mAdapter = new DanceCategoryListAdapter(categories, new DanceCategoryListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DanceCategory danceCategory){
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             mRecyclerView.setAdapter(mAdapter);
             loadDanceCategories();
         }
-
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     @Override

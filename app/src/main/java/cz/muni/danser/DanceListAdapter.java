@@ -30,7 +30,7 @@ public class DanceListAdapter extends RecyclerView.Adapter<DanceListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_view, parent, false);
+                .inflate(R.layout.square_list_item_view, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
