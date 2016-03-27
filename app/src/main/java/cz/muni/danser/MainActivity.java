@@ -33,33 +33,62 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     SearchView mSearchView;
-    static Api api = new Api();
-    static List<Track> tracks = new ArrayList();
+    final static Api api = new Api();
+    final static List<DanceCategory> categories = new ArrayList<>();
+    final static List<Dance> dances = new ArrayList<>();
+    final static List<Track> tracks = new ArrayList();
+    final static List<Track> suggestedTracks = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        mAdapter = new TrackListAdapter(tracks, new TrackListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Track track){
-                Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
-                intent.putExtra("track",track);
-                startActivity(intent);
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
-        loadTracks();
+        Intent intent = this.getIntent();
+        if(intent.hasExtra("dance")){
+            Dance dance = intent.getExtras().getParcelable("dance");
+            mAdapter = new TrackListAdapter(tracks, new TrackListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Track track){
+                    Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
+                    intent.putExtra("track",track);
+                    startActivity(intent);
+                }
+            });
+            mRecyclerView.setAdapter(mAdapter);
+            loadTracks(dance);
+        }
+        else if(intent.hasExtra("danceCategory")){
+            DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
+            mAdapter = new DanceListAdapter(dances, new DanceListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Dance dance){
+                    Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                    intent.putExtra("dance",dance);
+                    startActivity(intent);
+                }
+            });
+            mRecyclerView.setAdapter(mAdapter);
+            loadDances(danceCategory);
+        }
+        else{
+            mAdapter = new DanceCategoryListAdapter(categories, new DanceCategoryListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(DanceCategory danceCategory){
+                    Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                    intent.putExtra("danceCategory",danceCategory);
+                    startActivity(intent);
+                }
+            });
+            mRecyclerView.setAdapter(mAdapter);
+            loadDanceCategories();
+        }
+
     }
 
     @Override
@@ -83,14 +112,34 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        //TODO implement actvitiy action search on MainActivity or in new activity
+        Call<List<Track>> call = api.getTrackService().searchTracks(query, null);
+        call.enqueue(new Callback<List<Track>>() {
+            @Override
+            public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
+                List<Track> tracks = response.body();
+                mAdapter = new TrackListAdapter(tracks, new TrackListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(Track track){
+                        Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
+                        intent.putExtra("track",track);
+                        startActivity(intent);
+                    }
+                });
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Track>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        //Call<List<Track>> call = api.getTrackService().searchTracks(newText,5);
-        Call<List<Track>> call = api.getTrackService().getAllTracks();
+        Call<List<Track>> call = api.getTrackService().searchTracks(newText,5);
+        //Call<List<Track>> call = api.getTrackService().getAllTracks();
         call.enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -105,8 +154,43 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         return false;
     }
 
-    public void loadTracks(){
-        Call<List<Track>> call = api.getTrackService().getAllTracks();
+    public void loadDanceCategories(){
+        categories.clear();
+        Call<List<DanceCategory>> call = api.getTrackService().getCategories();
+        call.enqueue(new Callback<List<DanceCategory>>() {
+            @Override
+            public void onResponse(Call<List<DanceCategory>> call, Response<List<DanceCategory>> response) {
+                categories.addAll(response.body());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<DanceCategory>> call, Throwable t) {
+                Toast.makeText(MainActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void loadDances(DanceCategory danceCategory){
+        dances.clear();
+        Call<List<Dance>> call = api.getTrackService().getDances(danceCategory.getDanceCategory());
+        call.enqueue(new Callback<List<Dance>>() {
+            @Override
+            public void onResponse(Call<List<Dance>> call, Response<List<Dance>> response) {
+                dances.addAll(response.body());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<Dance>> call, Throwable t) {
+                Toast.makeText(MainActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void loadTracks(Dance dance){
+        tracks.clear();
+        Call<List<Track>> call = api.getTrackService().getTracks(dance.getDanceType());
         call.enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -122,6 +206,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     public Cursor createCursor(List<Track> tracks){
+        suggestedTracks.clear();
+        suggestedTracks.addAll(tracks);
+
         String[] columns = {
                 BaseColumns._ID,
                 SearchManager.SUGGEST_COLUMN_TEXT_1,
@@ -139,14 +226,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onSuggestionSelect(int position) {
+        showSelectedSuggestedTrack(position);
         return false;
     }
 
     @Override
     public boolean onSuggestionClick(int position) {
-        Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
-        intent.putExtra("track",tracks.get(position));
-        startActivity(intent);
+        showSelectedSuggestedTrack(position);
         return false;
+    }
+
+    private void showSelectedSuggestedTrack(int position){
+        Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
+        intent.putExtra("track",suggestedTracks.get(position));
+        startActivity(intent);
     }
 }
