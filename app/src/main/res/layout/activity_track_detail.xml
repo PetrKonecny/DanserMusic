@@ -20,4 +20,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/track_name"
         />
+    <Button
+        android:text="favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="favoriteTrack"
+        android:layout_below="@id/track_mbid"
+        />
 </RelativeLayout>

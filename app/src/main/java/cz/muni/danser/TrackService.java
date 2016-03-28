@@ -37,5 +37,4 @@ public interface TrackService {
 
     @GET("tracks")
     Call<List<Track>> searchTracks(@Query("track_name") String trackName, @Query("limit") Integer limit);
-
 }

@@ -3,21 +3,65 @@ package cz.muni.danser;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.gson.annotations.SerializedName;
 
-public class Track implements Parcelable {
+import java.util.List;
 
+@Table(name = "Tracks")
+public class Track extends Model implements Parcelable {
+
+    @Column(name = "Mdid", index = true, unique = true)
     private String mbid;
+    @Column(name = "TrackName")
     @SerializedName("track_name")
     private String trackName;
+    @Column(name = "DanceType")
     @SerializedName("dance_type")
     private int danceType;
+    @Column(name = "Artist")
     @SerializedName("artist_mbid")
     private String artistMbid;
+    @Column(name = "SpotifyId")
     @SerializedName("spotify_id")
     private String spotifyId;
+    @Column(name = "YoutubeId")
     @SerializedName("youtube_id")
     private String youtubeId;
+
+    public Track() {
+        super();
+    }
+
+    public boolean favoriteTrack() {
+
+        Playlist favorites = new Select().from(Playlist.class).where("PlaylistName = 'Favorite'").executeSingle();
+        if (favorites == null) {
+            favorites = new Playlist();
+            favorites.playlistName = "Favorite";
+            favorites.save();
+        }
+
+        if(!getIsFavorite()) {
+            TrackPlaylist trackPlaylist = new TrackPlaylist();
+            trackPlaylist.track = this;
+            trackPlaylist.playlist = favorites;
+            this.save();
+            trackPlaylist.save();
+        }else{
+            return false;
+        }
+        return true;
+    }
+
+    public boolean getIsFavorite() {
+        Playlist favorites = new Select().from(Playlist.class).where("PlaylistName = 'Favorite'").executeSingle();
+        System.out.println(this.getMbid());
+        return favorites.tracks().contains(this);
+    }
 
     public String getMbid() {
         return mbid;
@@ -103,4 +147,22 @@ public class Track implements Parcelable {
             return new Track[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Track track = (Track) o;
+
+        return getMbid().equals(track.getMbid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + mbid.hashCode();
+        return result;
+    }
 }

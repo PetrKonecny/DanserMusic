@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,9 +17,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="cz.muni.fi.danser.LIST_PLAYLIST_ACTION" />
+            </intent-filter>
         </activity>
         <activity android:name=".TrackDetailActivity" />
-
+        <meta-data android:name="AA_DB_NAME" android:value="Danser.db" />
     </application>
 
 </manifest>

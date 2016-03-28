@@ -3,7 +3,9 @@ package cz.muni.danser;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,5 +26,11 @@ public class TrackDetailActivity extends AppCompatActivity {
         track = extras.getParcelable("track");
         mTextVIewName.setText(track.getTrackName());
         mTextViewMbid.setText(track.getMbid());
+    }
+
+    public void favoriteTrack(View view){
+        if(track.favoriteTrack()) {
+            Toast.makeText(this, "Track added to favorites", Toast.LENGTH_SHORT).show();
+        }
     }
 }
