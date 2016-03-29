@@ -12,8 +12,8 @@ import butterknife.ButterKnife;
 
 public class TrackDetailActivity extends AppCompatActivity {
 
-    @Bind(R.id.track_name) TextView mTextVIewName;
-    @Bind(R.id.track_mbid) TextView mTextViewMbid;
+    @Bind(R.id.track_name) TextView mTextViewName;
+    @Bind(R.id.artist_name) TextView mTextViewArtistName;
     Track track;
 
     @Override
@@ -24,8 +24,8 @@ public class TrackDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         track = extras.getParcelable("track");
-        mTextVIewName.setText(track.getTrackName());
-        mTextViewMbid.setText(track.getMbid());
+        mTextViewName.setText(track.getTrackName());
+        mTextViewArtistName.setText(track.getArtistName());
     }
 
     public void favoriteTrack(View view){

@@ -28,9 +28,6 @@ public class Track extends Model implements Parcelable {
     private int danceType;
     @Expose
     @Column(name = "Artist")
-    @SerializedName("artist_mbid")
-    private String artistMbid;
-    @Expose
     @SerializedName("artist_name")
     private String artistName;
     @Column(name = "SpotifyId")
