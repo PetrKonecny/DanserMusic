@@ -31,12 +31,14 @@ public class Track extends Model implements Parcelable {
     @SerializedName("artist_mbid")
     private String artistMbid;
     @Expose
+    @SerializedName("artist_name")
+    private String artistName;
     @Column(name = "SpotifyId")
-    @SerializedName("spotify_id")
+    @SerializedName("spotify_ids")
     private String spotifyId;
     @Expose
     @Column(name = "YoutubeId")
-    @SerializedName("youtube_id")
+    @SerializedName("youtube_ids")
     private String youtubeId;
 
     public Track() {
@@ -94,12 +96,12 @@ public class Track extends Model implements Parcelable {
         this.danceType = danceType;
     }
 
-    public String getArtistMbid() {
-        return artistMbid;
+    public String getArtistName() {
+        return artistName;
     }
 
-    public void setArtistMbid(String artistMbid) {
-        this.artistMbid = artistMbid;
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 
     public String getSpotifyId() {
@@ -128,7 +130,7 @@ public class Track extends Model implements Parcelable {
         dest.writeString(getMbid());
         dest.writeString(getTrackName());
         dest.writeInt(getDanceType());
-        dest.writeString(getArtistMbid());
+        dest.writeString(getArtistName());
         dest.writeString(getSpotifyId());
         dest.writeString(getYoutubeId());
     }
@@ -137,7 +139,7 @@ public class Track extends Model implements Parcelable {
         setMbid(in.readString());
         setTrackName(in.readString());
         setDanceType(in.readInt());
-        setArtistMbid(in.readString());
+        setArtistName(in.readString());
         setSpotifyId(in.readString());
         setYoutubeId(in.readString());
     }
