@@ -3,14 +3,17 @@ package cz.muni.danser;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Pavel on 27. 3. 2016.
  */
 public class Dance implements Parcelable {
+    @Expose
     @SerializedName("dance_type")
     private int danceType;
+    @Expose
     @SerializedName("dance_name")
     private String danceName;
 

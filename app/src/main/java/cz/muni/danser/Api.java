@@ -1,5 +1,7 @@
 package cz.muni.danser;
 
+import com.google.gson.GsonBuilder;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -14,7 +16,9 @@ public class Api {
         if (trackService == null){
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Api.apiURL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
+                            .excludeFieldsWithoutExposeAnnotation()
+                            .create()))
                     .build();
 
             trackService = retrofit.create(TrackService.class);

@@ -3,6 +3,7 @@ package cz.muni.danser;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -17,6 +18,7 @@ public class DanceCategory implements Parcelable {
         this.danceCategory = danceCategory;
     }
 
+    @Expose
     @SerializedName("dance_category")
     private String danceCategory;
 
@@ -45,4 +47,5 @@ public class DanceCategory implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(danceCategory);
     }
+
 }

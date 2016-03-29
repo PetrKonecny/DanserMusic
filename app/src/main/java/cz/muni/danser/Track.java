@@ -7,6 +7,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -14,20 +15,26 @@ import java.util.List;
 @Table(name = "Tracks")
 public class Track extends Model implements Parcelable {
 
+    @Expose
     @Column(name = "Mdid", index = true, unique = true)
     private String mbid;
+    @Expose
     @Column(name = "TrackName")
     @SerializedName("track_name")
     private String trackName;
+    @Expose
     @Column(name = "DanceType")
     @SerializedName("dance_type")
     private int danceType;
+    @Expose
     @Column(name = "Artist")
     @SerializedName("artist_mbid")
     private String artistMbid;
+    @Expose
     @Column(name = "SpotifyId")
     @SerializedName("spotify_id")
     private String spotifyId;
+    @Expose
     @Column(name = "YoutubeId")
     @SerializedName("youtube_id")
     private String youtubeId;
