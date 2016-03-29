@@ -26,10 +26,10 @@ public class Track extends Model implements Parcelable {
     @SerializedName("artist_name")
     private String artistName;
     @Column(name = "SpotifyId")
-    @SerializedName("spotify_id")
+    @SerializedName("spotify_ids")
     private String spotifyId;
     @Column(name = "YoutubeId")
-    @SerializedName("youtube_id")
+    @SerializedName("youtube_ids")
     private String youtubeId;
 
     public Track() {

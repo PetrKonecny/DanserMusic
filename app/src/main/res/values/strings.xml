@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Danser</string>
     <string name="hint_search">Search danser</string>
+    <string name="add_to_favorites">favorite</string>
 </resources>
