@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @Table(name = "Playlists")
-public class Playlist extends Model{
+public class Playlist extends Model implements Listable{
 
     @Column(name = "PlaylistName")
     public String playlistName;
@@ -23,5 +23,10 @@ public class Playlist extends Model{
                 .on("TrackPlaylist.Track = Tracks.Id")
                 .where("TrackPlaylist.Playlist = ?",this.getId())
                 .execute();
+    }
+
+    @Override
+    public String getMainText() {
+        return playlistName;
     }
 }

@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Pavel on 27. 3. 2016.
  */
-public class Dance implements Parcelable {
+public class Dance implements Parcelable, Listable {
     @Expose
     @SerializedName("dance_type")
     private int danceType;
@@ -59,5 +59,10 @@ public class Dance implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(getDanceType());
         dest.writeString(getDanceName());
+    }
+
+    @Override
+    public String getMainText() {
+        return getDanceName();
     }
 }

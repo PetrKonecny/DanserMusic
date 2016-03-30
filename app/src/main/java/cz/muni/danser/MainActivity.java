@@ -56,63 +56,62 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         if(LIST_PLAYLIST_ACTION.equals(intent.getAction())){
             mLayoutManager = new LinearLayoutManager(this);
             List<Playlist> playlists = new Select().all().from(Playlist.class).execute();
-            System.out.println(playlists.size());
-            mAdapter = new PlaylistListAdapter(playlists, new PlaylistListAdapter.OnItemClickListener(){
+            mAdapter = new ListAdapter((List<Listable>)(List<?>)playlists, new ListAdapter.OnItemClickListener(){
                 @Override
-                public void onItemClick(Playlist playlist) {
+                public void onItemClick(Listable playlist) {
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                    intent.putExtra("playlistName",playlist.playlistName);
+                    intent.putExtra("playlistName",playlist.getMainText());
                     startActivity(intent);
                 }
-            });
+            },R.layout.list_item_view);
         }else if(intent.hasExtra("playlistName")){
             Playlist playlist = new Select().from(Playlist.class).where("playlistName = ?",intent.getStringExtra("playlistName")).executeSingle();
             mLayoutManager = new LinearLayoutManager(this);
-            mAdapter = new TrackListAdapter(playlist.tracks(), new TrackListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter((List<Listable>)(List<?>)playlist.tracks(), new ListAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Track track){
+                public void onItemClick(Listable track){
                     Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
-                    intent.putExtra("track",track);
+                    intent.putExtra("track",(Track)track);
                     startActivity(intent);
                 }
-            });
+            },R.layout.list_item_view);
         }
         else if(intent.hasExtra("dance")){
             mLayoutManager = new LinearLayoutManager(this);
             Dance dance = intent.getExtras().getParcelable("dance");
-            mAdapter = new TrackListAdapter(tracks, new TrackListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter((List<Listable>)(List<?>)tracks, new ListAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Track track){
+                public void onItemClick(Listable track){
                     Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
-                    intent.putExtra("track",track);
+                    intent.putExtra("track",(Track) track);
                     startActivity(intent);
                 }
-            });
+            },R.layout.list_item_view);
             loadTracks(dance);
         }
         else if(intent.hasExtra("danceCategory")){
             mLayoutManager = new GridLayoutManager(this,2);
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
-            mAdapter = new DanceListAdapter(dances, new DanceListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter((List<Listable>)(List<?>)dances, new ListAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Dance dance){
+                public void onItemClick(Listable dance){
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                    intent.putExtra("dance",dance);
+                    intent.putExtra("dance",(Dance)dance);
                     startActivity(intent);
                 }
-            });
+            },R.layout.square_list_item_view);
             loadDances(danceCategory);
         }
         else{
             mLayoutManager = new GridLayoutManager(this,2);
-            mAdapter = new DanceCategoryListAdapter(categories, new DanceCategoryListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter((List<Listable>)(List<?>)categories, new ListAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(DanceCategory danceCategory){
+                public void onItemClick(Listable danceCategory){
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                    intent.putExtra("danceCategory",danceCategory);
+                    intent.putExtra("danceCategory",(DanceCategory)danceCategory);
                     startActivity(intent);
                 }
-            });
+            },R.layout.square_list_item_view);
             loadDanceCategories();
         }
         mRecyclerView.setAdapter(mAdapter);
@@ -145,14 +144,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
                 List<Track> tracks = response.body();
-                mAdapter = new TrackListAdapter(tracks, new TrackListAdapter.OnItemClickListener() {
+                mAdapter = new ListAdapter((List<Listable>)(List<?>)tracks, new ListAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(Track track) {
+                    public void onItemClick(Listable track) {
                         Intent intent = new Intent(MainActivity.this, TrackDetailActivity.class);
-                        intent.putExtra("track", track);
+                        intent.putExtra("track", (Track) track);
                         startActivity(intent);
                     }
-                });
+                },R.layout.list_item_view);
                 mRecyclerView.setAdapter(mAdapter);
             }
 

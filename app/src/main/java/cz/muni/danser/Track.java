@@ -13,7 +13,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 @Table(name = "Tracks")
-public class Track extends Model implements Parcelable {
+public class Track extends Model implements Parcelable, Listable {
 
     @Expose
     @Column(name = "Mdid", index = true, unique = true)
@@ -170,5 +170,10 @@ public class Track extends Model implements Parcelable {
         int result = super.hashCode();
         result = 31 * result + mbid.hashCode();
         return result;
+    }
+
+    @Override
+    public String getMainText() {
+        return getTrackName();
     }
 }

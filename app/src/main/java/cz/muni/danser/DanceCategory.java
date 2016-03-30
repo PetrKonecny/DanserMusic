@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Pavel on 27. 3. 2016.
  */
-public class DanceCategory implements Parcelable {
+public class DanceCategory implements Parcelable, Listable {
     public String getDanceCategory() {
         return danceCategory;
     }
@@ -48,4 +48,8 @@ public class DanceCategory implements Parcelable {
         dest.writeString(danceCategory);
     }
 
+    @Override
+    public String getMainText() {
+        return getDanceCategory();
+    }
 }
