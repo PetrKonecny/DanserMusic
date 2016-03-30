@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         if(LIST_PLAYLIST_ACTION.equals(intent.getAction())){
             mLayoutManager = new LinearLayoutManager(this);
             List<Playlist> playlists = new Select().all().from(Playlist.class).execute();
-            mAdapter = new ListAdapter((List<Listable>)(List<?>)playlists, new ListAdapter.OnItemClickListener(){
+            mAdapter = new ListAdapter<>(playlists, new ListAdapter.OnItemClickListener(){
                 @Override
                 public void onItemClick(Listable playlist) {
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }else if(intent.hasExtra("playlistName")){
             Playlist playlist = new Select().from(Playlist.class).where("playlistName = ?",intent.getStringExtra("playlistName")).executeSingle();
             mLayoutManager = new LinearLayoutManager(this);
-            mAdapter = new ListAdapter((List<Listable>)(List<?>)playlist.tracks(), new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter<>(playlist.tracks(), new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable track){
                     Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         else if(intent.hasExtra("dance")){
             mLayoutManager = new LinearLayoutManager(this);
             Dance dance = intent.getExtras().getParcelable("dance");
-            mAdapter = new ListAdapter((List<Listable>)(List<?>)tracks, new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter<>(tracks, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable track){
                     Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         else if(intent.hasExtra("danceCategory")){
             mLayoutManager = new GridLayoutManager(this,2);
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
-            mAdapter = new ListAdapter((List<Listable>)(List<?>)dances, new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter<>(dances, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable dance){
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         else{
             mLayoutManager = new GridLayoutManager(this,2);
-            mAdapter = new ListAdapter((List<Listable>)(List<?>)categories, new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter<>(categories, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable danceCategory){
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
                 List<Track> tracks = response.body();
-                mAdapter = new ListAdapter((List<Listable>)(List<?>)tracks, new ListAdapter.OnItemClickListener() {
+                mAdapter = new ListAdapter<>(tracks, new ListAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Listable track) {
                         Intent intent = new Intent(MainActivity.this, TrackDetailActivity.class);

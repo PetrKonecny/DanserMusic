@@ -15,13 +15,13 @@ import java.util.List;
 /**
  * Created by Petr2 on 3/23/2016.
  */
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class ListAdapter<T> extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private List<Listable> mDataset;
+    private List<T> mDataset;
     private OnItemClickListener listener;
     private int mLayout;
 
-    public ListAdapter(List<Listable> dataset, OnItemClickListener listener, int layout){
+    public ListAdapter(List<T> dataset, OnItemClickListener listener, int layout){
         this.listener = listener;
         this.mDataset = dataset;
         this.mLayout = layout;
@@ -42,7 +42,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(mDataset.get(position), listener);
+        holder.bind((Listable)(mDataset.get(position)), listener);
     }
 
     @Override
@@ -62,10 +62,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
 
         public void bind(final Listable item, final OnItemClickListener listener) {
-            mTextView.setText(item.getMainText());
+            mTextView.setText(((Listable)item).getMainText());
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    listener.onItemClick(item);
+                    listener.onItemClick((Listable)item);
                 }
             });
         }
