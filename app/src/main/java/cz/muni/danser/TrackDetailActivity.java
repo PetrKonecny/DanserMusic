@@ -14,6 +14,7 @@ public class TrackDetailActivity extends AppCompatActivity {
 
     @Bind(R.id.track_name) TextView mTextViewName;
     @Bind(R.id.artist_name) TextView mTextViewArtistName;
+    @Bind(R.id.youtube_id) TextView mYoutubeId;
     Track track;
 
     @Override
@@ -26,6 +27,7 @@ public class TrackDetailActivity extends AppCompatActivity {
         track = extras.getParcelable("track");
         mTextViewName.setText(track.getTrackName());
         mTextViewArtistName.setText(track.getArtistName());
+        mYoutubeId.setText(track.getYoutubeId());
     }
 
     public void favoriteTrack(View view){

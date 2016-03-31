@@ -25,10 +25,14 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.PlaylistItem;
+import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.PlaylistSnippet;
 import com.google.api.services.youtube.model.PlaylistStatus;
+import com.google.api.services.youtube.model.ResourceId;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -36,10 +40,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class PlaylistActivity extends AppCompatActivity {
-    @Bind(R.id.my_recycler_view)
+    @Bind(R.id.playlist_recycler_view)
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
+    List<Playlist> playlists;
     private String SCOPE = "oauth2:https://www.googleapis.com/auth/youtube";
 
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
@@ -80,7 +85,7 @@ public class PlaylistActivity extends AppCompatActivity {
             pickUserAccount();
         } else {
             if (true) { //online
-                new GetUsernameTask(PlaylistActivity.this, mEmail, SCOPE).execute();
+                new GetUsernameTask(PlaylistActivity.this, mEmail, SCOPE).execute(playlists.get(0).tracks());
             } else {
                 Toast.makeText(this, R.string.not_online, Toast.LENGTH_LONG).show();
             }
@@ -102,7 +107,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
         if (!intent.hasExtra("playlistName")) {
             mLayoutManager = new LinearLayoutManager(this);
-            List<Playlist> playlists = new Select().all().from(Playlist.class).execute();
+            playlists = new Select().all().from(Playlist.class).execute();
             mAdapter = new ListAdapter<>(playlists, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable playlist) {
@@ -129,7 +134,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
     /***************************************/
 
-    public class GetUsernameTask extends AsyncTask<String, String, String> {
+    public class GetUsernameTask extends AsyncTask<List<Track>, String, String> {
         Activity mActivity;
         String mScope;
         String mEmail;
@@ -145,40 +150,83 @@ public class PlaylistActivity extends AppCompatActivity {
          * on the AsyncTask instance.
          */
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(List<Track>... params) {
+            String token = null;
+            String id = null;
             try {
-                String token = fetchToken();
-                if (token != null) {
-                    // **Insert the good stuff here.**
-                    // Use the token to access the user's Google data.
-                    Log.d("google api", token);
-
-                    GoogleCredential credential = new GoogleCredential().setAccessToken(token);
-                    YouTube youtube = new YouTube.Builder(new NetHttpTransport(), JacksonFactory.getDefaultInstance(),
-                            credential).setApplicationName("Danser Music").build();
-
-                    PlaylistSnippet playlistSnippet = new PlaylistSnippet();
-                    playlistSnippet.setTitle("Test Playlist " + Calendar.getInstance().getTime());
-                    playlistSnippet.setDescription("A private playlist created with the YouTube API v3");
-
-                    com.google.api.services.youtube.model.Playlist youTubePlaylist = new com.google.api.services.youtube.model.Playlist();
-                    youTubePlaylist.setSnippet(playlistSnippet);
-
-
-                    YouTube.Playlists.Insert playlistInsertCommand =
-                            youtube.playlists().insert("snippet", youTubePlaylist);
-                    com.google.api.services.youtube.model.Playlist playlistInserted = playlistInsertCommand.execute();
-
-                    Log.d("google api", "test playlist created");
-
-                }
+                token = fetchToken();
             } catch (IOException e) {
-                // The fetchToken() method handles Google-specific exceptions,
-                // so this indicates something went wrong at a higher level.
-                // TIP: Check for network connectivity before starting the AsyncTask.
-                //...
+                Log.d("playlist async",e.getMessage());
+            }
+            if (token != null) {
+                // **Insert the good stuff here.**
+                // Use the token to access the user's Google data.
+                GoogleCredential credential = new GoogleCredential().setAccessToken(token);
+                YouTube youtube = new YouTube.Builder(new NetHttpTransport(), JacksonFactory.getDefaultInstance(),
+                        credential).setApplicationName("Danser Music").build();
+                try {
+                    YouTube.Playlists.Insert playlistInsertCommand = youtube.playlists().insert("snippet", createPlaylist("", ""));
+                    com.google.api.services.youtube.model.Playlist playlistInserted = playlistInsertCommand.execute();
+                    id = playlistInserted.getId();
+                }catch(IOException e) {
+                    Log.d("playlist async",e.getMessage());
+                }
+                YouTube.PlaylistItems items = youtube.playlistItems();
+                for (Track track : params[0]) {
+                    if (track.getYoutubeId() != null) {
+                        try {
+                            Log.d("youtube id", track.getYoutubeId().split(",")[0]);
+                            items.insert("snippet,contentDetails", createPlaylistItem(track.getTrackName(), id, track.getYoutubeId().split(",")[0])).execute();
+                        } catch (IOException e){
+                            Log.d("playlist async",e.getMessage());
+                            continue;
+                        }
+                    }
+                }
             }
             return null;
+            // The fetchToken() method handles Google-specific exceptions,
+            // so this indicates something went wrong at a higher level.
+            // TIP: Check for network connectivity before starting the AsyncTask.
+            //...return null;
+        }
+
+        public com.google.api.services.youtube.model.Playlist createPlaylist(String title, String description) {
+            PlaylistSnippet playlistSnippet = new PlaylistSnippet();
+            playlistSnippet.setTitle("Test Playlist " + Calendar.getInstance().getTime());
+            playlistSnippet.setDescription("A private playlist created with the YouTube API v3");
+
+            com.google.api.services.youtube.model.Playlist youTubePlaylist = new com.google.api.services.youtube.model.Playlist();
+            youTubePlaylist.setSnippet(playlistSnippet);
+            return youTubePlaylist;
+        }
+
+
+        public PlaylistItem createPlaylistItem(String title, String playlistId, String videoId) throws IOException {
+
+            // Define a resourceId that identifies the video being added to the
+            // playlist.
+            ResourceId resourceId = new ResourceId();
+            resourceId.setKind("youtube#video");
+            resourceId.setVideoId(videoId);
+
+            // Set fields included in the playlistItem resource's "snippet" part.
+            PlaylistItemSnippet playlistItemSnippet = new PlaylistItemSnippet();
+            playlistItemSnippet.setTitle(title);
+            playlistItemSnippet.setPlaylistId(playlistId);
+            playlistItemSnippet.setResourceId(resourceId);
+
+            // Create the playlistItem resource and set its snippet to the
+            // object created above.
+            PlaylistItem playlistItem = new PlaylistItem();
+            playlistItem.setSnippet(playlistItemSnippet);
+
+            // Call the API to add the playlist item to the specified playlist.
+            // In the API call, the first argument identifies the resource parts
+            // that the API response should contain, and the second argument is
+            // the playlist item being inserted.
+            return playlistItem;
+
         }
 
         /**
