@@ -3,6 +3,7 @@
     package="cz.muni.danser">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="com.activeandroid.app.Application"
@@ -22,7 +23,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".TrackDetailActivity" />
-        <meta-data android:name="AA_DB_NAME" android:value="Danser.db" />
+
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="Danser.db" />
+
+        <activity android:name=".PlaylistActivity"></activity>
     </application>
 
 </manifest>

@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     final static List<Track> suggestedTracks = new ArrayList();
     final static String LIST_PLAYLIST_ACTION = "cz.muni.fi.danser.LIST_PLAYLIST_ACTION";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,32 +50,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         ButterKnife.bind(this);
         mRecyclerView.setHasFixedSize(true);
         Intent intent = this.getIntent();
-        System.out.println(LIST_PLAYLIST_ACTION.equals(intent.getAction()));
 
-        if(LIST_PLAYLIST_ACTION.equals(intent.getAction())){
-            mLayoutManager = new LinearLayoutManager(this);
-            List<Playlist> playlists = new Select().all().from(Playlist.class).execute();
-            mAdapter = new ListAdapter<>(playlists, new ListAdapter.OnItemClickListener(){
-                @Override
-                public void onItemClick(Listable playlist) {
-                    Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                    intent.putExtra("playlistName",playlist.getMainText());
-                    startActivity(intent);
-                }
-            },R.layout.list_item_view);
-        }else if(intent.hasExtra("playlistName")){
-            Playlist playlist = new Select().from(Playlist.class).where("playlistName = ?",intent.getStringExtra("playlistName")).executeSingle();
-            mLayoutManager = new LinearLayoutManager(this);
-            mAdapter = new ListAdapter<>(playlist.tracks(), new ListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Listable track){
-                    Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
-                    intent.putExtra("track",(Track)track);
-                    startActivity(intent);
-                }
-            },R.layout.list_item_view);
-        }
-        else if(intent.hasExtra("dance")){
+        if(intent.hasExtra("dance")){
             mLayoutManager = new LinearLayoutManager(this);
             Dance dance = intent.getExtras().getParcelable("dance");
             mAdapter = new ListAdapter<>(tracks, new ListAdapter.OnItemClickListener() {
@@ -270,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     public void showPlaylists(MenuItem item){
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this,PlaylistActivity.class);
         intent.setAction(MainActivity.LIST_PLAYLIST_ACTION);
         startActivity(intent);
     }
