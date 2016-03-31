@@ -1,5 +1,6 @@
 package cz.muni.danser;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -20,6 +21,7 @@ public class ListAdapter<T> extends RecyclerView.Adapter<ListAdapter.ViewHolder>
     private List<T> mDataset;
     private OnItemClickListener listener;
     private int mLayout;
+    private static Context c;
 
     public ListAdapter(List<T> dataset, OnItemClickListener listener, int layout){
         this.listener = listener;
@@ -34,7 +36,7 @@ public class ListAdapter<T> extends RecyclerView.Adapter<ListAdapter.ViewHolder>
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(c=parent.getContext())
                 .inflate(mLayout, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -62,7 +64,8 @@ public class ListAdapter<T> extends RecyclerView.Adapter<ListAdapter.ViewHolder>
         }
 
         public void bind(final Listable item, final OnItemClickListener listener) {
-            mTextView.setText(((Listable)item).getMainText());
+            String text = (item instanceof ListableT)?((ListableT)item).getMainText(c) : ((Listable)item).getMainText();
+            mTextView.setText(text);
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick((Listable)item);
