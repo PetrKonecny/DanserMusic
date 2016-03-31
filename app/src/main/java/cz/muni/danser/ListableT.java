@@ -7,5 +7,5 @@ import android.content.Context;
  * Created by Pavel on 3/31/2016.
  */
 public interface ListableT extends Listable{
-    public String getMainText(Context c);
+    String getMainText(Context c);
 }

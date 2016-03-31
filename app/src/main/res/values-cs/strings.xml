@@ -6,4 +6,8 @@
     <string name="dance_category_folk">Lidové</string>
     <string name="dance_category_jazz">Jazzové</string>
     <string name="dance_category_miscellaneous">Různé</string>
+    <string name="dance_type_18">Valčík</string>
+    <string name="dance_type_22">Čardáš</string>
+    <string name="dance_type_23">Polonéza</string>
+    <string name="dance_type_24">Ploužák</string>
 </resources>

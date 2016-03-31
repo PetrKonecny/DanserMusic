@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Pavel on 27. 3. 2016.
  */
-public class DanceCategory implements Parcelable, ListableT {
+public class DanceCategory extends ListableTImpl implements Parcelable {
     public String getDanceCategory() {
         return danceCategory;
     }
@@ -55,13 +55,7 @@ public class DanceCategory implements Parcelable, ListableT {
     }
 
     @Override
-    public String getMainText(Context c) {
-        String r = getMainText();
-        try{
-            r = c.getString(R.string.class.getField("dance_category_"+getDanceCategory()).getInt(null));
-        } catch(NoSuchFieldException e){
-        } catch(IllegalAccessException e){
-        }
-        return r;
+    public String getTranslationIdentifier() {
+        return "dance_category_" + getDanceCategory();
     }
 }
