@@ -1,9 +1,15 @@
 <resources>
     <string name="app_name">Danser</string>
-    <string name="hint_search">Search danser</string>
+    <string name="hint_search">Search songs...</string>
     <string name="add_to_favorites">favorite</string>
     <string name="artist">Artist:</string>
-    <string name="pick_account">Pick account</string>
-    <string name="not_online">Connect it.</string>
+    <string name="pick_account">You have to pick an account in order to export YouTube playlist.</string>
+    <string name="not_online">You have to be connected to the internet in order to export YouTube playlist.</string>
     <string name="google_app_id">672064283419-35crplnl02bmsqogcm5q6vvkch0fnc30.apps.googleusercontent.com</string>
+    <string name="dance_category_ballroom">Ballroom (Standard)</string>
+    <string name="dance_category_latin">Latin</string>
+    <string name="dance_category_club">Club</string>
+    <string name="dance_category_folk">Folk</string>
+    <string name="dance_category_jazz">Jazz</string>
+    <string name="dance_category_miscellaneous">Miscellaneous</string>
 </resources>

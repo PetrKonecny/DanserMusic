@@ -1,5 +1,6 @@
 package cz.muni.danser;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Pavel on 27. 3. 2016.
  */
-public class DanceCategory implements Parcelable, Listable {
+public class DanceCategory implements Parcelable, ListableT {
     public String getDanceCategory() {
         return danceCategory;
     }
@@ -51,5 +52,16 @@ public class DanceCategory implements Parcelable, Listable {
     @Override
     public String getMainText() {
         return getDanceCategory();
+    }
+
+    @Override
+    public String getMainText(Context c) {
+        String r = getMainText();
+        try{
+            r = c.getString(R.string.class.getField("dance_category_"+getDanceCategory()).getInt(null));
+        } catch(NoSuchFieldException e){
+        } catch(IllegalAccessException e){
+        }
+        return r;
     }
 }

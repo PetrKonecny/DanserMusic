@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dance_category_ballroom">Standardní</string>
+    <string name="dance_category_latin">Latinsko-americké</string>
+    <string name="dance_category_club">Klubové</string>
+    <string name="dance_category_folk">Lidové</string>
+    <string name="dance_category_jazz">Jazzové</string>
+    <string name="dance_category_miscellaneous">Různé</string>
+</resources>
