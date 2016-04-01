@@ -15,13 +15,16 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import butterknife.Bind;
@@ -36,11 +39,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     SearchView mSearchView;
-    final static Api api = new Api();
-    final static List<DanceCategory> categories = new ArrayList<>();
-    final static List<Dance> dances = new ArrayList<>();
-    final static List<Track> tracks = new ArrayList();
-    final static List<Track> suggestedTracks = new ArrayList();
+    Api api = new Api();
+    List<DanceCategory> categories = new ArrayList<>();
+    List<Dance> dances = new ArrayList<>();
+    List<Track> tracks = new ArrayList();
+    List<Track> suggestedTracks = new ArrayList();
     final static String LIST_PLAYLIST_ACTION = "cz.muni.fi.danser.LIST_PLAYLIST_ACTION";
 
     @Override
@@ -50,6 +53,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         ButterKnife.bind(this);
         mRecyclerView.setHasFixedSize(true);
         Intent intent = this.getIntent();
+
+        if(savedInstanceState != null) {
+            dances.addAll((Collection)savedInstanceState.getParcelableArrayList("DANCES"));
+            tracks.addAll((Collection)savedInstanceState.getParcelableArrayList("TRACKS"));
+            categories.addAll((Collection)savedInstanceState.getParcelableArrayList("DANCE_CATEGORIES"));
+        }
 
         if(intent.hasExtra("dance")){
             mLayoutManager = new LinearLayoutManager(this);
@@ -62,8 +71,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     startActivity(intent);
                 }
             },R.layout.list_item_view);
-            loadTracks(dance);
+            if(tracks.isEmpty()) {
+                loadTracks(dance);
+            }
         }
+
         else if(intent.hasExtra("danceCategory")){
             mLayoutManager = new GridLayoutManager(this,2);
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
@@ -71,11 +83,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 @Override
                 public void onItemClick(Listable dance){
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                    intent.putExtra("dance",(Dance)dance);
+                    intent.putExtra("dance",(Dance) dance);
                     startActivity(intent);
                 }
             },R.layout.square_list_item_view);
-            loadDances(danceCategory);
+            if(dances.isEmpty()) {
+                loadDances(danceCategory);
+            }
         }
         else{
             mLayoutManager = new GridLayoutManager(this,2);
@@ -87,10 +101,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     startActivity(intent);
                 }
             },R.layout.square_list_item_view);
-            loadDanceCategories();
+            if(categories.isEmpty()) {
+                loadDanceCategories();
+            }
         }
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putParcelableArrayList("DANCE_CATEGORIES", (ArrayList) categories);
+        savedInstanceState.putParcelableArrayList("DANCES", (ArrayList) dances);
+        savedInstanceState.putParcelableArrayList("TRACKS", (ArrayList) tracks);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -126,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         intent.putExtra("track", (Track) track);
                         startActivity(intent);
                     }
-                },R.layout.list_item_view);
+                }, R.layout.list_item_view);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
