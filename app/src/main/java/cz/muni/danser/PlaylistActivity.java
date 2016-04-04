@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,14 +32,21 @@ import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.PlaylistSnippet;
 import com.google.api.services.youtube.model.PlaylistStatus;
 import com.google.api.services.youtube.model.ResourceId;
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
 
 public class PlaylistActivity extends AppCompatActivity {
     @Bind(R.id.playlist_recycler_view)
@@ -45,7 +54,11 @@ public class PlaylistActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     List<Playlist> playlists;
+    Playlist playlist;
     private String SCOPE = "oauth2:https://www.googleapis.com/auth/youtube";
+    private static final int REQUEST_CODE = 1337;
+    private static final String REDIRECT_URI = "yourcustomprotocol://callback";
+    private static final String CLIENT_ID = "";
 
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
 
@@ -72,7 +85,51 @@ public class PlaylistActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.pick_account, Toast.LENGTH_SHORT).show();
             }
         }
+        if (requestCode == REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
+
+            switch (response.getType()) {
+                // Response was successful and contains auth token
+                case TOKEN:
+                    createSpotifyPlaylist(response.getAccessToken(),playlists.get(0).tracks());
+                    break;
+
+                // Auth flow returned an error
+                case ERROR:
+                    // Handle error response
+                    break;
+
+                // Most likely auth flow was cancelled
+                default:
+                    // Handle other cases
+            }
+        }
+
         // Handle the result from exceptions
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_playlist, menu);
+        return true;
+    }
+
+    public void createSpotifyPlaylist(String token, List<Track> tracks){
+        SpotifyApi api = new SpotifyApi();
+        api.setAccessToken(token);
+        SpotifyService spotify = api.getService();
+        Map<String,Object> body = new HashMap<>();
+        body.put("name", "new danser playlist");
+        body.put("public", false);
+        String id = spotify.getMe().id;
+        kaaes.spotify.webapi.android.models.Playlist playlist = spotify.createPlaylist(id, body);
+        body = new HashMap<>();
+        List<String> uris = new ArrayList<>();
+        for(Track track : tracks){
+            uris.add("spotify:track:"+track.getSpotifyId().split(",")[0]);
+        }
+        body.put("uris",uris);
+        spotify.addTracksToPlaylist(id,playlist.id,null,body);
     }
 
     /**
@@ -92,7 +149,7 @@ public class PlaylistActivity extends AppCompatActivity {
         }
     }
 
-    public void generate(View view) {
+    public void generate(MenuItem item) {
         getUsername();
     }
 
@@ -117,7 +174,7 @@ public class PlaylistActivity extends AppCompatActivity {
                 }
             }, R.layout.list_item_view);
         } else {
-            Playlist playlist = new Select().from(Playlist.class).where("playlistName = ?", intent.getStringExtra("playlistName")).executeSingle();
+            playlist = new Select().from(Playlist.class).where("playlistName = ?", intent.getStringExtra("playlistName")).executeSingle();
             mLayoutManager = new LinearLayoutManager(this);
             mAdapter = new ListAdapter<>(playlist.tracks(), new ListAdapter.OnItemClickListener() {
                 @Override
@@ -133,6 +190,18 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     /***************************************/
+
+    public void exportToSpotify(MenuItem item){
+
+        AuthenticationRequest.Builder builder =
+                new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+
+        builder.setScopes(new String[]{"streaming"});
+        AuthenticationRequest request = builder.build();
+
+        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+
+    }
 
     public class GetUsernameTask extends AsyncTask<List<Track>, String, String> {
         Activity mActivity;

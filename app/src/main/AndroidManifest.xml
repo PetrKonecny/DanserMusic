@@ -22,6 +22,9 @@
                 <action android:name="cz.muni.fi.danser.LIST_PLAYLIST_ACTION" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.spotify.sdk.android.authentication.LoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".TrackDetailActivity" />
 
         <meta-data
