@@ -73,48 +73,54 @@ public class Track extends Model implements Parcelable, Listable {
         return mbid;
     }
 
-    public void setMbid(String mbid) {
+    public Track setMbid(String mbid) {
         this.mbid = mbid;
+        return this;
     }
 
     public String getTrackName() {
         return trackName;
     }
 
-    public void setTrackName(String trackName) {
+    public Track setTrackName(String trackName) {
         this.trackName = trackName;
+        return this;
     }
 
     public int getDanceType() {
         return danceType;
     }
 
-    public void setDanceType(int danceType) {
+    public Track setDanceType(int danceType) {
         this.danceType = danceType;
+        return this;
     }
 
     public String getArtistName() {
         return artistName;
     }
 
-    public void setArtistName(String artistName) {
+    public Track setArtistName(String artistName) {
         this.artistName = artistName;
+        return this;
     }
 
     public String getSpotifyId() {
         return spotifyId;
     }
 
-    public void setSpotifyId(String spotifyId) {
+    public Track setSpotifyId(String spotifyId) {
         this.spotifyId = spotifyId;
+        return this;
     }
 
     public String getYoutubeId() {
         return youtubeId;
     }
 
-    public void setYoutubeId(String youtubeId) {
+    public Track setYoutubeId(String youtubeId) {
         this.youtubeId = youtubeId;
+        return this;
     }
 
     @Override

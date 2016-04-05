@@ -13,4 +13,7 @@
     <string name="dance_category_folk">Folk</string>
     <string name="dance_category_jazz">Jazz</string>
     <string name="dance_category_miscellaneous">Miscellaneous</string>
+    <string name="share_into">Recognize in Danser</string>
+    <string name="regexp_soundhound">^I just used SoundHound to find (.*) by (.*)$</string>
+    <string name="regexp_trackid">^I used TrackID™ to find (.*) by (.*)\\..*</string>
 </resources>

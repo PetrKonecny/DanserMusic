@@ -10,4 +10,6 @@
     <string name="dance_type_22">Čardáš</string>
     <string name="dance_type_23">Polonéza</string>
     <string name="dance_type_24">Ploužák</string>
+    <string name="regexp_soundhound">^Právě jsem použil(a) SoundHound k nalezení (.*) od (.*)$</string>
+    <string name="regexp_trackid">^Pomocí aplikace TrackID™ se mi podařilo najít skladbu (.*) od (.*)\\..*</string>
 </resources>
