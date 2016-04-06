@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         if(intent.hasExtra("dance")){
             mLayoutManager = new LinearLayoutManager(this);
             Dance dance = intent.getExtras().getParcelable("dance");
-            mAdapter = new ListAdapter<>(tracks, new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter(tracks, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable track){
                     Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         else if(intent.hasExtra("danceCategory")){
             mLayoutManager = new GridLayoutManager(this,2);
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
-            mAdapter = new ListAdapter<>(dances, new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter(dances, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable dance){
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         else{
             mLayoutManager = new GridLayoutManager(this,2);
-            mAdapter = new ListAdapter<>(categories, new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter(categories, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable danceCategory){
                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
                 List<Track> tracks = response.body();
-                mAdapter = new ListAdapter<>(tracks, new ListAdapter.OnItemClickListener() {
+                mAdapter = new ListAdapter(tracks, new ListAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Listable track) {
                         Intent intent = new Intent(MainActivity.this, TrackDetailActivity.class);

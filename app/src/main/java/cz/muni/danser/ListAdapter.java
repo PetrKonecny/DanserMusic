@@ -1,6 +1,7 @@
 package cz.muni.danser;
 
 import android.content.Context;
+import android.support.annotation.StringDef;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -16,14 +17,14 @@ import java.util.List;
 /**
  * Created by Petr2 on 3/23/2016.
  */
-public class ListAdapter<T> extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private List<T> mDataset;
+    private List<?> mDataset;
     private OnItemClickListener listener;
     private int mLayout;
     private static Context c;
 
-    public ListAdapter(List<T> dataset, OnItemClickListener listener, int layout){
+    public ListAdapter(List dataset, OnItemClickListener listener, int layout){
         this.listener = listener;
         this.mDataset = dataset;
         this.mLayout = layout;
@@ -64,11 +65,17 @@ public class ListAdapter<T> extends RecyclerView.Adapter<ListAdapter.ViewHolder>
         }
 
         public void bind(final Listable item, final OnItemClickListener listener) {
-            String text = (item instanceof ListableT)?((ListableT)item).getMainText(c) : ((Listable)item).getMainText();
+            String text = null;
+            if(item instanceof StringParsable) {
+                text = Utils.getStringFromResourceName(c, ((StringParsable) item).getResourceMap().get("mainTitle"));
+            }
+            if(text == null){
+                text = item.getMainText();
+            }
             mTextView.setText(text);
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    listener.onItemClick((Listable)item);
+                    listener.onItemClick(item);
                 }
             });
         }

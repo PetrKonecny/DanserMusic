@@ -65,7 +65,6 @@ public class Track extends Model implements Parcelable, Listable {
 
     public boolean getIsFavorite() {
         Playlist favorites = new Select().from(Playlist.class).where("PlaylistName = 'Favorite'").executeSingle();
-        System.out.println(this.getMbid());
         return favorites.tracks().contains(this);
     }
 
@@ -73,54 +72,48 @@ public class Track extends Model implements Parcelable, Listable {
         return mbid;
     }
 
-    public Track setMbid(String mbid) {
+    public void setMbid(String mbid) {
         this.mbid = mbid;
-        return this;
     }
 
     public String getTrackName() {
         return trackName;
     }
 
-    public Track setTrackName(String trackName) {
+    public void setTrackName(String trackName) {
         this.trackName = trackName;
-        return this;
     }
 
     public int getDanceType() {
         return danceType;
     }
 
-    public Track setDanceType(int danceType) {
+    public void setDanceType(int danceType) {
         this.danceType = danceType;
-        return this;
     }
 
     public String getArtistName() {
         return artistName;
     }
 
-    public Track setArtistName(String artistName) {
+    public void setArtistName(String artistName) {
         this.artistName = artistName;
-        return this;
     }
 
     public String getSpotifyId() {
         return spotifyId;
     }
 
-    public Track setSpotifyId(String spotifyId) {
+    public void setSpotifyId(String spotifyId) {
         this.spotifyId = spotifyId;
-        return this;
     }
 
     public String getYoutubeId() {
         return youtubeId;
     }
 
-    public Track setYoutubeId(String youtubeId) {
+    public void setYoutubeId(String youtubeId) {
         this.youtubeId = youtubeId;
-        return this;
     }
 
     @Override

@@ -165,7 +165,7 @@ public class PlaylistActivity extends AppCompatActivity {
         if (!intent.hasExtra("playlistName")) {
             mLayoutManager = new LinearLayoutManager(this);
             playlists = new Select().all().from(Playlist.class).execute();
-            mAdapter = new ListAdapter<>(playlists, new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter(playlists, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable playlist) {
                     Intent intent = new Intent(PlaylistActivity.this, PlaylistActivity.class);
@@ -176,7 +176,7 @@ public class PlaylistActivity extends AppCompatActivity {
         } else {
             playlist = new Select().from(Playlist.class).where("playlistName = ?", intent.getStringExtra("playlistName")).executeSingle();
             mLayoutManager = new LinearLayoutManager(this);
-            mAdapter = new ListAdapter<>(playlist.tracks(), new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter(playlist.tracks(), new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable track) {
                     Intent intent = new Intent(PlaylistActivity.this, TrackDetailActivity.class);

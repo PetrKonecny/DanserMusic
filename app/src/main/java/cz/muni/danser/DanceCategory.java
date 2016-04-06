@@ -1,16 +1,18 @@
 package cz.muni.danser;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Pavel on 27. 3. 2016.
  */
-public class DanceCategory extends ListableTImpl implements Parcelable {
+public class DanceCategory implements Parcelable, StringParsable, Listable {
     public String getDanceCategory() {
         return danceCategory;
     }
@@ -55,7 +57,9 @@ public class DanceCategory extends ListableTImpl implements Parcelable {
     }
 
     @Override
-    public String getTranslationIdentifier() {
-        return "dance_category_" + getDanceCategory();
+    public Map getResourceMap() {
+        Map<String,String> map = new HashMap<>();
+        map.put("mainTitle","dance_category_" + getDanceCategory());
+        return map;
     }
 }

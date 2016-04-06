@@ -6,10 +6,13 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Pavel on 27. 3. 2016.
  */
-public class Dance extends ListableTImpl implements Parcelable {
+public class Dance implements Parcelable, Listable, StringParsable {
     @Expose
     @SerializedName("dance_type")
     private int danceType;
@@ -67,7 +70,9 @@ public class Dance extends ListableTImpl implements Parcelable {
     }
 
     @Override
-    public String getTranslationIdentifier(){
-        return "dance_type_" + String.valueOf(getDanceType());
+    public Map getResourceMap() {
+        Map<String,String> map = new HashMap<>();
+        map.put("mainTitle","dance_category_" + "dance_type_" + String.valueOf(getDanceType()));
+        return map;
     }
 }

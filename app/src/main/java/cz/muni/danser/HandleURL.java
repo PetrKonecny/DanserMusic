@@ -10,10 +10,12 @@ import java.util.regex.Pattern;
 public class HandleURL extends AppCompatActivity {
     private static Track fillTrack(Track searchTrack, boolean artistFirst, String s1, String s2){
         if(artistFirst){
-            searchTrack.setArtistName(s1).setTrackName(s2);
+            searchTrack.setArtistName(s1);
+            searchTrack.setTrackName(s2);
         }
         else{
-            searchTrack.setTrackName(s1).setArtistName(s2);
+            searchTrack.setTrackName(s1);
+            searchTrack.setArtistName(s2);
         }
         return searchTrack;
     }

@@ -41,6 +41,7 @@
             <intent-filter><!-- Last.fm -->
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:host="www.last.fm"
                     android:pathPattern="/music/.*/_/.*"
