@@ -47,6 +47,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.PlaylistTrack;
+import kaaes.spotify.webapi.android.models.UserPrivate;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class PlaylistActivity extends AppCompatActivity {
     @Bind(R.id.playlist_recycler_view)
@@ -56,24 +62,24 @@ public class PlaylistActivity extends AppCompatActivity {
     List<Playlist> playlists;
     Playlist playlist;
     private String SCOPE = "oauth2:https://www.googleapis.com/auth/youtube";
-    private static final int REQUEST_CODE = 1337;
+    private static final int SPOTIFY_REQUEST_CODE = 1337;
     private static final String REDIRECT_URI = "dansermusic://spotifycallback";
     private static final String CLIENT_ID = "4cb6768e46ae40ebbb7efaec7ea66ca9";
 
-    static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
+    static final int YOUTUBE_REQUEST_CODE = 1000;
 
     private void pickUserAccount() {
         String[] accountTypes = new String[]{"com.google"};
         Intent intent = AccountPicker.newChooseAccountIntent(null, null,
                 accountTypes, false, null, null, null, null);
-        startActivityForResult(intent, REQUEST_CODE_PICK_ACCOUNT);
+        startActivityForResult(intent, YOUTUBE_REQUEST_CODE);
     }
 
     private String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PICK_ACCOUNT) {
+        if (requestCode == YOUTUBE_REQUEST_CODE) {
             // Receiving a result from the AccountPicker
             if (resultCode == RESULT_OK) {
                 mEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
@@ -85,19 +91,18 @@ public class PlaylistActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.pick_account, Toast.LENGTH_SHORT).show();
             }
         }
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == SPOTIFY_REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
 
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
-                    //!!! this kills app on either out of bounds (if no playlist was created yet) or null pointer exception
-                    createSpotifyPlaylist(response.getAccessToken(),playlists.get(0).tracks());
+                    initSpotifyAddPlaylist(response.getAccessToken(), playlist.tracks());
                     break;
 
                 // Auth flow returned an error
                 case ERROR:
-                    // Handle error response
+                    Toast.makeText(PlaylistActivity.this,"Can't connect to Spotify service", Toast.LENGTH_LONG).show();
                     break;
 
                 // Most likely auth flow was cancelled
@@ -111,26 +116,65 @@ public class PlaylistActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_playlist, menu);
+        if(getIntent().hasExtra("playlistName")) {
+            getMenuInflater().inflate(R.menu.menu_playlist, menu);
+        }
         return true;
     }
 
-    public void createSpotifyPlaylist(String token, List<Track> tracks){
-        SpotifyApi api = new SpotifyApi();
-        api.setAccessToken(token);
-        SpotifyService spotify = api.getService();
+    private final void createSpotifyPlaylist(final String id, final List<Track> tracks, final SpotifyService service){
         Map<String,Object> body = new HashMap<>();
-        body.put("name", "new danser playlist");
+        body.put("name", "new Danser playlist");
         body.put("public", false);
-        String id = spotify.getMe().id;
-        kaaes.spotify.webapi.android.models.Playlist playlist = spotify.createPlaylist(id, body);
-        body = new HashMap<>();
+        service.createPlaylist(id, body, new Callback<kaaes.spotify.webapi.android.models.Playlist>() {
+            @Override
+            public void success(kaaes.spotify.webapi.android.models.Playlist playlist, Response response) {
+                addTracksToPlaylist(id,playlist.id,tracks,service);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(PlaylistActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void addTracksToPlaylist(String id, String playlistId, List<Track> tracks, SpotifyService service){
+        Map body = new HashMap<>();
         List<String> uris = new ArrayList<>();
         for(Track track : tracks){
             uris.add("spotify:track:"+track.getSpotifyId().split(",")[0]);
         }
         body.put("uris",uris);
-        spotify.addTracksToPlaylist(id,playlist.id,null,body);
+        service.addTracksToPlaylist(id, playlistId, null, body, new Callback<Pager<PlaylistTrack>>() {
+            @Override
+            public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
+                Toast.makeText(PlaylistActivity.this,"Playlist was added to your spotify acccount", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(PlaylistActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void initSpotifyAddPlaylist(String token, final List<Track> tracks){
+        SpotifyApi api = new SpotifyApi();
+        api.setAccessToken(token);
+        final SpotifyService spotify = api.getService();
+        spotify.getMe(new Callback<UserPrivate>() {
+            @Override
+            public void success(UserPrivate userPrivate, Response response) {
+                createSpotifyPlaylist(userPrivate.id, tracks, spotify);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(PlaylistActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
@@ -143,7 +187,7 @@ public class PlaylistActivity extends AppCompatActivity {
             pickUserAccount();
         } else {
             if (true) { //online
-                new GetUsernameTask(PlaylistActivity.this, mEmail, SCOPE).execute(playlists.get(0).tracks());
+                new ExportPlaylistToYoutubeTask(PlaylistActivity.this, mEmail, SCOPE).execute(playlist.tracks());
             } else {
                 Toast.makeText(this, R.string.not_online, Toast.LENGTH_LONG).show();
             }
@@ -200,16 +244,18 @@ public class PlaylistActivity extends AppCompatActivity {
         builder.setScopes(new String[]{"playlist-modify-public", "playlist-modify-private", "user-read-private"});
         AuthenticationRequest request = builder.build();
 
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+        AuthenticationClient.openLoginActivity(this, SPOTIFY_REQUEST_CODE, request);
 
     }
 
-    public class GetUsernameTask extends AsyncTask<List<Track>, String, String> {
+
+
+    public class ExportPlaylistToYoutubeTask extends AsyncTask<List<Track>, String, String> {
         Activity mActivity;
         String mScope;
         String mEmail;
 
-        public GetUsernameTask(Activity activity, String name, String scope) {
+        public ExportPlaylistToYoutubeTask(Activity activity, String name, String scope) {
             this.mActivity = activity;
             this.mScope = scope;
             this.mEmail = name;

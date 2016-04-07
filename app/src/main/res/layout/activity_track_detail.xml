@@ -37,6 +37,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
     />
+    <TextView
+        android:id="@+id/spotify_label"
+        android:text="@string/spotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:id="@+id/spotify_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
     <Button
         android:text="@string/add_to_favorites"
         android:layout_width="wrap_content"

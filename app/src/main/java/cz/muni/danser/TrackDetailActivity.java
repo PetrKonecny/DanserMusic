@@ -15,6 +15,7 @@ public class TrackDetailActivity extends AppCompatActivity {
     @Bind(R.id.track_name) TextView mTextViewName;
     @Bind(R.id.artist_name) TextView mTextViewArtistName;
     @Bind(R.id.youtube_id) TextView mYoutubeId;
+    @Bind(R.id.spotify_id) TextView mSpotifyId;
     Track track;
 
     @Override
@@ -28,6 +29,7 @@ public class TrackDetailActivity extends AppCompatActivity {
         mTextViewName.setText(track.getTrackName());
         mTextViewArtistName.setText(track.getArtistName());
         mYoutubeId.setText(track.getYoutubeId());
+        mSpotifyId.setText(track.getSpotifyId());
     }
 
     public void favoriteTrack(View view){

@@ -30,6 +30,7 @@ public class Track extends Model implements Parcelable, Listable {
     @Column(name = "Artist")
     @SerializedName("artist_name")
     private String artistName;
+    @Expose
     @Column(name = "SpotifyId")
     @SerializedName("spotify_ids")
     private String spotifyId;

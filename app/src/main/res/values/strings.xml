@@ -16,4 +16,5 @@
     <string name="share_into">Recognize in Danser</string>
     <string name="regexp_soundhound">^I just used SoundHound to find (.*) by (.*)$</string>
     <string name="regexp_trackid">^I used TrackID™ to find (.*) by (.*)\\..*</string>
+    <string name="spotify">Spotify :</string>
 </resources>
