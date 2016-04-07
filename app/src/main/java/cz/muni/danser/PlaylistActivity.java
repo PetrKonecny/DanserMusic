@@ -57,8 +57,8 @@ public class PlaylistActivity extends AppCompatActivity {
     Playlist playlist;
     private String SCOPE = "oauth2:https://www.googleapis.com/auth/youtube";
     private static final int REQUEST_CODE = 1337;
-    private static final String REDIRECT_URI = "yourcustomprotocol://callback";
-    private static final String CLIENT_ID = "";
+    private static final String REDIRECT_URI = "dansermusic://spotifycallback";
+    private static final String CLIENT_ID = "4cb6768e46ae40ebbb7efaec7ea66ca9";
 
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
 
@@ -91,6 +91,7 @@ public class PlaylistActivity extends AppCompatActivity {
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
+                    //!!! this kills app on either out of bounds (if no playlist was created yet) or null pointer exception
                     createSpotifyPlaylist(response.getAccessToken(),playlists.get(0).tracks());
                     break;
 
@@ -196,7 +197,7 @@ public class PlaylistActivity extends AppCompatActivity {
         AuthenticationRequest.Builder builder =
                 new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
 
-        builder.setScopes(new String[]{"streaming"});
+        builder.setScopes(new String[]{"playlist-modify-public", "playlist-modify-private", "user-read-private"});
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
