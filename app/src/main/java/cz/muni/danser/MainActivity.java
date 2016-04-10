@@ -23,12 +23,12 @@ import java.util.Collection;
 import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.muni.danser.cz.muni.danser.api.Api;
-import cz.muni.danser.cz.muni.danser.api.CategoryServiceImpl;
+import cz.muni.danser.api.Api;
+import cz.muni.danser.api.CategoryServiceImpl;
 import cz.muni.danser.api.DanceServiceImpl;
 import cz.muni.danser.api.TrackServiceImpl;
 import cz.muni.danser.model.Dance;
-import cz.muni.danser.cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.model.DanceCategory;
 import cz.muni.danser.model.Listable;
 import cz.muni.danser.model.Track;
 

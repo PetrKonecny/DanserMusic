@@ -43,7 +43,7 @@ final public class Api {
         File httpCacheDirectory = new File(context.getCacheDir(), "responses");
         int cacheSize = 10 * 1024 * 1024; // 10 MiB
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
-        return new OkHttpClient.Builder().cache(cache).addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR).build();
+        return new OkHttpClient.Builder().cache(cache).addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR).addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR).build();
     }
 
     public static Retrofit getRetrofit(){
@@ -62,18 +62,27 @@ final public class Api {
         }
         return retrofitApi;
     }
+
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
+            Response originalResponse = chain.proceed(chain.request());
             if (Utils.isNetworkAvailable(context)) {
-                request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                int maxAge = 60; // read from cache for 1 minute
+                return originalResponse.newBuilder()
+                        .header("Cache-Control", "public, max-age=" + maxAge)
+                        .build();
             } else {
-                request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                int maxStale = 60 * 60 * 24 * 7; // tolerate 1 week
+                return originalResponse.newBuilder()
+                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                        .build();
             }
-            return chain.proceed(request);
         }
     };
+
+
+
 
     public interface RetrofitApi {
 
