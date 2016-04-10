@@ -7,6 +7,8 @@ import android.os.Bundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cz.muni.danser.cz.muni.danser.model.Track;
+
 public class HandleURL extends AppCompatActivity {
     private static Track fillTrack(Track searchTrack, boolean artistFirst, String s1, String s2){
         if(artistFirst){

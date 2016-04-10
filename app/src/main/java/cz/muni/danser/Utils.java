@@ -5,6 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
+import cz.muni.danser.cz.muni.danser.api.Api;
+import cz.muni.danser.cz.muni.danser.model.Translatable;
+
 /**
  * Created by Petr2 on 4/6/2016.
  */
@@ -31,9 +34,8 @@ public final class Utils {
         return translated;
     }
 
-    public static boolean isNetworkAvailable() {
-        Context context = Api.getContext();
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isNetworkAvailable(Context c) {
+        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
         }

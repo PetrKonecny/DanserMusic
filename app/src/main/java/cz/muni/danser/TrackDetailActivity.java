@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cz.muni.danser.cz.muni.danser.model.Track;
 
 public class TrackDetailActivity extends AppCompatActivity {
 
@@ -40,7 +41,6 @@ public class TrackDetailActivity extends AppCompatActivity {
                 mSpotifyId.setText("https://open.spotify.com/track/"+spotifyIds[0]);
             }
         }
-        mDanceType.setText(MainActivity.api.getDance(track.getDanceType(), mDanceType).getMainText());
     }
 
     public void favoriteTrack(View view){

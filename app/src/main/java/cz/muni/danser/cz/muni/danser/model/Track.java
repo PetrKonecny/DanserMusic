@@ -1,4 +1,4 @@
-package cz.muni.danser;
+package cz.muni.danser.cz.muni.danser.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,8 +10,6 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 @Table(name = "Tracks")
 public class Track extends Model implements Parcelable, Listable, Comparable<Track> {

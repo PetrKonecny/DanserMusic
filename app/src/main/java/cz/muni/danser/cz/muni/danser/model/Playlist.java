@@ -1,4 +1,4 @@
-package cz.muni.danser;
+package cz.muni.danser.cz.muni.danser.model;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @Table(name = "Playlists")
-public class Playlist extends Model implements Listable{
+public class Playlist extends Model implements Listable {
 
     @Column(name = "PlaylistName")
     public String playlistName;

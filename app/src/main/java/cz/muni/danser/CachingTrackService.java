@@ -8,6 +8,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 
+import cz.muni.danser.cz.muni.danser.api.Api;
+import cz.muni.danser.cz.muni.danser.model.Dance;
+import cz.muni.danser.cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.cz.muni.danser.model.Track;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,6 +20,7 @@ import retrofit2.Response;
  * Created by Pavel on 9. 4. 2016.
  */
 public class CachingTrackService {
+    /*
     private static TreeMap<String, DanceCategory> categories = new TreeMap<>();
     private static List<DanceCategory> categoriesCachedList = new ArrayList<>();
 
@@ -218,4 +223,5 @@ public class CachingTrackService {
         }
         return tracksCachedList;
     }
+    */
 }

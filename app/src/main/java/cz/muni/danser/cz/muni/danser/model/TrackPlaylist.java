@@ -1,4 +1,4 @@
-package cz.muni.danser;
+package cz.muni.danser.cz.muni.danser.model;
 
 
 import com.activeandroid.Model;
@@ -6,6 +6,9 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 import java.util.List;
+
+import cz.muni.danser.cz.muni.danser.model.Playlist;
+import cz.muni.danser.cz.muni.danser.model.Track;
 
 /**
  * Created by Petr2 on 3/27/2016.

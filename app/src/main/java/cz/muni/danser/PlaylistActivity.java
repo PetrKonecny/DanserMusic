@@ -42,6 +42,9 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cz.muni.danser.cz.muni.danser.model.Listable;
+import cz.muni.danser.cz.muni.danser.model.Playlist;
+import cz.muni.danser.cz.muni.danser.model.Track;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
@@ -188,7 +191,7 @@ public class PlaylistActivity extends AppCompatActivity {
         if (mEmail == null) {
             pickUserAccount();
         } else {
-            if (Utils.isNetworkAvailable()) {
+            if (Utils.isNetworkAvailable(this)) {
                 new ExportPlaylistToYoutubeTask(PlaylistActivity.this, mEmail, SCOPE).execute(playlist.tracks());
             } else {
                 Toast.makeText(this, R.string.not_online, Toast.LENGTH_LONG).show();

@@ -1,4 +1,4 @@
-package cz.muni.danser;
+package cz.muni.danser.cz.muni.danser.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

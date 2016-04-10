@@ -3,11 +3,15 @@ package cz.muni.danser;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.List;
+
+import cz.muni.danser.cz.muni.danser.model.Listable;
+import cz.muni.danser.cz.muni.danser.model.StringParsable;
 
 /**
  * Created by Petr2 on 3/23/2016.
