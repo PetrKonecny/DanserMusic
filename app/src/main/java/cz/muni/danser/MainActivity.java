@@ -199,6 +199,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         startActivity(intent);
     }
 
+    public void generatePlaylist(MenuItem item){
+        Intent intent = new Intent(this,GeneratePlaylistActivity.class);
+        startActivity(intent);
+    }
+
     // Implemented service callbacks
 
     @Override

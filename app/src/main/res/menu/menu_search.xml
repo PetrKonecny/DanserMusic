@@ -9,4 +9,8 @@
         android:title="@string/playlists"
         android:icon="@android:drawable/btn_star_big_off"
         android:onClick="showPlaylists" />
+    <item android:id="@+id/generate"
+        android:title="Generate playlist"
+        android:icon="@android:drawable/btn_star_big_off"
+        android:onClick="generatePlaylist" />
 </menu>
