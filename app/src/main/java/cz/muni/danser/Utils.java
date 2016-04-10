@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
 import cz.muni.danser.cz.muni.danser.api.Api;
-import cz.muni.danser.cz.muni.danser.model.Translatable;
+import cz.muni.danser.model.Translatable;
 
 /**
  * Created by Petr2 on 4/6/2016.

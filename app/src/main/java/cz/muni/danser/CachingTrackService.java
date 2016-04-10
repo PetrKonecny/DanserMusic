@@ -1,20 +1,7 @@
 package cz.muni.danser;
 
-import android.os.Bundle;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeMap;
-
 import cz.muni.danser.cz.muni.danser.api.Api;
-import cz.muni.danser.cz.muni.danser.model.Dance;
 import cz.muni.danser.cz.muni.danser.model.DanceCategory;
-import cz.muni.danser.cz.muni.danser.model.Track;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Pavel on 9. 4. 2016.

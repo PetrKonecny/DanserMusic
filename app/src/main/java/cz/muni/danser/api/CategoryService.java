@@ -1,9 +1,9 @@
-package cz.muni.danser.cz.muni.danser.api;
+package cz.muni.danser.api;
 
 import java.util.List;
 
-import cz.muni.danser.cz.muni.danser.model.Dance;
-import cz.muni.danser.cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.model.Dance;
+import cz.muni.danser.model.DanceCategory;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

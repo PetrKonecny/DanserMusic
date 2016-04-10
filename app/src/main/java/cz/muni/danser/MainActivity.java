@@ -15,7 +15,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -26,16 +25,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cz.muni.danser.cz.muni.danser.api.Api;
 import cz.muni.danser.cz.muni.danser.api.CategoryServiceImpl;
-import cz.muni.danser.cz.muni.danser.api.DanceServiceImpl;
-import cz.muni.danser.cz.muni.danser.api.TrackService;
-import cz.muni.danser.cz.muni.danser.api.TrackServiceImpl;
-import cz.muni.danser.cz.muni.danser.model.Dance;
+import cz.muni.danser.api.DanceServiceImpl;
+import cz.muni.danser.api.TrackServiceImpl;
+import cz.muni.danser.model.Dance;
 import cz.muni.danser.cz.muni.danser.model.DanceCategory;
-import cz.muni.danser.cz.muni.danser.model.Listable;
-import cz.muni.danser.cz.muni.danser.model.Track;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import cz.muni.danser.model.Listable;
+import cz.muni.danser.model.Track;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener, TrackServiceImpl.Callbacks, DanceServiceImpl.Callbacks, CategoryServiceImpl.Callbacks {
 

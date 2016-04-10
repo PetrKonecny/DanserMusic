@@ -42,9 +42,9 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.muni.danser.cz.muni.danser.model.Listable;
-import cz.muni.danser.cz.muni.danser.model.Playlist;
-import cz.muni.danser.cz.muni.danser.model.Track;
+import cz.muni.danser.model.Listable;
+import cz.muni.danser.model.Playlist;
+import cz.muni.danser.model.Track;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;

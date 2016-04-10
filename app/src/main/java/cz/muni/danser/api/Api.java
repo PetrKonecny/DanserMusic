@@ -1,4 +1,4 @@
-package cz.muni.danser.cz.muni.danser.api;
+package cz.muni.danser.api;
 
 import android.content.Context;
 
@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.List;
 
 import cz.muni.danser.Utils;
-import cz.muni.danser.cz.muni.danser.model.Dance;
-import cz.muni.danser.cz.muni.danser.model.DanceCategory;
-import cz.muni.danser.cz.muni.danser.model.Track;
+import cz.muni.danser.model.Dance;
+import cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.model.Track;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;

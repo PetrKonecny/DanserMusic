@@ -1,8 +1,8 @@
-package cz.muni.danser.cz.muni.danser.api;
+package cz.muni.danser.api;
 
 import java.util.List;
 
-import cz.muni.danser.cz.muni.danser.model.Playlist;
+import cz.muni.danser.model.Playlist;
 
 /**
  * Created by Petr2 on 4/10/2016.

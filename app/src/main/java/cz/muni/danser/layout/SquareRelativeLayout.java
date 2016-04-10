@@ -1,4 +1,4 @@
-package cz.muni.danser.cz.muni.danser.cz.muni.danser.layout;
+package cz.muni.danser.layout;
 
 /**
  * Created by Petr2 on 3/27/2016.

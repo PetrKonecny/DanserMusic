@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.muni.danser.cz.muni.danser.model.Track;
+import cz.muni.danser.model.Track;
 
 public class TrackDetailActivity extends AppCompatActivity {
 

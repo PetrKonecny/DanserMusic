@@ -1,11 +1,9 @@
-package cz.muni.danser.cz.muni.danser.api;
-
-import android.content.Context;
+package cz.muni.danser.api;
 
 import java.util.List;
 
-import cz.muni.danser.cz.muni.danser.model.Dance;
-import cz.muni.danser.cz.muni.danser.model.Track;
+import cz.muni.danser.model.Dance;
+import cz.muni.danser.model.Track;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -1,4 +1,4 @@
-package cz.muni.danser.cz.muni.danser.model;
+package cz.muni.danser.model;
 
 import java.util.Map;
 
