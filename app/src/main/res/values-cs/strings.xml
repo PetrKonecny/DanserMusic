@@ -12,5 +12,13 @@
     <string name="dance_type_24">Ploužák</string>
     <string name="regexp_soundhound">^Právě jsem použil(a) SoundHound k nalezení (.*) od (.*)$</string>
     <string name="regexp_trackid">^Pomocí aplikace TrackID™ se mi podařilo najít skladbu (.*) od (.*)\\..*</string>
-    <string name="spotify">Spotify :</string>
+    <string name="playlists">Playlisty</string>
+    <string name="add_to_favorites">do oblíbených</string>
+    <string name="artist">Interpret</string>
+    <string name="dance_label">Tanec:</string>
+    <string name="hint_search">Hledat skladby…</string>
+    <string name="no_network">Síť není dostupná. Data nemusí být přesná a úplná.</string>
+    <string name="not_online">Pro vytvoření YouTube playlistu je potřeba připojení k internetu.</string>
+    <string name="pick_account">Pro vytvoření YouTube playlistu je potřeba zvolit účet.</string>
+    <string name="share_into">Rozpoznat tanec Danserem</string>
 </resources>

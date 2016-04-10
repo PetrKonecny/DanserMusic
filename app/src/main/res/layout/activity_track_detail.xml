@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="cz.muni.danser.TrackDetailActivity">
+    tools:context=".TrackDetailActivity">
     <TextView
         android:id="@+id/track_name"
         android:layout_width="match_parent"
@@ -36,6 +36,7 @@
         android:id="@+id/youtube_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autoLink="web"
     />
     <TextView
         android:id="@+id/spotify_label"
@@ -45,6 +46,18 @@
         />
     <TextView
         android:id="@+id/spotify_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        />
+    <TextView
+        android:id="@+id/dance_label"
+        android:text="@string/dance_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:id="@+id/dance_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

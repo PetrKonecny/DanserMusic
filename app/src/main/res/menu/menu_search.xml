@@ -6,7 +6,7 @@
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView" />
     <item android:id="@+id/playlists"
-        android:title="Playlists"
+        android:title="@string/playlists"
         android:icon="@android:drawable/btn_star_big_off"
         android:onClick="showPlaylists" />
 </menu>

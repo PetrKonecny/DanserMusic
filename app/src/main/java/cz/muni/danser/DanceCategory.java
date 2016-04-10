@@ -2,6 +2,7 @@ package cz.muni.danser;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -12,7 +13,7 @@ import java.util.Map;
 /**
  * Created by Pavel on 27. 3. 2016.
  */
-public class DanceCategory implements Parcelable, StringParsable, Listable {
+public class DanceCategory extends Translatable implements Parcelable, StringParsable, Listable, Comparable<DanceCategory> {
     public String getDanceCategory() {
         return danceCategory;
     }
@@ -57,9 +58,14 @@ public class DanceCategory implements Parcelable, StringParsable, Listable {
     }
 
     @Override
-    public Map getResourceMap() {
+    public Map<String,String> getResourceMap() {
         Map<String,String> map = new HashMap<>();
         map.put("mainTitle","dance_category_" + getDanceCategory());
         return map;
+    }
+
+    @Override
+    public int compareTo(@NonNull DanceCategory another) {
+        return getMainText().compareToIgnoreCase(another.getMainText());
     }
 }

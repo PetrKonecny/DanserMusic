@@ -2,6 +2,7 @@ package cz.muni.danser;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -13,7 +14,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 @Table(name = "Tracks")
-public class Track extends Model implements Parcelable, Listable {
+public class Track extends Model implements Parcelable, Listable, Comparable<Track> {
 
     @Expose
     @Column(name = "Mdid", index = true, unique = true)
@@ -175,5 +176,10 @@ public class Track extends Model implements Parcelable, Listable {
     @Override
     public String getMainText() {
         return getTrackName();
+    }
+
+    @Override
+    public int compareTo(@NonNull Track another) {
+        return getMainText().compareToIgnoreCase(another.getMainText());
     }
 }

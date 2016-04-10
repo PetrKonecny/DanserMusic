@@ -1,17 +1,12 @@
 package cz.muni.danser;
 
 import android.content.Context;
-import android.support.annotation.StringDef;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.xmlpull.v1.XmlPullParser;
-
 import java.util.List;
 
 /**
@@ -39,8 +34,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(c=parent.getContext())
                 .inflate(mLayout, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override

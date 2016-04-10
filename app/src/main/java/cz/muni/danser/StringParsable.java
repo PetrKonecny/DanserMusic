@@ -7,5 +7,5 @@ import java.util.Map;
  * Implement if Object has some attributes that have string representations in application resources
  */
 public interface StringParsable {
-    public Map<String,String> getResourceMap();
+    Map<String,String> getResourceMap();
 }

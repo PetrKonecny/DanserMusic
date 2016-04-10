@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
@@ -22,7 +22,6 @@ import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -30,7 +29,6 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.PlaylistSnippet;
-import com.google.api.services.youtube.model.PlaylistStatus;
 import com.google.api.services.youtube.model.ResourceId;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -38,7 +36,6 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +58,7 @@ public class PlaylistActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;
     List<Playlist> playlists;
     Playlist playlist;
-    private String SCOPE = "oauth2:https://www.googleapis.com/auth/youtube";
+    private static String SCOPE = "oauth2:https://www.googleapis.com/auth/youtube";
     private static final int SPOTIFY_REQUEST_CODE = 1337;
     private static final String REDIRECT_URI = "dansermusic://spotifycallback";
     private static final String CLIENT_ID = "4cb6768e46ae40ebbb7efaec7ea66ca9";
@@ -122,7 +119,7 @@ public class PlaylistActivity extends AppCompatActivity {
         return true;
     }
 
-    private final void createSpotifyPlaylist(final String id, final List<Track> tracks, final SpotifyService service){
+    private void createSpotifyPlaylist(final String id, final List<Track> tracks, final SpotifyService service){
         Map<String,Object> body = new HashMap<>();
         body.put("name", "new Danser playlist");
         body.put("public", false);
@@ -140,24 +137,29 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     private void addTracksToPlaylist(String id, String playlistId, List<Track> tracks, SpotifyService service){
-        Map body = new HashMap<>();
+        Map<String,Object> body = new HashMap<>();
         List<String> uris = new ArrayList<>();
         for(Track track : tracks){
-            uris.add("spotify:track:"+track.getSpotifyId().split(",")[0]);
+            if(track.getSpotifyId() != null){
+                uris.add("spotify:track:"+track.getSpotifyId().split(",")[0]);
+            }
         }
-        body.put("uris",uris);
-        service.addTracksToPlaylist(id, playlistId, null, body, new Callback<Pager<PlaylistTrack>>() {
-            @Override
-            public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
-                Toast.makeText(PlaylistActivity.this,"Playlist was added to your spotify acccount", Toast.LENGTH_LONG).show();
-            }
+        if(uris.isEmpty()){
+            Toast.makeText(PlaylistActivity.this,"No songs in your playlist have Spotify IDs.", Toast.LENGTH_LONG).show();
+        } else {
+            body.put("uris",uris);
+            service.addTracksToPlaylist(id, playlistId, null, body, new Callback<Pager<PlaylistTrack>>() {
+                @Override
+                public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
+                    Toast.makeText(PlaylistActivity.this,"Playlist was added to your spotify acccount", Toast.LENGTH_LONG).show();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Toast.makeText(PlaylistActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
+                @Override
+                public void failure(RetrofitError error) {
+                    Toast.makeText(PlaylistActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     public void initSpotifyAddPlaylist(String token, final List<Track> tracks){
@@ -186,7 +188,7 @@ public class PlaylistActivity extends AppCompatActivity {
         if (mEmail == null) {
             pickUserAccount();
         } else {
-            if (true) { //online
+            if (Utils.isNetworkAvailable()) {
                 new ExportPlaylistToYoutubeTask(PlaylistActivity.this, mEmail, SCOPE).execute(playlist.tracks());
             } else {
                 Toast.makeText(this, R.string.not_online, Toast.LENGTH_LONG).show();
@@ -206,8 +208,12 @@ public class PlaylistActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         mRecyclerView.setHasFixedSize(true);
+        ActionBar bar = getSupportActionBar();
 
         if (!intent.hasExtra("playlistName")) {
+            if(bar != null){
+                bar.setTitle(getString(R.string.playlists));
+            }
             mLayoutManager = new LinearLayoutManager(this);
             playlists = new Select().all().from(Playlist.class).execute();
             mAdapter = new ListAdapter(playlists, new ListAdapter.OnItemClickListener() {
@@ -220,6 +226,9 @@ public class PlaylistActivity extends AppCompatActivity {
             }, R.layout.list_item_view);
         } else {
             playlist = new Select().from(Playlist.class).where("playlistName = ?", intent.getStringExtra("playlistName")).executeSingle();
+            if(bar != null){
+                bar.setTitle(playlist.getMainText());
+            }
             mLayoutManager = new LinearLayoutManager(this);
             mAdapter = new ListAdapter(playlist.tracks(), new ListAdapter.OnItemClickListener() {
                 @Override
@@ -261,6 +270,12 @@ public class PlaylistActivity extends AppCompatActivity {
             this.mEmail = name;
         }
 
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Toast.makeText(PlaylistActivity.this,s,Toast.LENGTH_LONG).show();
+        }
+
         /**
          * Executes the asynchronous job. This runs when you call execute()
          * on the AsyncTask instance.
@@ -281,7 +296,7 @@ public class PlaylistActivity extends AppCompatActivity {
                 YouTube youtube = new YouTube.Builder(new NetHttpTransport(), JacksonFactory.getDefaultInstance(),
                         credential).setApplicationName("Danser Music").build();
                 try {
-                    YouTube.Playlists.Insert playlistInsertCommand = youtube.playlists().insert("snippet", createPlaylist("", ""));
+                    YouTube.Playlists.Insert playlistInsertCommand = youtube.playlists().insert("snippet", createPlaylist(playlist.getMainText(), "Playlist generated by Danser Music (www.dansermusic.com)"));
                     com.google.api.services.youtube.model.Playlist playlistInserted = playlistInsertCommand.execute();
                     id = playlistInserted.getId();
                 }catch(IOException e) {
@@ -295,22 +310,20 @@ public class PlaylistActivity extends AppCompatActivity {
                             items.insert("snippet,contentDetails", createPlaylistItem(track.getTrackName(), id, track.getYoutubeId().split(",")[0])).execute();
                         } catch (IOException e){
                             Log.d("playlist async",e.getMessage());
-                            continue;
+                            //continue;
                         }
                     }
                 }
+                return "YouTube playlist was generated.";
+            } else {
+                return "Unable to obtain token to create playlist.";
             }
-            return null;
-            // The fetchToken() method handles Google-specific exceptions,
-            // so this indicates something went wrong at a higher level.
-            // TIP: Check for network connectivity before starting the AsyncTask.
-            //...return null;
         }
 
         public com.google.api.services.youtube.model.Playlist createPlaylist(String title, String description) {
             PlaylistSnippet playlistSnippet = new PlaylistSnippet();
-            playlistSnippet.setTitle("Test Playlist " + Calendar.getInstance().getTime());
-            playlistSnippet.setDescription("A private playlist created with the YouTube API v3");
+            playlistSnippet.setTitle(title);
+            playlistSnippet.setDescription(description);
 
             com.google.api.services.youtube.model.Playlist youTubePlaylist = new com.google.api.services.youtube.model.Playlist();
             youTubePlaylist.setSnippet(playlistSnippet);

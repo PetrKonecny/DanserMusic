@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -16,6 +15,7 @@ public class TrackDetailActivity extends AppCompatActivity {
     @Bind(R.id.artist_name) TextView mTextViewArtistName;
     @Bind(R.id.youtube_id) TextView mYoutubeId;
     @Bind(R.id.spotify_id) TextView mSpotifyId;
+    @Bind(R.id.dance_type) TextView mDanceType;
     Track track;
 
     @Override
@@ -28,8 +28,19 @@ public class TrackDetailActivity extends AppCompatActivity {
         track = extras.getParcelable("track");
         mTextViewName.setText(track.getTrackName());
         mTextViewArtistName.setText(track.getArtistName());
-        mYoutubeId.setText(track.getYoutubeId());
-        mSpotifyId.setText(track.getSpotifyId());
+        if(track.getYoutubeId() != null){
+            String[] youtubeIds = track.getYoutubeId().split(",");
+            if(youtubeIds.length > 0){
+                mYoutubeId.setText("https://www.youtube.com/watch?v="+youtubeIds[0]);
+            }
+        }
+        if(track.getSpotifyId() != null){
+            String[] spotifyIds = track.getSpotifyId().split(",");
+            if(spotifyIds.length > 0){
+                mSpotifyId.setText("https://open.spotify.com/track/"+spotifyIds[0]);
+            }
+        }
+        mDanceType.setText(MainActivity.api.getDance(track.getDanceType(), mDanceType).getMainText());
     }
 
     public void favoriteTrack(View view){
