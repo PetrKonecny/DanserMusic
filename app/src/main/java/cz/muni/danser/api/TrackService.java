@@ -1,6 +1,6 @@
 package cz.muni.danser.api;
 
-import cz.muni.danser.cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.model.DanceCategory;
 
 /**
  * Created by Petr2 on 3/24/2016.

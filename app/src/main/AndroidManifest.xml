@@ -29,91 +29,127 @@
         <activity xmlns:android="http://schemas.android.com/apk/res/android"
             android:name=".HandleURL"
             android:label="@string/share_into">
+
             <!-- share -->
-                <intent-filter>
-                <!-- Shazam, SoundCloud, SoundHound,
-                Deezer, TrackID, iTunes, YouTube -->
-                    <action android:name="android.intent.action.SEND"/>
-                    <category android:name="android.intent.category.DEFAULT"/>
-                    <data android:mimeType="text/plain"/>
-                </intent-filter>
+            <intent-filter>
+
+                <!--
+                Shazam, SoundCloud, SoundHound,
+                Deezer, TrackID, iTunes, YouTube
+                -->
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
             <!-- view -->
-            <intent-filter><!-- Last.fm -->
+            <intent-filter>
+                <!-- Last.fm -->
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="www.last.fm"
                     android:pathPattern="/music/.*/_/.*"
                     android:scheme="http" />
             </intent-filter>
-            <intent-filter><!-- Shazam -->
+            <intent-filter>
+                <!-- Shazam -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="www.shazam.com"
                     android:pathPattern="/.*/track/.*/.*"
                     android:scheme="http" />
             </intent-filter>
-            <intent-filter><!-- SoundCloud -->
+            <intent-filter>
+                <!-- SoundCloud -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="soundcloud.com"
                     android:pathPattern="/.*/.*"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter><!-- SoundHound -->
+            <intent-filter>
+                <!-- SoundHound -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="www.soundhound.com"
                     android:pathPattern="/?al=.*"
                     android:scheme="http" />
             </intent-filter>
-            <intent-filter><!-- Deezer -->
+            <intent-filter>
+                <!-- Deezer -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="www.deezer.com"
                     android:pathPattern="/track/.*"
                     android:scheme="http" />
             </intent-filter>
-            <intent-filter><!-- Spotify -->
+            <intent-filter>
+                <!-- Spotify -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="open.spotify.com"
                     android:pathPattern="/track/.*"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter><!-- TrackID -->
+            <intent-filter>
+                <!-- TrackID -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="trackid.sonymobile.com"
                     android:pathPattern="/track/.*"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter><!-- Apple Music - without album -->
+            <intent-filter>
+                <!-- Apple Music - without album -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="itun.es"
                     android:pathPattern="/.*/.*?i=.*"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter><!-- Apple Music - with album -->
+            <intent-filter>
+                <!-- Apple Music - with album -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="itunes.apple.com"
                     android:pathPattern="/.*/album/.*/id.*?i=.*"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter><!-- YouTube -->
+            <intent-filter>
+                <!-- YouTube -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="www.youtube.com"
                     android:pathPattern="/watch?v=.*"
@@ -126,6 +162,7 @@
             android:value="Danser.db" />
 
         <activity android:name=".PlaylistActivity" />
+        <activity android:name=".GeneratePlaylistActivity"></activity>
     </application>
 
 </manifest>

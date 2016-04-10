@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
-import cz.muni.danser.cz.muni.danser.api.Api;
+import cz.muni.danser.api.Api;
 import cz.muni.danser.model.Translatable;
 
 /**

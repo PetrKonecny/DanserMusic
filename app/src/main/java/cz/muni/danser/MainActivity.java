@@ -23,12 +23,12 @@ import java.util.Collection;
 import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.muni.danser.cz.muni.danser.api.Api;
-import cz.muni.danser.cz.muni.danser.api.CategoryServiceImpl;
+import cz.muni.danser.api.Api;
+import cz.muni.danser.api.CategoryServiceImpl;
 import cz.muni.danser.api.DanceServiceImpl;
 import cz.muni.danser.api.TrackServiceImpl;
 import cz.muni.danser.model.Dance;
-import cz.muni.danser.cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.model.DanceCategory;
 import cz.muni.danser.model.Listable;
 import cz.muni.danser.model.Track;
 
@@ -196,6 +196,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public void showPlaylists(MenuItem item){
         Intent intent = new Intent(this,PlaylistActivity.class);
         intent.setAction(MainActivity.LIST_PLAYLIST_ACTION);
+        startActivity(intent);
+    }
+
+    public void generatePlaylist(MenuItem item){
+        Intent intent = new Intent(this,GeneratePlaylistActivity.class);
         startActivity(intent);
     }
 
