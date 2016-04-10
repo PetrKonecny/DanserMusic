@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by Pavel on 27. 3. 2016.
  */
-public class DanceCategory extends Translatable implements Parcelable, StringParsable, Listable, Comparable<DanceCategory> {
+public class DanceCategory implements Parcelable, StringParsable, Listable, Comparable<DanceCategory>, Translatable {
     public String getDanceCategory() {
         return danceCategory;
     }

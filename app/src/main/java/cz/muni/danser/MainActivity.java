@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             mLayoutManager = new LinearLayoutManager(this);
             Dance dance = intent.getExtras().getParcelable("dance");
             if(bar != null){
-                bar.setTitle(dance.getTranslatedMainText());
+                bar.setTitle(Utils.getTranslatedMainText(dance));
             }
 
             mAdapter = new ListAdapter(api.getTracks(dance.getDanceType(),callback), new ListAdapter.OnItemClickListener() {
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             mLayoutManager = new GridLayoutManager(this,2);
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
             if(bar != null){
-                bar.setTitle(danceCategory.getTranslatedMainText());
+                bar.setTitle(Utils.getTranslatedMainText(danceCategory));
             }
             mAdapter = new ListAdapter(api.getDances(danceCategory.getDanceCategory(),callback), new ListAdapter.OnItemClickListener() {
                 @Override
