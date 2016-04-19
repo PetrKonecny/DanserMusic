@@ -1,23 +1,17 @@
 package cz.muni.danser.api;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import cz.muni.danser.Utils;
 import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceCategory;
 import cz.muni.danser.model.Track;
 import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

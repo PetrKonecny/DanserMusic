@@ -1,70 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_column="1"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TrackDetailActivity">
-    <TextView
-        android:id="@+id/track_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-    />
-    <TextView
-        android:id="@+id/artist_label"
-        android:text="@string/artist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <TextView
-        android:id="@+id/artist_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    <TextView
-        android:id="@+id/youtube_label"
-        android:text="@string/youtube"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <TextView
-        android:id="@+id/youtube_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-    />
-    <TextView
-        android:id="@+id/spotify_label"
-        android:text="@string/spotify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <TextView
-        android:id="@+id/spotify_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        />
-    <TextView
-        android:id="@+id/dance_label"
-        android:text="@string/dance_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <TextView
-        android:id="@+id/dance_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="0"
+    android:shrinkColumns="1"
+    android:id="@+id/track_detail_table"
+    >
+    <TableRow>
+        <TextView
+            android:id="@+id/track_name"
+            android:layout_width="fill_parent"
+            android:layout_span="2"
+            android:textSize="30sp"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/artist_label"
+            android:layout_width="fill_parent"
+            android:text="@string/artist"
+            />
+        <TextView
+            android:id="@+id/artist_name"
+            android:layout_width="fill_parent"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/release_label"
+            android:layout_width="fill_parent"
+            android:text="@string/release_label"
+            />
+        <TextView
+            android:id="@+id/release_name"
+            android:layout_width="fill_parent"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/release_year_label"
+            android:layout_width="fill_parent"
+            android:text="@string/release_year"
+            />
+        <TextView
+            android:id="@+id/release_year"
+            android:layout_width="fill_parent"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/youtube_label"
+            android:layout_width="fill_parent"
+            android:text="@string/youtube"
+            />
+        <TextView
+            android:id="@+id/youtube_id"
+            android:layout_width="fill_parent"
+            android:autoLink="web"
+            />
+    </TableRow>
+    <TableRow android:layout_width="fill_parent">
+        <TextView
+            android:id="@+id/spotify_label"
+            android:layout_width="fill_parent"
+            android:text="@string/spotify"
+            />
+        <TextView
+            android:id="@+id/spotify_id"
+            android:layout_width="fill_parent"
+            android:autoLink="web"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/dance_label"
+            android:layout_width="fill_parent"
+            android:text="@string/dance_label"
+            />
+        <TextView
+            android:id="@+id/dance_type"
+            android:layout_width="fill_parent"
+            />
+    </TableRow>
+</TableLayout>
     <Button
         android:text="@string/add_to_favorites"
+        android:onClick="favoriteTrack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="favoriteTrack"
+        android:layout_below="@id/track_detail_table"
         />
-</LinearLayout>
+</RelativeLayout>

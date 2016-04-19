@@ -20,4 +20,6 @@
     <string name="dance_label">Dance:</string>
     <string name="no_network">Network is not available. Data might not be accurate and complete.</string>
     <string name="playlists">Playlists</string>
+    <string name="release_label">Release:</string>
+    <string name="release_year">Release year:</string>
 </resources>

@@ -38,6 +38,43 @@ public class Track extends Model implements Parcelable, Listable, Comparable<Tra
     @SerializedName("youtube_ids")
     private String youtubeId;
 
+    public String getReleaseMbid() {
+        return releaseMbid;
+    }
+
+    public void setReleaseMbid(String releaseMbid) {
+        this.releaseMbid = releaseMbid;
+    }
+
+    public String getReleaseName() {
+        return releaseName;
+    }
+
+    public void setReleaseName(String releaseName) {
+        this.releaseName = releaseName;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    @Expose
+    @Column(name = "ReleaseMbid")
+    @SerializedName("release_mbid")
+    private String releaseMbid;
+    @Expose
+    @Column(name = "ReleaseName")
+    @SerializedName("release_name")
+    private String releaseName;
+    @Expose
+    @Column(name = "ReleaseYear")
+    @SerializedName("release_year")
+    private int releaseYear;
+
     public Track() {
         super();
     }
@@ -129,6 +166,9 @@ public class Track extends Model implements Parcelable, Listable, Comparable<Tra
         dest.writeString(getArtistName());
         dest.writeString(getSpotifyId());
         dest.writeString(getYoutubeId());
+        dest.writeString(getReleaseMbid());
+        dest.writeString(getReleaseName());
+        dest.writeInt(getReleaseYear());
     }
 
     public Track (Parcel in){
@@ -138,6 +178,9 @@ public class Track extends Model implements Parcelable, Listable, Comparable<Tra
         setArtistName(in.readString());
         setSpotifyId(in.readString());
         setYoutubeId(in.readString());
+        setReleaseMbid(in.readString());
+        setReleaseName(in.readString());
+        setReleaseYear(in.readInt());
     }
 
     public static final Parcelable.Creator<Track> CREATOR = new Parcelable.Creator<Track>() {
