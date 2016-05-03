@@ -3,7 +3,8 @@ package cz.muni.danser.api;
 import java.util.List;
 
 import cz.muni.danser.model.Dance;
-import cz.muni.danser.model.Track;
+import cz.muni.danser.model.DanceSong;
+import cz.muni.danser.model.DanceTrack;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,7 +23,7 @@ public class DanceServiceImpl implements DanceService {
     public interface Callbacks {
         void getAllDancesCallback(List<Dance> dances);
         void getDanceCallback(Dance dance);
-        void getTracksForDanceCallback(List<Track> tracks);
+        void getSongsForDanceCallback(List<DanceSong> danceTracks);
         void exceptionCallback(Throwable t);
     }
 
@@ -59,16 +60,16 @@ public class DanceServiceImpl implements DanceService {
     }
 
     @Override
-    public void getTracks(int danceType) {
-        Call<List<Track>> call = Api.getRetrofitApi().getTracks(danceType);
-        call.enqueue(new Callback<List<Track>>() {
+    public void getSongs(int danceType) {
+        Call<List<DanceSong>> call = Api.getRetrofitApi().getDanceSongs(danceType);
+        call.enqueue(new Callback<List<DanceSong>>() {
             @Override
-            public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
-                callbacks.getTracksForDanceCallback(response.body());
+            public void onResponse(Call<List<DanceSong>> call, Response<List<DanceSong>> response) {
+                callbacks.getSongsForDanceCallback(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Track>> call, Throwable t) {
+            public void onFailure(Call<List<DanceSong>> call, Throwable t) {
                 callbacks.exceptionCallback(t);
             }
         });

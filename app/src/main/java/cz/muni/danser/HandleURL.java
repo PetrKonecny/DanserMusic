@@ -7,19 +7,19 @@ import android.os.Bundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cz.muni.danser.model.Track;
+import cz.muni.danser.model.DanceTrack;
 
 public class HandleURL extends AppCompatActivity {
-    private static Track fillTrack(Track searchTrack, boolean artistFirst, String s1, String s2){
+    private static DanceTrack fillTrack(DanceTrack searchDanceTrack, boolean artistFirst, String s1, String s2){
         if(artistFirst){
-            searchTrack.setArtistName(s1);
-            searchTrack.setTrackName(s2);
+            searchDanceTrack.setArtistName(s1);
+            searchDanceTrack.setTrackName(s2);
         }
         else{
-            searchTrack.setTrackName(s1);
-            searchTrack.setArtistName(s2);
+            searchDanceTrack.setTrackName(s1);
+            searchDanceTrack.setArtistName(s2);
         }
-        return searchTrack;
+        return searchDanceTrack;
     }
 
     @Override
@@ -28,15 +28,15 @@ public class HandleURL extends AppCompatActivity {
         setContentView(R.layout.activity_handle_url);
 
         Intent intent = getIntent();
-        Track searchTrack = new Track();
+        DanceTrack searchDanceTrack = new DanceTrack();
         if(Intent.ACTION_SEND.equals(intent.getAction()) && "text/plain".equals(intent.getType()) && intent.hasExtra(Intent.EXTRA_TEXT)){
             String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
             Matcher youtubeM, spotifyM;
             if((youtubeM = Pattern.compile("^https://youtu.be/(.*)$").matcher(extraText)).matches()){
-                searchTrack.setYoutubeId(youtubeM.group(1));
+                searchDanceTrack.setYoutubeId(youtubeM.group(1));
             }
             else if((spotifyM = Pattern.compile("^https://open.spotify.com/track/(\\w+)$").matcher(extraText)).matches()){
-                searchTrack.setSpotifyId(spotifyM.group(1));
+                searchDanceTrack.setSpotifyId(spotifyM.group(1));
             }
             else if(intent.hasExtra(Intent.EXTRA_SUBJECT)){
                 String extraSubject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
@@ -77,7 +77,7 @@ public class HandleURL extends AppCompatActivity {
                         else{
                             winner = mSubject;
                         }
-                        searchTrack = fillTrack(searchTrack, artistFirst[i], winner.group(1), winner.group(2));
+                        searchDanceTrack = fillTrack(searchDanceTrack, artistFirst[i], winner.group(1), winner.group(2));
                         break;
                     }
                 }
@@ -90,8 +90,8 @@ public class HandleURL extends AppCompatActivity {
              */
         }
         /*
-        TO DO: search against known tracks if any matches by given (not null) attributes
-        + show track detail
+        TO DO: search against known danceTracks if any matches by given (not null) attributes
+        + show danceTrack detail
         + handle non-matching intents etc...
          */
     }

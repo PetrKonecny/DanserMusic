@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".TrackDetailActivity">
+    tools:context=".SongDetailActivity">
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -18,78 +18,10 @@
     >
     <TableRow>
         <TextView
-            android:id="@+id/track_name"
+            android:id="@+id/song_name"
             android:layout_width="fill_parent"
             android:layout_span="2"
             android:textSize="30sp"
-            />
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:id="@+id/artist_label"
-            android:layout_width="fill_parent"
-            android:text="@string/artist"
-            />
-        <TextView
-            android:id="@+id/artist_name"
-            android:layout_width="fill_parent"
-            />
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:id="@+id/release_label"
-            android:layout_width="fill_parent"
-            android:text="@string/release_label"
-            />
-        <TextView
-            android:id="@+id/release_name"
-            android:layout_width="fill_parent"
-            />
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:id="@+id/release_year_label"
-            android:layout_width="fill_parent"
-            android:text="@string/release_year"
-            />
-        <TextView
-            android:id="@+id/release_year"
-            android:layout_width="fill_parent"
-            />
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:id="@+id/youtube_label"
-            android:layout_width="fill_parent"
-            android:text="@string/youtube"
-            />
-        <TextView
-            android:id="@+id/youtube_id"
-            android:layout_width="fill_parent"
-            android:autoLink="web"
-            />
-    </TableRow>
-    <TableRow android:layout_width="fill_parent">
-        <TextView
-            android:id="@+id/spotify_label"
-            android:layout_width="fill_parent"
-            android:text="@string/spotify"
-            />
-        <TextView
-            android:id="@+id/spotify_id"
-            android:layout_width="fill_parent"
-            android:autoLink="web"
-            />
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:id="@+id/dance_label"
-            android:layout_width="fill_parent"
-            android:text="@string/dance_label"
-            />
-        <TextView
-            android:id="@+id/dance_type"
-            android:layout_width="fill_parent"
             />
     </TableRow>
 </TableLayout>

@@ -7,15 +7,14 @@ import android.support.annotation.NonNull;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Table(name = "Tracks")
-public class Track extends Model implements Parcelable, Listable, Comparable<Track> {
+public class DanceTrack extends Model implements Parcelable, Listable, Comparable<DanceTrack> {
 
     @Expose
-    @Column(name = "Mdid", index = true, unique = true)
+    @Column(name = "Mbid", index = true, unique = true)
     private String mbid;
     @Expose
     @Column(name = "TrackName")
@@ -75,34 +74,8 @@ public class Track extends Model implements Parcelable, Listable, Comparable<Tra
     @SerializedName("release_year")
     private int releaseYear;
 
-    public Track() {
+    public DanceTrack() {
         super();
-    }
-
-    public boolean favoriteTrack() {
-
-        Playlist favorites = new Select().from(Playlist.class).where("PlaylistName = 'Favorite'").executeSingle();
-        if (favorites == null) {
-            favorites = new Playlist();
-            favorites.playlistName = "Favorite";
-            favorites.save();
-        }
-
-        if(!getIsFavorite()) {
-            TrackPlaylist trackPlaylist = new TrackPlaylist();
-            trackPlaylist.track = this;
-            trackPlaylist.playlist = favorites;
-            this.save();
-            trackPlaylist.save();
-        }else{
-            return false;
-        }
-        return true;
-    }
-
-    public boolean getIsFavorite() {
-        Playlist favorites = new Select().from(Playlist.class).where("PlaylistName = 'Favorite'").executeSingle();
-        return favorites.tracks().contains(this);
     }
 
     public String getMbid() {
@@ -171,7 +144,7 @@ public class Track extends Model implements Parcelable, Listable, Comparable<Tra
         dest.writeInt(getReleaseYear());
     }
 
-    public Track (Parcel in){
+    public DanceTrack(Parcel in){
         setMbid(in.readString());
         setTrackName(in.readString());
         setDanceType(in.readInt());
@@ -183,16 +156,16 @@ public class Track extends Model implements Parcelable, Listable, Comparable<Tra
         setReleaseYear(in.readInt());
     }
 
-    public static final Parcelable.Creator<Track> CREATOR = new Parcelable.Creator<Track>() {
+    public static final Parcelable.Creator<DanceTrack> CREATOR = new Parcelable.Creator<DanceTrack>() {
 
         @Override
-        public Track createFromParcel(Parcel in) {
-            return new Track(in);
+        public DanceTrack createFromParcel(Parcel in) {
+            return new DanceTrack(in);
         }
 
         @Override
-        public Track[] newArray(int size) {
-            return new Track[size];
+        public DanceTrack[] newArray(int size) {
+            return new DanceTrack[size];
         }
     };
 
@@ -201,9 +174,9 @@ public class Track extends Model implements Parcelable, Listable, Comparable<Tra
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Track track = (Track) o;
+        DanceTrack danceTrack = (DanceTrack) o;
 
-        return getMbid().equals(track.getMbid());
+        return getMbid().equals(danceTrack.getMbid());
 
     }
 
@@ -220,7 +193,7 @@ public class Track extends Model implements Parcelable, Listable, Comparable<Tra
     }
 
     @Override
-    public int compareTo(@NonNull Track another) {
+    public int compareTo(@NonNull DanceTrack another) {
         return getMainText().compareToIgnoreCase(another.getMainText());
     }
 }

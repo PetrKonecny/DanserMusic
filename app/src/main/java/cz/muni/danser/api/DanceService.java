@@ -9,6 +9,6 @@ public interface DanceService {
 
     void getDance(int danceType);
 
-    void getTracks(int danceType);
+    void getSongs(int danceType);
 
 }

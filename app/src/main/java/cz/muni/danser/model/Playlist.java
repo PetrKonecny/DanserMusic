@@ -7,21 +7,17 @@ import com.activeandroid.query.Select;
 
 import java.util.List;
 
-/**
- * Created by Petr2 on 3/27/2016.
- */
-
 @Table(name = "Playlists")
 public class Playlist extends Model implements Listable {
 
     @Column(name = "PlaylistName")
     public String playlistName;
 
-    public List<Track> tracks() {
-        return new Select().from(Track.class)
-                .innerJoin(TrackPlaylist.class)
-                .on("TrackPlaylist.Track = Tracks.Id")
-                .where("TrackPlaylist.Playlist = ?",this.getId())
+    public List<DanceSong> songs() {
+        return new Select().from(DanceSong.class)
+                .innerJoin(SongPlaylist.class)
+                .on("SongPlaylists.DanceSong = DanceSong.Id")
+                .where("SongPlaylists.Playlist = ?",this.getId())
                 .execute();
     }
 

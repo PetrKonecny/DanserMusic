@@ -25,7 +25,7 @@
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".TrackDetailActivity" />
+        <activity android:name=".SongDetailActivity" />
         <activity xmlns:android="http://schemas.android.com/apk/res/android"
             android:name=".HandleURL"
             android:label="@string/share_into">

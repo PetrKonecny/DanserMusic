@@ -26,23 +26,24 @@ import butterknife.ButterKnife;
 import cz.muni.danser.api.Api;
 import cz.muni.danser.api.CategoryServiceImpl;
 import cz.muni.danser.api.DanceServiceImpl;
-import cz.muni.danser.api.TrackServiceImpl;
+import cz.muni.danser.api.SongServiceImpl;
 import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.model.DanceSong;
+import cz.muni.danser.model.DanceTrack;
 import cz.muni.danser.model.Listable;
-import cz.muni.danser.model.Track;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener, TrackServiceImpl.Callbacks, DanceServiceImpl.Callbacks, CategoryServiceImpl.Callbacks {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener, SongServiceImpl.Callbacks, DanceServiceImpl.Callbacks, CategoryServiceImpl.Callbacks {
 
     @Bind(R.id.my_recycler_view) RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     SearchView mSearchView;
     List<DanceCategory> categories = new ArrayList<>();
-    List<Dance> dances = new ArrayList();
-    List<Track> tracks = new ArrayList();
-    List<Track> suggestedTracks = new ArrayList();
-    TrackServiceImpl trackService;
+    List<Dance> dances = new ArrayList<>();
+    List<DanceSong> danceSongs = new ArrayList<>();
+    List<DanceSong> suggestedDanceSongs = new ArrayList<>();
+    SongServiceImpl songService;
     DanceServiceImpl danceService;
     CategoryServiceImpl categoryService;
 
@@ -56,13 +57,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setHasFixedSize(true);
         Intent intent = this.getIntent();
         Api.setContext(this);
-        trackService = new TrackServiceImpl(this);
+        songService = new SongServiceImpl(this);
         danceService = new DanceServiceImpl(this);
         categoryService = new CategoryServiceImpl(this);
 
         if(savedInstanceState != null) {
             dances.addAll((Collection) savedInstanceState.getParcelableArrayList("DANCES"));
-            tracks.addAll((Collection) savedInstanceState.getParcelableArrayList("TRACKS"));
+            danceSongs.addAll((Collection) savedInstanceState.getParcelableArrayList("DANCE_SONGS"));
             categories.addAll((Collection) savedInstanceState.getParcelableArrayList("DANCE_CATEGORIES"));
         }
 
@@ -71,16 +72,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         if(intent.hasExtra("dance")){
             mLayoutManager = new LinearLayoutManager(this);
             Dance dance = intent.getExtras().getParcelable("dance");
-            danceService.getTracks(dance.getDanceType());
+            danceService.getSongs(dance.getDanceType());
             if(bar != null){
                 bar.setTitle(Utils.getTranslatedMainText(dance));
             }
 
-            mAdapter = new ListAdapter(tracks, new ListAdapter.OnItemClickListener() {
+            mAdapter = new ListAdapter(danceSongs, new ListAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Listable track){
-                    Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
-                    intent.putExtra("track",(Track) track);
+                public void onItemClick(Listable danceSong){
+                    Intent intent = new Intent(MainActivity.this,SongDetailActivity.class);
+                    intent.putExtra("danceSong",(DanceSong) danceSong);
                     startActivity(intent);
                 }
             },R.layout.list_item_view);
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putParcelableArrayList("DANCE_CATEGORIES", (ArrayList) categories);
         savedInstanceState.putParcelableArrayList("DANCES", (ArrayList) dances);
-        savedInstanceState.putParcelableArrayList("TRACKS", (ArrayList) tracks);
+        savedInstanceState.putParcelableArrayList("TRACKS", (ArrayList) danceSongs);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -146,19 +147,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        trackService.searchTracks(query, null);
+        songService.searchSongs(query, null);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        trackService.suggestTracks(newText);
+        songService.suggestSongs(newText);
         return false;
     }
 
-    public Cursor createCursor(List<Track> tracks){
-        suggestedTracks.clear();
-        suggestedTracks.addAll(tracks);
+    public Cursor createCursor(List<DanceSong> danceSongs){
+        suggestedDanceSongs.clear();
+        suggestedDanceSongs.addAll(danceSongs);
 
         String[] columns = {
                 BaseColumns._ID,
@@ -168,28 +169,28 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         MatrixCursor cursor = new MatrixCursor(columns);
 
-        for (int i = 0; i < tracks.size(); i++)
+        for (int i = 0; i < danceSongs.size(); i++)
         {
-            cursor.addRow(new Object[]{i, tracks.get(i).getTrackName(), i});
+            cursor.addRow(new Object[]{i, danceSongs.get(i).getMainText(), i});
         }
         return cursor;
     }
 
     @Override
     public boolean onSuggestionSelect(int position) {
-        showSelectedSuggestedTrack(position);
+        showSelectedSuggestedSong(position);
         return false;
     }
 
     @Override
     public boolean onSuggestionClick(int position) {
-        showSelectedSuggestedTrack(position);
+        showSelectedSuggestedSong(position);
         return false;
     }
 
-    private void showSelectedSuggestedTrack(int position){
-        Intent intent = new Intent(MainActivity.this,TrackDetailActivity.class);
-        intent.putExtra("track", suggestedTracks.get(position));
+    private void showSelectedSuggestedSong(int position){
+        Intent intent = new Intent(MainActivity.this,SongDetailActivity.class);
+        intent.putExtra("danceTrack", suggestedDanceSongs.get(position));
         startActivity(intent);
     }
 
@@ -207,12 +208,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     // Implemented service callbacks
 
     @Override
-    public void searchTracksCallback(List<Track> tracks) {
-        mAdapter = new ListAdapter(tracks, new ListAdapter.OnItemClickListener() {
+    public void searchSongsCallback(List<DanceSong> danceSongs) {
+        mAdapter = new ListAdapter(danceSongs, new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Listable track) {
-                Intent intent = new Intent(MainActivity.this, TrackDetailActivity.class);
-                intent.putExtra("track", (Track) track);
+                Intent intent = new Intent(MainActivity.this, SongDetailActivity.class);
+                intent.putExtra("danceTrack", (DanceTrack) track);
                 startActivity(intent);
             }
         }, R.layout.list_item_view);
@@ -220,8 +221,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @Override
-    public void suggestTracksCallback(List<Track> tracks) {
-        mSearchView.getSuggestionsAdapter().swapCursor(createCursor(tracks));
+    public void suggestSongsCallback(List<DanceSong> danceSongs) {
+        mSearchView.getSuggestionsAdapter().swapCursor(createCursor(danceSongs));
     }
 
     @Override
@@ -230,6 +231,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         this.categories.addAll(categories);
         mAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void getCategoryCallback(DanceCategory category) {}
 
     @Override
     public void exceptionCallback(Throwable t) {
@@ -244,26 +248,18 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @Override
-    public void getTracksForDanceCallback(List<Track> tracks) {
-        this.tracks.clear();
-        this.tracks.addAll(tracks);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    //Not used service callbacks
-    @Override
-    public void getAllTracksCallback(List<Track> tracks) { }
-
-    @Override
-    public void getAllDancesCallback(List<Dance> dances) { }
-
-    @Override
-    public void getCategoryCallback(DanceCategory category) { }
+    public void getAllDancesCallback(List<Dance> dances) {}
 
     @Override
     public void getDanceCallback(Dance dance) {}
 
     @Override
-    public void getTrackCallback(Track track) {}
+    public void getSongsForDanceCallback(List<DanceSong> danceSongs) {
+        this.danceSongs.clear();
+        this.danceSongs.addAll(danceSongs);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
 
 }
