@@ -10,14 +10,19 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cz.muni.danser.api.DanceServiceImpl;
+import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceSong;
 
-public class SongDetailActivity extends AppCompatActivity {
+public class SongDetailActivity extends AppCompatActivity implements DanceServiceImpl.Callbacks {
     @Bind(R.id.song_name) TextView mTextViewName;
     @Bind(R.id.track_detail_table) TableLayout mTable;
     private DanceSong danceSong;
+    private static final int DANCE_VIEW_ID = View.generateViewId();
 
     private void addRow(int label_resource_id, View view){
         TableRow row = new TableRow(this);
@@ -32,6 +37,12 @@ public class SongDetailActivity extends AppCompatActivity {
         return textView;
     }
 
+    private TextView textViewFromString(String string, int id){
+        TextView textView = textViewFromString(string);
+        textView.setId(id);
+        return textView;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,27 +51,50 @@ public class SongDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         danceSong = extras.getParcelable("danceSong");
+        if(danceSong == null){
+            intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
 
         mTextViewName.setText(danceSong.getMainText());
 
-        addRow(R.string.artist, textViewFromString(danceSong.getArtistNames()));
-        addRow(R.string.release_label, textViewFromString(danceSong.getReleases()));
-        addRow(R.string.release_year, textViewFromString(danceSong.getReleaseYears()));
-        if(danceSong.getYoutubeIds() != null && danceSong.getYoutubeIds().size() > 0){
-            TextView mYouTube = textViewFromString("https://www.youtube.com/watch?v="+danceSong.getYoutubeIds().iterator().next());
-            mYouTube.setAutoLinkMask(Linkify.WEB_URLS);
-            addRow(R.string.youtube, mYouTube);
-        } //else: suggest button
-        if(danceSong.getSpotifyIds() != null && danceSong.getSpotifyIds().size() > 0){
-            TextView mSpotify = textViewFromString("https://open.spotify.com/track/"+danceSong.getSpotifyIds().iterator().next());
-            mSpotify.setAutoLinkMask(Linkify.WEB_URLS);
-            addRow(R.string.spotify, mSpotify);
-        } //else: suggest button
+        if(danceSong.getWorkMbid() != null){
+            addRow(R.string.work_mbid_label, textViewFromString(danceSong.getWorkMbid()));
+        }
+
+        DanceServiceImpl danceService = new DanceServiceImpl(this);
+        addRow(R.string.dance_label, textViewFromString("...", DANCE_VIEW_ID));
+        danceService.getDance(danceSong.getDance());
+
+
+
     }
 
-    public void favoriteTrack(View view){
+    public void favoriteSong(View view){
         if(danceSong.favoriteSong()) {
             Toast.makeText(this, "Song added to favorites", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void getAllDancesCallback(List<Dance> dances) {
+        //why?
+    }
+
+    @Override
+    public void getDanceCallback(Dance dance) {
+        ((TextView) findViewById(DANCE_VIEW_ID)).setText(Utils.getTranslatedMainText(dance));
+    }
+
+    @Override
+    public void getSongsForDanceCallback(List<DanceSong> danceTracks) {
+        //why?
+    }
+
+    @Override
+    public void exceptionCallback(Throwable t) {
+
     }
 }

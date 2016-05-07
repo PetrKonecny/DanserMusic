@@ -7,36 +7,24 @@ import android.os.Bundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cz.muni.danser.model.DanceTrack;
+import cz.muni.danser.model.DanceRecording;
 
 public class HandleURL extends AppCompatActivity {
-    private static DanceTrack fillTrack(DanceTrack searchDanceTrack, boolean artistFirst, String s1, String s2){
-        if(artistFirst){
-            searchDanceTrack.setArtistName(s1);
-            searchDanceTrack.setTrackName(s2);
-        }
-        else{
-            searchDanceTrack.setTrackName(s1);
-            searchDanceTrack.setArtistName(s2);
-        }
-        return searchDanceTrack;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_handle_url);
 
         Intent intent = getIntent();
-        DanceTrack searchDanceTrack = new DanceTrack();
+        //DanceRecording searchDanceTrack = new DanceRecording();
         if(Intent.ACTION_SEND.equals(intent.getAction()) && "text/plain".equals(intent.getType()) && intent.hasExtra(Intent.EXTRA_TEXT)){
             String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
             Matcher youtubeM, spotifyM;
             if((youtubeM = Pattern.compile("^https://youtu.be/(.*)$").matcher(extraText)).matches()){
-                searchDanceTrack.setYoutubeId(youtubeM.group(1));
+                //searchDanceTrack.setYoutubeId(youtubeM.group(1));
             }
             else if((spotifyM = Pattern.compile("^https://open.spotify.com/track/(\\w+)$").matcher(extraText)).matches()){
-                searchDanceTrack.setSpotifyId(spotifyM.group(1));
+                //searchDanceTrack.setSpotifyId(spotifyM.group(1));
             }
             else if(intent.hasExtra(Intent.EXTRA_SUBJECT)){
                 String extraSubject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
@@ -77,7 +65,7 @@ public class HandleURL extends AppCompatActivity {
                         else{
                             winner = mSubject;
                         }
-                        searchDanceTrack = fillTrack(searchDanceTrack, artistFirst[i], winner.group(1), winner.group(2));
+                        //searchDanceTrack = fillRecording(searchDanceTrack, artistFirst[i], winner.group(1), winner.group(2));
                         break;
                     }
                 }

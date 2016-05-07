@@ -10,6 +10,7 @@ import java.util.List;
 
 import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.model.DanceRecording;
 import cz.muni.danser.model.DanceSong;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -87,6 +88,9 @@ final public class Api {
 
         @GET("songs_for_dance")
         Call<List<DanceSong>> searchDanceSongs(@Query("song_name") String songName, @Query("limit") Integer limit);
+
+        @GET("songs_for_dance/{song_for_dance}/recordings")
+        Call<List<DanceRecording>> getRecordings(@Path("song_for_dance") int songForDanceId);
     }
 
     private static final Interceptor DANSER_HEADERS_INTERCEPTOR = new Interceptor() {

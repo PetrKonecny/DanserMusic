@@ -30,7 +30,6 @@ import cz.muni.danser.api.SongServiceImpl;
 import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceCategory;
 import cz.muni.danser.model.DanceSong;
-import cz.muni.danser.model.DanceTrack;
 import cz.muni.danser.model.Listable;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener, SongServiceImpl.Callbacks, DanceServiceImpl.Callbacks, CategoryServiceImpl.Callbacks {
@@ -48,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     CategoryServiceImpl categoryService;
 
     final static String LIST_PLAYLIST_ACTION = "cz.muni.fi.danser.LIST_PLAYLIST_ACTION";
+    final static String SAVE_CATEGORIES = "DANCE_CATEGORIES";
+    final static String SAVE_DANCES = "DANCES";
+    final static String SAVE_SONGS = "DANCE_SONGS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +64,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         categoryService = new CategoryServiceImpl(this);
 
         if(savedInstanceState != null) {
-            dances.addAll((Collection) savedInstanceState.getParcelableArrayList("DANCES"));
-            danceSongs.addAll((Collection) savedInstanceState.getParcelableArrayList("DANCE_SONGS"));
-            categories.addAll((Collection) savedInstanceState.getParcelableArrayList("DANCE_CATEGORIES"));
+            categories.addAll((Collection) savedInstanceState.getParcelableArrayList(SAVE_CATEGORIES));
+            dances.addAll((Collection) savedInstanceState.getParcelableArrayList(SAVE_DANCES));
+            danceSongs.addAll((Collection) savedInstanceState.getParcelableArrayList(SAVE_SONGS));
         }
 
         ActionBar bar = getSupportActionBar();
@@ -120,9 +122,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
-        savedInstanceState.putParcelableArrayList("DANCE_CATEGORIES", (ArrayList) categories);
-        savedInstanceState.putParcelableArrayList("DANCES", (ArrayList) dances);
-        savedInstanceState.putParcelableArrayList("TRACKS", (ArrayList) danceSongs);
+        savedInstanceState.putParcelableArrayList(SAVE_CATEGORIES, (ArrayList) categories);
+        savedInstanceState.putParcelableArrayList(SAVE_DANCES, (ArrayList) dances);
+        savedInstanceState.putParcelableArrayList(SAVE_SONGS, (ArrayList) danceSongs);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -190,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void showSelectedSuggestedSong(int position){
         Intent intent = new Intent(MainActivity.this,SongDetailActivity.class);
-        intent.putExtra("danceTrack", suggestedDanceSongs.get(position));
+        intent.putExtra("danceSong", suggestedDanceSongs.get(position));
         startActivity(intent);
     }
 
@@ -211,9 +213,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public void searchSongsCallback(List<DanceSong> danceSongs) {
         mAdapter = new ListAdapter(danceSongs, new ListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Listable track) {
+            public void onItemClick(Listable danceSong) {
                 Intent intent = new Intent(MainActivity.this, SongDetailActivity.class);
-                intent.putExtra("danceTrack", (DanceTrack) track);
+                intent.putExtra("danceSong", (DanceSong) danceSong);
                 startActivity(intent);
             }
         }, R.layout.list_item_view);

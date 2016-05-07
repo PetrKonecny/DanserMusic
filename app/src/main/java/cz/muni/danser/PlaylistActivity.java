@@ -42,8 +42,10 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cz.muni.danser.api.Api;
+import cz.muni.danser.api.RecordingServiceImpl;
+import cz.muni.danser.model.DanceRecording;
 import cz.muni.danser.model.DanceSong;
-import cz.muni.danser.model.DanceTrack;
 import cz.muni.danser.model.Listable;
 import cz.muni.danser.model.Playlist;
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -144,8 +146,14 @@ public class PlaylistActivity extends AppCompatActivity {
         Map<String,Object> body = new HashMap<>();
         List<String> uris = new ArrayList<>();
         for(DanceSong danceSong : danceSongs){
-            if(danceSong.getSpotifyIds() != null){
-                uris.add("spotify:danceTrack:" + danceSong.getSpotifyIds().iterator().next());
+            List<DanceRecording> recordings = danceSong.listRecordings();
+            if(recordings.size() > 0){
+                for(DanceRecording recording : recordings){
+                    if(recording.getSpotifyId() != null){
+                        uris.add("spotify:track:" + recording.getSpotifyId());
+                        break;
+                    }
+                }
             }
         }
         if(uris.isEmpty()){
@@ -308,12 +316,18 @@ public class PlaylistActivity extends AppCompatActivity {
                 }
                 YouTube.PlaylistItems items = youtube.playlistItems();
                 for (DanceSong danceSong : params[0]) {
-                    if (danceSong.getYoutubeIds() != null) {
-                        try {
-                            items.insert("snippet,contentDetails", createPlaylistItem(danceSong.getSongName(), id, danceSong.getYoutubeIds().iterator().next())).execute();
-                        } catch (IOException e){
-                            Log.d("playlist async",e.getMessage());
-                            //continue;
+                    List<DanceRecording> recordings = danceSong.listRecordings();
+                    if(recordings.size() > 0){
+                        for(DanceRecording recording : recordings){
+                            if (recording.getYoutubeId() != null) {
+                                try {
+                                    items.insert("snippet,contentDetails", createPlaylistItem(danceSong.getSongName(), id, recording.getYoutubeId())).execute();
+                                    break;
+                                } catch (IOException e){
+                                    Log.d("playlist async",e.getMessage());
+                                    //continue;
+                                }
+                            }
                         }
                     }
                 }
