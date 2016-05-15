@@ -64,12 +64,10 @@ public class SongDetailActivity extends AppCompatActivity implements DanceServic
             addRow(R.string.work_mbid_label, textViewFromString(danceSong.getWorkMbid()));
         }
 
-        DanceServiceImpl danceService = new DanceServiceImpl(this);
-        addRow(R.string.dance_label, textViewFromString("...", DANCE_VIEW_ID));
-        danceService.getDance(danceSong.getDance());
-
-
-
+        /** @todo FIX */
+        if(danceSong.getDance() != null){
+            addRow(R.string.dance_label, textViewFromString(danceSong.getDance().getMainText(), DANCE_VIEW_ID));
+        }
     }
 
     public void favoriteSong(View view){

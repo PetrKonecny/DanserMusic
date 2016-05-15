@@ -16,7 +16,7 @@ public class Playlist extends Model implements Listable {
     public List<DanceSong> songs() {
         return new Select().from(DanceSong.class)
                 .innerJoin(SongPlaylist.class)
-                .on("SongPlaylists.DanceSong = DanceSong.Id")
+                .on("SongPlaylists.DanceSong = Songs.Id")
                 .where("SongPlaylists.Playlist = ?",this.getId())
                 .execute();
     }

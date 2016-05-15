@@ -1,9 +1,5 @@
 package cz.muni.danser.model;
 
-/**
- * Created by Pavel on 3. 5. 2016.
- */
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -18,15 +14,14 @@ import com.google.gson.annotations.SerializedName;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import cz.muni.danser.api.Api;
 
-@Table(name = "DanceSong")
+@Table(name = "Songs")
 public class DanceSong extends Model implements Parcelable, Listable, Comparable<DanceSong> {
     @Expose
     @SerializedName("song_for_dance_id")
-    @Column(name = "id", index = true, unique = true)
+    @Column(name = "songForDanceId", index = true, unique = true)
     private int songForDanceId;
 
     @Expose
@@ -36,22 +31,28 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
 
     @Expose
     @SerializedName("song_name")
-    @NonNull
+    @Column(name = "songName")
     private String songName;
 
     @Expose
     @SerializedName("work_mbid")
+    @Column(name = "workMbid")
     private String workMbid;
 
     @Expose
-    private int dance;
+    @Column(name = "dance")
+    private Dance dance;
+
+    public DanceSong(){
+        super();
+    }
 
     protected DanceSong(Parcel in) {
         songForDanceId = in.readInt();
         songId = in.readInt();
         songName = in.readString();
         workMbid = in.readString();
-        dance = in.readInt();
+        dance = in.readParcelable(Dance.class.getClassLoader());
     }
 
     @Override
@@ -60,7 +61,7 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
         dest.writeInt(songId);
         dest.writeString(songName);
         dest.writeString(workMbid);
-        dest.writeInt(dance);
+        dest.writeParcelable(dance, flags);
     }
 
     @Override
@@ -108,6 +109,7 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
             songPlaylist.danceSong = this;
             songPlaylist.playlist = favorites;
             this.save();
+            this.getDance().save();
             songPlaylist.save();
         }else{
             return false;
@@ -148,11 +150,11 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
         this.workMbid = workMbid;
     }
 
-    public int getDance() {
+    public Dance getDance() {
         return dance;
     }
 
-    public void setDance(int dance) {
+    public void setDance(Dance dance) {
         this.dance = dance;
     }
 

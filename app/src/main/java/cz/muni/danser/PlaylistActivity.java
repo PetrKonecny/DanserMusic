@@ -246,7 +246,7 @@ public class PlaylistActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(Listable song) {
                     Intent intent = new Intent(PlaylistActivity.this, SongDetailActivity.class);
-                    intent.putExtra("danceTrack", (DanceSong) song);
+                    intent.putExtra("danceSong", (DanceSong) song);
                     startActivity(intent);
                 }
             }, R.layout.list_item_view);
