@@ -42,8 +42,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.muni.danser.api.Api;
-import cz.muni.danser.api.RecordingServiceImpl;
 import cz.muni.danser.model.DanceRecording;
 import cz.muni.danser.model.DanceSong;
 import cz.muni.danser.model.Listable;
