@@ -11,17 +11,14 @@ import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import cz.muni.danser.api.Api;
-
 @Table(name = "Songs")
-public class DanceSong extends Model implements Parcelable, Listable, Comparable<DanceSong> {
+public class DanceSong extends Model implements Parcelable, Listable {
     @Expose
     @SerializedName("song_for_dance_id")
-    @Column(name = "songForDanceId", index = true, unique = true)
+    @Column(name = "songForDanceId", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private int songForDanceId;
 
     @Expose
@@ -84,11 +81,6 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
     @Override
     public String getMainText() {
         return getSongName();
-    }
-
-    @Override
-    public int compareTo(@NonNull DanceSong another) {
-        return getMainText().compareToIgnoreCase(another.getMainText());
     }
 
     public boolean getIsFavorite() {
@@ -176,15 +168,6 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
         return result;
     }
 
-    @NonNull
-    public List<DanceRecording> listRecordings(){
-        try {
-            return Api.getRetrofitApi().getRecordings(this.songForDanceId).execute().body();
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
-    }
-
     @Override
     public String toString() {
         return "DanceSong{" +
@@ -194,5 +177,13 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
                 ", workMbid='" + workMbid + '\'' +
                 ", dance=" + dance +
                 '}';
+    }
+
+    public List<DanceRecording> listDanceRecordings() {
+        return getMany(DanceRecording.class, "danceSong");
+    }
+
+    public List<DanceRecording> listRecordings(){
+        return Collections.emptyList();
     }
 }

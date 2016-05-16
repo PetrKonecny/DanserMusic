@@ -11,11 +11,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Table(name = "Recordings")
-public class DanceRecording extends DanceSong {
+public class DanceRecording extends Model implements Parcelable, Listable {
     @Expose
-    @Column(name = "Mbid", index = true, unique = true)
+    @Column(name = "Mbid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     @SerializedName("recording_mbid")
-    @NonNull
     private String recordingMbid;
 
     @Expose
@@ -55,8 +54,15 @@ public class DanceRecording extends DanceSong {
     @SerializedName("release_year")
     private int releaseYear;
 
+    @Expose
+    @SerializedName("dance_song")
+    private DanceSong danceSong;
+
+    public DanceRecording(){
+        super();
+    }
+
     protected DanceRecording(Parcel in) {
-        super(in);
         recordingMbid = in.readString();
         recordingName = in.readString();
         artistName = in.readString();
@@ -67,11 +73,11 @@ public class DanceRecording extends DanceSong {
         releaseMbid = in.readString();
         releaseName = in.readString();
         releaseYear = in.readInt();
+        danceSong = in.readParcelable(DanceSong.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
         dest.writeString(recordingMbid);
         dest.writeString(recordingName);
         dest.writeString(artistName);
@@ -82,6 +88,7 @@ public class DanceRecording extends DanceSong {
         dest.writeString(releaseMbid);
         dest.writeString(releaseName);
         dest.writeInt(releaseYear);
+        dest.writeParcelable(danceSong, flags);
     }
 
     @Override
@@ -179,6 +186,14 @@ public class DanceRecording extends DanceSong {
 
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
+    }
+
+    public DanceSong getDanceSong() {
+        return danceSong;
+    }
+
+    public void setDanceSong(DanceSong danceSong) {
+        this.danceSong = danceSong;
     }
 
     @Override

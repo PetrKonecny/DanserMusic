@@ -11,6 +11,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Table(name = "Dances")
@@ -130,5 +131,9 @@ public class Dance extends Model implements Parcelable, Listable, StringParsable
                 ", danceName='" + danceName + '\'' +
                 ", danceCategory='" + danceCategory + '\'' +
                 '}';
+    }
+
+    public List<DanceSong> listDanceSongs() {
+        return getMany(DanceSong.class, "dance");
     }
 }
