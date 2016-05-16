@@ -3,22 +3,16 @@ package cz.muni.danser;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.util.Linkify;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.muni.danser.api.DanceServiceImpl;
-import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceSong;
 
-public class SongDetailActivity extends AppCompatActivity implements DanceServiceImpl.Callbacks {
+public class SongDetailActivity extends AppCompatActivity {
     @Bind(R.id.song_name) TextView mTextViewName;
     @Bind(R.id.track_detail_table) TableLayout mTable;
     private DanceSong danceSong;
@@ -74,25 +68,5 @@ public class SongDetailActivity extends AppCompatActivity implements DanceServic
         if(danceSong.favoriteSong()) {
             Toast.makeText(this, "Song added to favorites", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void getAllDancesCallback(List<Dance> dances) {
-        //why?
-    }
-
-    @Override
-    public void getDanceCallback(Dance dance) {
-        ((TextView) findViewById(DANCE_VIEW_ID)).setText(Utils.getTranslatedMainText(dance));
-    }
-
-    @Override
-    public void getSongsForDanceCallback(List<DanceSong> danceTracks) {
-        //why?
-    }
-
-    @Override
-    public void exceptionCallback(Throwable t) {
-
     }
 }
