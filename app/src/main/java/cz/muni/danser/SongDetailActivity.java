@@ -58,10 +58,7 @@ public class SongDetailActivity extends AppCompatActivity {
             addRow(R.string.work_mbid_label, textViewFromString(danceSong.getWorkMbid()));
         }
 
-        /** @todo FIX */
-        if(danceSong.getDance() != null){
-            addRow(R.string.dance_label, textViewFromString(danceSong.getDance().getMainText(), DANCE_VIEW_ID));
-        }
+        addRow(R.string.dance_label, textViewFromString(danceSong.getDance().getMainText(), DANCE_VIEW_ID));
     }
 
     public void favoriteSong(View view){
