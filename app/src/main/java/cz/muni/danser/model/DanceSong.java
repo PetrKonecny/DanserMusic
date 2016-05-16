@@ -108,8 +108,8 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
             SongPlaylist songPlaylist = new SongPlaylist();
             songPlaylist.danceSong = this;
             songPlaylist.playlist = favorites;
+            this.dance.save();
             this.save();
-            this.getDance().save();
             songPlaylist.save();
         }else{
             return false;
@@ -183,5 +183,16 @@ public class DanceSong extends Model implements Parcelable, Listable, Comparable
         } catch (IOException e) {
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "DanceSong{" +
+                "songForDanceId=" + songForDanceId +
+                ", songId=" + songId +
+                ", songName='" + songName + '\'' +
+                ", workMbid='" + workMbid + '\'' +
+                ", dance=" + dance +
+                '}';
     }
 }

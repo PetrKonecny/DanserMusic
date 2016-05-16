@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     List<Dance> dances = new ArrayList<>();
     List<DanceSong> danceSongs = new ArrayList<>();
     List<DanceSong> suggestedDanceSongs = new ArrayList<>();
-    ApiImpl service = new ApiImpl();
+    ApiImpl service;
 
     final static String LIST_PLAYLIST_ACTION = "cz.muni.fi.danser.LIST_PLAYLIST_ACTION";
     final static String SAVE_CATEGORIES = "DANCE_CATEGORIES";

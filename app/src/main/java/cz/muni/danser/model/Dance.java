@@ -17,7 +17,7 @@ import java.util.Map;
 public class Dance extends Model implements Parcelable, Listable, StringParsable, Comparable<Dance>, Translatable {
     @Expose
     @SerializedName("dance_type")
-    @Column(name = "DanceType", index = true, unique = true)
+    @Column(name = "DanceType", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private int danceType;
 
     @Expose
@@ -121,5 +121,14 @@ public class Dance extends Model implements Parcelable, Listable, StringParsable
         int result = super.hashCode();
         result = 31 * result + danceType;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Dance{" +
+                "danceType=" + danceType +
+                ", danceName='" + danceName + '\'' +
+                ", danceCategory='" + danceCategory + '\'' +
+                '}';
     }
 }
