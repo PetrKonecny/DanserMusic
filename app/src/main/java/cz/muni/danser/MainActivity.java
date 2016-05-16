@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 @Override
                 public void accept(List<DanceCategory> danceCategories) {
                     MainActivity.this.categories.clear();
-                    MainActivity.this.categories.addAll(categories);
+                    MainActivity.this.categories.addAll(danceCategories);
                     mAdapter.notifyDataSetChanged();
                 }
             });
