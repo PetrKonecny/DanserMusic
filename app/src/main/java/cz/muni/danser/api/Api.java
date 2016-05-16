@@ -27,7 +27,7 @@ import retrofit2.http.Query;
 final public class Api {
     final private static String API_URL = "https://api.dansermusic.com/";
     final private static String API_TOKEN = "kGuMi,0iwe/2@en7*cz9GnAwp-|K{Q#v";
-    final private static String API_VERSION = "2";
+    final private static String API_VERSION = "3";
     private static RetrofitApi retrofitApi;
     private static Context context;
 
@@ -39,20 +39,19 @@ final public class Api {
     }
 
     public static OkHttpClient getCache(){
-        File httpCacheDirectory = new File(context.getCacheDir(), "responses");
+        /*File httpCacheDirectory = new File(context.getCacheDir(), "responses");
         int cacheSize = 10 * 1024 * 1024; // 10 MiB
-        Cache cache = new Cache(httpCacheDirectory, cacheSize);
+        Cache cache = new Cache(httpCacheDirectory, cacheSize);*/
         return new OkHttpClient.Builder()
                 //.cache(cache)
                 .addInterceptor(DANSER_HEADERS_INTERCEPTOR)
-                .addNetworkInterceptor(DANSER_HEADERS_INTERCEPTOR)
                 .build();
     }
 
     public static Retrofit getRetrofit(){
         return new Retrofit.Builder()
                 .baseUrl(Api.API_URL)
-                //.client(getCache())
+                .client(getCache())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                         .excludeFieldsWithoutExposeAnnotation()
                         .create()))
@@ -97,11 +96,10 @@ final public class Api {
         @Override
         public Response intercept(Interceptor.Chain chain) throws IOException {
             Request request = chain.request();
-            Request newRequest;
-
-            newRequest = request.newBuilder()
-                    .addHeader("X-Danser-token", API_TOKEN)
-                    .addHeader("X-Danser-version", API_VERSION)
+            Request newRequest = request.newBuilder()
+                    .header("X-Danser-token", API_TOKEN)
+                    .header("X-Danser-version", API_VERSION)
+                    .method(request.method(), request.body())
                     .build();
             return chain.proceed(newRequest);
         }
