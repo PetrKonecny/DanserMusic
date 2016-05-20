@@ -45,6 +45,7 @@
             </intent-filter>
             <!-- view -->
             <intent-filter>
+
                 <!-- Last.fm -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -57,6 +58,7 @@
                     android:scheme="http" />
             </intent-filter>
             <intent-filter>
+
                 <!-- Shazam -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -68,6 +70,7 @@
                     android:scheme="http" />
             </intent-filter>
             <intent-filter>
+
                 <!-- SoundCloud -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -79,6 +82,7 @@
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
+
                 <!-- SoundHound -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -90,6 +94,7 @@
                     android:scheme="http" />
             </intent-filter>
             <intent-filter>
+
                 <!-- Deezer -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -101,6 +106,7 @@
                     android:scheme="http" />
             </intent-filter>
             <intent-filter>
+
                 <!-- Spotify -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -112,6 +118,7 @@
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
+
                 <!-- TrackID -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -123,6 +130,7 @@
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
+
                 <!-- Apple Music - without album -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -134,6 +142,7 @@
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
+
                 <!-- Apple Music - with album -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -145,6 +154,7 @@
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
+
                 <!-- YouTube -->
                 <action android:name="android.intent.action.VIEW" />
 
@@ -162,7 +172,10 @@
             android:value="Danser.db" />
 
         <activity android:name=".PlaylistActivity" />
-        <activity android:name=".GeneratePlaylistActivity"></activity>
+        <activity android:name=".GeneratePlaylistActivity" />
+        <activity android:name=".ExportActivity" />
+        <activity android:name=".SongListActivity" />
+        <activity android:name=".DetailFragmentWrapperActivity"></activity>
     </application>
 
 </manifest>

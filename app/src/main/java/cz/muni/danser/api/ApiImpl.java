@@ -1,5 +1,7 @@
 package cz.muni.danser.api;
 
+import com.activeandroid.query.Select;
+
 import java.util.List;
 
 import cz.muni.danser.functional.Consumer;
@@ -7,6 +9,7 @@ import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceCategory;
 import cz.muni.danser.model.DanceRecording;
 import cz.muni.danser.model.DanceSong;
+import cz.muni.danser.model.Playlist;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -167,4 +170,19 @@ public class ApiImpl implements GeneralApi {
             }
         });
     }
+
+    public List<Playlist> getPlaylists() {
+        return new Select().all().from(Playlist.class).execute();
+    }
+
+    @Override
+    public Playlist getPlaylist(long id) {
+        return new Select().from(Playlist.class).where("Id = ?",id).executeSingle();
+    }
+
+    @Override
+    public Playlist getPlaylistByName(String name) {
+        return new Select().from(Playlist.class).where("playlistName = ?", name).executeSingle();
+    }
+
 }

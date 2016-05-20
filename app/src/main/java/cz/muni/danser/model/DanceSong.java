@@ -3,8 +3,11 @@ package cz.muni.danser.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.activeandroid.Cache;
 import com.activeandroid.Model;
+import com.activeandroid.TableInfo;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
@@ -18,7 +21,7 @@ import java.util.List;
 public class DanceSong extends Model implements Parcelable, Listable {
     @Expose
     @SerializedName("song_for_dance_id")
-    @Column(name = "songForDanceId", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "songForDanceId")
     private int songForDanceId;
 
     @Expose
@@ -100,7 +103,11 @@ public class DanceSong extends Model implements Parcelable, Listable {
             SongPlaylist songPlaylist = new SongPlaylist();
             songPlaylist.danceSong = this;
             songPlaylist.playlist = favorites;
-            this.dance.save();
+            if(this.dance.getIsUnique()) {
+                this.dance.save();
+            }else{
+                this.dance = new Select().from(Dance.class).where("DanceType = ?",this.dance.getDanceType()).executeSingle();
+            }
             this.save();
             songPlaylist.save();
         }else{

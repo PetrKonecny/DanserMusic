@@ -229,8 +229,9 @@ public class PlaylistActivity extends AppCompatActivity {
             mAdapter = new ListAdapter(playlists, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable playlist) {
-                    Intent intent = new Intent(PlaylistActivity.this, PlaylistActivity.class);
-                    intent.putExtra("playlistName", playlist.getMainText());
+                    Intent intent = new Intent(PlaylistActivity.this, SongListActivity.class);
+                    intent.putExtra("playlistId", ((Playlist)playlist).getId());
+                    Log.d("PlaylistActivity.id",((Playlist)playlist).getId().toString());
                     startActivity(intent);
                 }
             }, R.layout.list_item_view);

@@ -13,7 +13,7 @@ import com.google.gson.annotations.SerializedName;
 @Table(name = "Recordings")
 public class DanceRecording extends Model implements Parcelable, Listable {
     @Expose
-    @Column(name = "Mbid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "Mbid")
     @SerializedName("recording_mbid")
     private String recordingMbid;
 

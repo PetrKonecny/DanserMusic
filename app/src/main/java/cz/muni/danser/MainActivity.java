@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         service.setExceptionCallback(new Consumer<Throwable>(){
             @Override
             public void accept(Throwable throwable) {
+                throwable.printStackTrace();
                 Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -113,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             mAdapter = new ListAdapter(dances, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Listable dance){
-                    Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                    intent.putExtra("dance",(Dance) dance);
+                    Intent intent = new Intent(MainActivity.this,SongListActivity.class);
+                    intent.putExtra("danceId",((Dance)dance).getDanceType());
                     startActivity(intent);
                 }
             },R.layout.square_list_item_view);

@@ -7,6 +7,7 @@ import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceCategory;
 import cz.muni.danser.model.DanceRecording;
 import cz.muni.danser.model.DanceSong;
+import cz.muni.danser.model.Playlist;
 
 public interface GeneralApi {
     void getCategories(Consumer<List<DanceCategory>> callback);
@@ -21,4 +22,8 @@ public interface GeneralApi {
     void suggestSongs(String trackName, Consumer<List<DanceSong>> callback);
 
     void getRecordings(DanceSong danceSong, Consumer<List<DanceRecording>> callback);
+
+    List<Playlist> getPlaylists();
+    Playlist getPlaylist(long id);
+    Playlist getPlaylistByName(String name);
 }

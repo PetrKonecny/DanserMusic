@@ -3,10 +3,12 @@ package cz.muni.danser.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,7 +20,7 @@ import java.util.Map;
 public class Dance extends Model implements Parcelable, Listable, StringParsable, Comparable<Dance>, Translatable {
     @Expose
     @SerializedName("dance_type")
-    @Column(name = "DanceType", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "DanceType")
     private int danceType;
 
     @Expose
@@ -92,6 +94,10 @@ public class Dance extends Model implements Parcelable, Listable, StringParsable
     @Override
     public String getMainText() {
         return getDanceName();
+    }
+
+    public boolean getIsUnique() {
+        return new Select().from(Dance.class).where("DanceType = ?",this.danceType).executeSingle() == null;
     }
 
     @Override
