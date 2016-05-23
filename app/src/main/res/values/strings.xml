@@ -2,29 +2,19 @@
     <string name="app_name" translatable="false">Danser</string>
     <string name="hint_search">Search songs…</string>
     <string name="add_to_favorites">favorite</string>
-    <string name="artist">Artist:</string>
     <string name="pick_account">You have to pick an account in order to export YouTube playlist.</string>
     <string name="not_online">You have to be connected to the internet in order to export YouTube playlist.</string>
     <string name="google_app_id" translatable="false">672064283419-35crplnl02bmsqogcm5q6vvkch0fnc30.apps.googleusercontent.com</string>
-    <string name="youtube" translatable="false">YouTube:</string>
-    <string name="dance_category_ballroom">Ballroom (Standard)</string>
-    <string name="dance_category_latin">Latin</string>
-    <string name="dance_category_club">Club</string>
-    <string name="dance_category_folk">Folk</string>
-    <string name="dance_category_jazz">Jazz</string>
-    <string name="dance_category_miscellaneous">Miscellaneous</string>
     <string name="share_into">Recognize in Danser</string>
     <string name="regexp_soundhound">^I just used SoundHound to find (.*) by (.*)$</string>
     <string name="regexp_trackid">^I used TrackID™ to find (.*) by (.*)\\..*</string>
-    <string name="spotify" translatable="false">Spotify:</string>
     <string name="dance_label">Dance:</string>
-    <string name="no_network">Network is not available. Data might not be accurate and complete.</string>
     <string name="playlists">Playlists</string>
-    <string name="release_label">Release:</string>
-    <string name="release_year">Release year:</string>
     <string name="work_mbid_label">Work MBID:</string>
     <string name="recordings_number">Number of recordings:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

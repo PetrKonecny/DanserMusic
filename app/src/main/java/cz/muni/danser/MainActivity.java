@@ -1,13 +1,6 @@
 package cz.muni.danser;
 
-import android.app.SearchManager;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.provider.BaseColumns;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -31,16 +23,14 @@ import cz.muni.danser.model.DanceCategory;
 import cz.muni.danser.model.DanceSong;
 import cz.muni.danser.model.Listable;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
+public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.my_recycler_view) RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-    SearchView mSearchView;
     List<DanceCategory> categories = new ArrayList<>();
     List<Dance> dances = new ArrayList<>();
     List<DanceSong> danceSongs = new ArrayList<>();
-    List<DanceSong> suggestedDanceSongs = new ArrayList<>();
     ApiImpl service;
 
     final static String LIST_PLAYLIST_ACTION = "cz.muni.fi.danser.LIST_PLAYLIST_ACTION";
@@ -53,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        SearchSuggestionFragment searchFragment = (SearchSuggestionFragment) getFragmentManager().findFragmentByTag("SEARCH");
+        if(searchFragment == null){
+            getFragmentManager().beginTransaction().add(new SearchSuggestionFragment(),"SEARCH").commit();
+        }
         mRecyclerView.setHasFixedSize(true);
         Intent intent = this.getIntent();
         Api.setContext(this);
@@ -73,31 +67,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         ActionBar bar = getSupportActionBar();
 
-        if(intent.hasExtra("dance")){
-            mLayoutManager = new LinearLayoutManager(this);
-            Dance dance = intent.getExtras().getParcelable("dance");
-            service.getSongs(dance.getDanceType(), new Consumer<List<DanceSong>>(){
-                @Override
-                public void accept(List<DanceSong> danceSongs) {
-                    MainActivity.this.danceSongs.clear();
-                    MainActivity.this.danceSongs.addAll(danceSongs);
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
-            if(bar != null){
-                bar.setTitle(Utils.getTranslatedMainText(dance));
-            }
-
-            mAdapter = new ListAdapter(danceSongs, new ListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Listable danceSong){
-                    Intent intent = new Intent(MainActivity.this,SongDetailActivity.class);
-                    intent.putExtra("danceSong",(DanceSong) danceSong);
-                    startActivity(intent);
-                }
-            },R.layout.list_item_view);
-        }
-        else if(intent.hasExtra("danceCategory")){
+        if(intent.hasExtra("danceCategory")){
             mLayoutManager = new GridLayoutManager(this,2);
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
             service.getDances(danceCategory.getDanceCategory(), new Consumer<List<Dance>>(){
@@ -149,92 +119,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         savedInstanceState.putParcelableArrayList(SAVE_DANCES, (ArrayList) dances);
         savedInstanceState.putParcelableArrayList(SAVE_SONGS, (ArrayList) danceSongs);
         super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.search);
-        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        mSearchView.setOnQueryTextListener(this);
-        mSearchView.setOnSuggestionListener(this);
-        final CursorAdapter suggestionAdapter = new SimpleCursorAdapter(this,
-                R.layout.track_search_suggestion,
-                null,
-                new String[]{SearchManager.SUGGEST_COLUMN_TEXT_1},
-                new int[]{android.R.id.text1},
-                0);
-        mSearchView.setSuggestionsAdapter(suggestionAdapter);
-        return true;
-    }
-
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        service.searchSongs(query, null, new Consumer<List<DanceSong>>() {
-            @Override
-            public void accept(List<DanceSong> danceSongs) {
-                mAdapter = new ListAdapter(danceSongs, new ListAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Listable danceSong) {
-                        Intent intent = new Intent(MainActivity.this, SongDetailActivity.class);
-                        intent.putExtra("danceSong", (DanceSong) danceSong);
-                        startActivity(intent);
-                    }
-                }, R.layout.list_item_view);
-                mRecyclerView.setAdapter(mAdapter);
-            }
-        });
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        service.suggestSongs(newText, new Consumer<List<DanceSong>>() {
-            @Override
-            public void accept(List<DanceSong> danceSongs) {
-                mSearchView.getSuggestionsAdapter().swapCursor(createCursor(danceSongs));
-            }
-        });
-        return false;
-    }
-
-    public Cursor createCursor(List<DanceSong> danceSongs){
-        suggestedDanceSongs.clear();
-        suggestedDanceSongs.addAll(danceSongs);
-
-        String[] columns = {
-                BaseColumns._ID,
-                SearchManager.SUGGEST_COLUMN_TEXT_1,
-                SearchManager.SUGGEST_COLUMN_INTENT_DATA
-        };
-
-        MatrixCursor cursor = new MatrixCursor(columns);
-
-        for (int i = 0; i < danceSongs.size(); i++)
-        {
-            cursor.addRow(new Object[]{i, danceSongs.get(i).getMainText(), i});
-        }
-        return cursor;
-    }
-
-    @Override
-    public boolean onSuggestionSelect(int position) {
-        showSelectedSuggestedSong(position);
-        return false;
-    }
-
-    @Override
-    public boolean onSuggestionClick(int position) {
-        showSelectedSuggestedSong(position);
-        return false;
-    }
-
-    private void showSelectedSuggestedSong(int position){
-        Intent intent = new Intent(MainActivity.this,SongDetailActivity.class);
-        intent.putExtra("danceSong", suggestedDanceSongs.get(position));
-        startActivity(intent);
     }
 
     public void showPlaylists(MenuItem item){

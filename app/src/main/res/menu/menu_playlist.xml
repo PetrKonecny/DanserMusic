@@ -2,10 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/export_spotify"
         android:title="Export to spotify"
-        android:icon="@android:drawable/btn_star_big_off"
         android:onClick="exportToSpotify" />
     <item
         android:id="@+id/export_to_youtube"
         android:title="Export to youtube"
-        android:onClick="generate"/>
+        android:onClick="exportToYoutube"/>
 </menu>
