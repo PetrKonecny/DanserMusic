@@ -3,12 +3,10 @@ package cz.muni.danser;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import cz.muni.danser.api.ApiImpl;
@@ -22,6 +20,13 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     private GeneralApi service;
     private List<DanceSong> songs;
     private ExportFragment exportFragment;
+    private SongListFragment listFragment;
+    private SongDetailFragment detailFragment;
+
+
+    public List<Listable> getSongs() {
+        return (List) songs;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,21 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         songs = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_list);
-        final SongListFragment fragment = (SongListFragment) getFragmentManager().findFragmentById(R.id.list_frag);
+        exportFragment = (ExportFragment) getFragmentManager().findFragmentByTag("EXPORT_FRAGMENT");
+        if(exportFragment == null){
+            exportFragment = new ExportFragment();
+            getFragmentManager().beginTransaction().add(exportFragment,"EXPORT_FRAGMENT").commit();
+        }
+        detailFragment = (SongDetailFragment) getFragmentManager().findFragmentById(R.id.detail_frag_duo_container);
+        if(detailFragment == null && getResources().getBoolean(R.bool.dualPane)) {
+            detailFragment = new SongDetailFragment();
+            getFragmentManager().beginTransaction().add(R.id.detail_frag_duo_container,detailFragment).commit();
+        }
+        listFragment = (SongListFragment) getFragmentManager().findFragmentById(R.id.list_frag_container);
+        if(listFragment == null){
+            listFragment = new SongListFragment();
+            getFragmentManager().beginTransaction().add(R.id.list_frag_container,listFragment).commit();
+        }
         if(savedInstanceState != null){
             songs.addAll((List) savedInstanceState.getParcelableArrayList("SONGS"));
         }
@@ -39,25 +58,22 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
                 @Override
                 public void accept(List<DanceSong> danceSongs) {
                     songs = danceSongs;
-                    fragment.refreshList(danceSongs);
+                    listFragment.refreshList((List)danceSongs);
                     if(getResources().getBoolean(R.bool.dualPane)){
-                        onListFragmentInteraction((DanceSong) danceSongs.get(0));
+                        onListItemClick((DanceSong) danceSongs.get(0));
                     }
                 }
             });
-
         } else if (getIntent().hasExtra("playlistId")) {
             long playlistId = getIntent().getExtras().getLong("playlistId");
-            Log.d("whatever",Integer.toString(service.getPlaylist(playlistId).songs().size()));
-            fragment.refreshList(service.getPlaylist(playlistId).songs());
             songs = service.getPlaylist(playlistId).songs();
         }
+    }
 
-        exportFragment = (ExportFragment) getFragmentManager().findFragmentByTag("EXPORT_FRAGMENT");
-        if(exportFragment == null){
-            exportFragment = new ExportFragment();
-            getFragmentManager().beginTransaction().add(exportFragment,"EXPORT_FRAGMENT").commit();
-        }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -73,14 +89,13 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     }
 
     @Override
-    public void onListFragmentInteraction(Listable item) {
+    public void onListItemClick(Listable item) {
         if(!getResources().getBoolean(R.bool.dualPane)) {
             Intent intent = new Intent(this, DetailFragmentWrapperActivity.class);
             intent.putExtra("danceSong", (DanceSong) item);
             startActivity(intent);
         } else {
-            SongDetailFragment fragment = (SongDetailFragment) getFragmentManager().findFragmentById(R.id.detail_frag_duo);
-            fragment.updateDanceSong((DanceSong) item);
+            detailFragment.updateDanceSong((DanceSong) item);
         }
     }
 
@@ -96,9 +111,4 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         exportFragment.exportToYoutube();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("whatever" , Integer.toString(requestCode));
-    }
 }

@@ -25,12 +25,6 @@ import cz.muni.danser.model.DanceRecording;
 import cz.muni.danser.model.DanceSong;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * create an instance of this fragment.
- */
 public class SongDetailFragment extends Fragment {
     TableLayout mTable;
     private DanceSong danceSong;

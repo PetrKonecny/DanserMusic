@@ -1,12 +1,12 @@
 package cz.muni.danser;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +26,9 @@ import java.util.List;
  */
 public class SongListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_SONGS = "songs";
-    // TODO: Customize parameters
-    private List<DanceSong> songs;
     private RecyclerView recyclerView;
     private ListAdapter mAdapter;
+    private OnListFragmentInteractionListener mActivity;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -43,7 +40,6 @@ public class SongListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        songs = new ArrayList<>();
     }
 
     @Override
@@ -57,38 +53,50 @@ public class SongListFragment extends Fragment {
             recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
         }
-        mAdapter = new ListAdapter(songs, new ListAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(Listable item) {
-                ((OnListFragmentInteractionListener)getActivity()).onListFragmentInteraction(item);
-            }
-        },R.layout.list_item_view);
-        recyclerView.setAdapter(mAdapter);
         return view;
     }
 
+    public void setLayoutManager(RecyclerView.LayoutManager manager){
+        recyclerView.setLayoutManager(manager);
+    }
+
+    public void refreshList(List<Listable> songs) {
+        int layout;
+        if(recyclerView.getLayoutManager() instanceof GridLayoutManager){
+            layout = R.layout.square_list_item_view;
+        }else{
+            layout = R.layout.list_item_view;
+        }
+
+        mAdapter = new ListAdapter(songs, new ListAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(Listable item) {
+                mActivity.onListItemClick(item);
+            }
+        },layout);
+        recyclerView.setAdapter(mAdapter);
+    }
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = (OnListFragmentInteractionListener) activity;
     }
 
-    public void refreshList(List<DanceSong> songs) {
-        this.songs.clear();
-        this.songs.addAll(songs);
-        mAdapter.notifyDataSetChanged();
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        refreshList(mActivity.getSongs());
+    }
+
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Listable item);
+        void onListItemClick(Listable item);
+        List<Listable> getSongs();
     }
 }

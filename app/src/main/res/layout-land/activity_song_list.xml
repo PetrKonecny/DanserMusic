@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     >
-    <fragment class="cz.muni.danser.SongListFragment"
-        android:id="@+id/list_frag"
+    <FrameLayout
+        android:id="@+id/list_frag_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
     />
-    <fragment class="cz.muni.danser.SongDetailFragment"
-        android:id="@+id/detail_frag_duo"
+    <FrameLayout
+        android:id="@+id/detail_frag_duo_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
