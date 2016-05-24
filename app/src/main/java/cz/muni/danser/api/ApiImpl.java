@@ -202,15 +202,11 @@ public class ApiImpl implements GeneralApi {
         });
     }
 
-    public void getManyRecordingsSync(final List<DanceSong> danceSongs, final List<String> requiredFields, final Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>> callback){
-        try {
-            Call<Map<Integer, List<DanceRecording>>> call = Api.getRetrofitApi().getManyRecordings(songListToSongIds(danceSongs),
-                    prepareRequiredFields(requiredFields));
-            Map<Integer, List<DanceRecording>> map = call.execute().body();
-            callback.accept( integerMapToSongMap(danceSongs, map) );
-        } catch (IOException e) {
-            exceptionCallback.accept(e);
-        }
+    public void getManyRecordingsSync(final List<DanceSong> danceSongs, final List<String> requiredFields, final Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>> callback) throws IOException {
+        Call<Map<Integer, List<DanceRecording>>> call = Api.getRetrofitApi().getManyRecordings(songListToSongIds(danceSongs),
+                prepareRequiredFields(requiredFields));
+        Map<Integer, List<DanceRecording>> map = call.execute().body();
+        callback.accept( integerMapToSongMap(danceSongs, map) );
     }
 
     private String songListToSongIds(List<DanceSong> danceSongs){
