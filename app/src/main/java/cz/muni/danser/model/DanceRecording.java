@@ -219,4 +219,21 @@ public class DanceRecording extends Model implements Parcelable, Listable {
         result = 31 * result + recordingMbid.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "DanceRecording{" +
+                "recordingMbid='" + recordingMbid + '\'' +
+                ", recordingName='" + recordingName + '\'' +
+                ", artistName='" + artistName + '\'' +
+                ", length=" + length +
+                ", spotifyId='" + spotifyId + '\'' +
+                ", youtubeId='" + youtubeId + '\'' +
+                ", bpm=" + bpm +
+                ", releaseMbid='" + releaseMbid + '\'' +
+                ", releaseName='" + releaseName + '\'' +
+                ", releaseYear=" + releaseYear +
+                ", danceSong=" + danceSong +
+                '}';
+    }
 }

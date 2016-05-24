@@ -31,10 +31,15 @@ import com.spotify.sdk.android.authentication.LoginActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
+import cz.muni.danser.api.ApiImpl;
+import cz.muni.danser.functional.Consumer;
 import cz.muni.danser.model.DanceRecording;
 import cz.muni.danser.model.DanceSong;
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -57,6 +62,7 @@ public class ExportFragment extends Fragment {
     private List<DanceSong> songs;
     private String playlistName;
     private String mEmail;
+    private static ApiImpl api;
 
     public ExportFragment() {
 
@@ -66,13 +72,21 @@ public class ExportFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        api = new ApiImpl();
+        api.setExceptionCallback(new Consumer<Throwable>(){
+            @Override
+            public void accept(Throwable throwable) {
+                throwable.printStackTrace();
+                Toast.makeText(ExportFragment.this.getActivity(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
-    public void setSongs(List<DanceSong> songs){
+    public void setSongs(List<DanceSong> songs) {
         this.songs = songs;
     }
 
-    public void setPlaylistName(String playlistName){
+    public void setPlaylistName(String playlistName) {
         this.playlistName = playlistName;
     }
 
@@ -107,7 +121,7 @@ public class ExportFragment extends Fragment {
 
                 // Auth flow returned an error
                 case ERROR:
-                    Toast.makeText(ExportFragment.this.getActivity(),"Can't connect to Spotify service", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ExportFragment.this.getActivity(), "Can't connect to Spotify service", Toast.LENGTH_LONG).show();
                     break;
 
                 // Most likely auth flow was cancelled
@@ -118,14 +132,14 @@ public class ExportFragment extends Fragment {
         // Handle the result from exceptions
     }
 
-    private void createSpotifyPlaylist(final String id, final List<DanceSong> danceSongs, final SpotifyService service){
-        Map<String,Object> body = new HashMap<>();
+    private void createSpotifyPlaylist(final String id, final List<DanceSong> danceSongs, final SpotifyService service) {
+        Map<String, Object> body = new HashMap<>();
         body.put("name", "new Danser playlist");
         body.put("public", false);
         service.createPlaylist(id, body, new Callback<Playlist>() {
             @Override
             public void success(kaaes.spotify.webapi.android.models.Playlist playlist, Response response) {
-                addTracksToPlaylist(id,playlist.id, danceSongs, service);
+                addTracksToPlaylist(id, playlist.id, danceSongs, service);
             }
 
             @Override
@@ -135,39 +149,32 @@ public class ExportFragment extends Fragment {
         });
     }
 
-    private void addTracksToPlaylist(String id, String playlistId, List<DanceSong> danceSongs, SpotifyService service){
-        Map<String,Object> body = new HashMap<>();
-        List<String> uris = new ArrayList<>();
-        for(DanceSong danceSong : danceSongs){
-            List<DanceRecording> recordings = danceSong.listRecordings();
-            if(recordings.size() > 0){
-                for(DanceRecording recording : recordings){
-                    if(recording.getSpotifyId() != null){
-                        uris.add("spotify:track:" + recording.getSpotifyId());
-                        break;
-                    }
+    private void addTracksToPlaylist(final String id, final String playlistId, List<DanceSong> danceSongs, final SpotifyService service) {
+        final Map<String, Object> body = new HashMap<>();
+        api.getManyRecordings(danceSongs, Arrays.asList(new String[]{"spotify"}), new Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>>() {
+            @Override
+            public void accept(LinkedHashMap<DanceSong, List<DanceRecording>> map) {
+                if (map.size() == 0) {
+                    Toast.makeText(ExportFragment.this.getActivity(), "No songs in your playlist have Spotify IDs.", Toast.LENGTH_LONG).show();
+                } else {
+                    body.put("uris", SongUtils.getSpotifyUrisForSongs(map));
+                    service.addTracksToPlaylist(id, playlistId, null, body, new Callback<Pager<PlaylistTrack>>() {
+                        @Override
+                        public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
+                            Toast.makeText(ExportFragment.this.getActivity(), "Playlist was added to your spotify acccount", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Toast.makeText(ExportFragment.this.getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
-        }
-        if(uris.isEmpty()){
-            Toast.makeText(ExportFragment.this.getActivity(),"No songs in your playlist have Spotify IDs.", Toast.LENGTH_LONG).show();
-        } else {
-            body.put("uris",uris);
-            service.addTracksToPlaylist(id, playlistId, null, body, new Callback<Pager<PlaylistTrack>>() {
-                @Override
-                public void success(Pager<PlaylistTrack> playlistTrackPager, Response response) {
-                    Toast.makeText(ExportFragment.this.getActivity(),"Playlist was added to your spotify acccount", Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Toast.makeText(ExportFragment.this.getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-        }
+        });
     }
 
-    public void initSpotifyAddPlaylist(String token, final List<DanceSong> danceSongs){
+    public void initSpotifyAddPlaylist(String token, final List<DanceSong> danceSongs) {
         SpotifyApi api = new SpotifyApi();
         api.setAccessToken(token);
         final SpotifyService spotify = api.getService();
@@ -205,7 +212,7 @@ public class ExportFragment extends Fragment {
         getUsername();
     }
 
-    public void exportToSpotify(){
+    public void exportToSpotify() {
 
         AuthenticationRequest.Builder builder =
                 new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
@@ -214,7 +221,7 @@ public class ExportFragment extends Fragment {
         AuthenticationRequest request = builder.build();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.putExtra("EXTRA_AUTH_REQUEST", request);
-        startActivityForResult(intent,SPOTIFY_REQUEST_CODE);
+        startActivityForResult(intent, SPOTIFY_REQUEST_CODE);
     }
 
     public class ExportPlaylistToYoutubeTask extends AsyncTask<List<DanceSong>, String, String> {
@@ -231,7 +238,7 @@ public class ExportFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Toast.makeText(ExportFragment.this.getActivity(),s,Toast.LENGTH_LONG).show();
+            Toast.makeText(ExportFragment.this.getActivity(), s, Toast.LENGTH_LONG).show();
         }
 
         /**
@@ -245,7 +252,7 @@ public class ExportFragment extends Fragment {
             try {
                 token = fetchToken();
             } catch (IOException e) {
-                Log.d("playlist async",e.getMessage());
+                Log.d("playlist async", e.getMessage());
             }
             if (token != null) {
                 // **Insert the good stuff here.**
@@ -257,25 +264,32 @@ public class ExportFragment extends Fragment {
                     YouTube.Playlists.Insert playlistInsertCommand = youtube.playlists().insert("snippet", createPlaylist(playlistName, "Playlist generated by Danser Music (www.dansermusic.com)"));
                     com.google.api.services.youtube.model.Playlist playlistInserted = playlistInsertCommand.execute();
                     id = playlistInserted.getId();
-                }catch(IOException e) {
-                    Log.d("playlist async",e.getMessage());
+                } catch (IOException e) {
+                    Log.d("playlist async", e.getMessage());
                 }
-                YouTube.PlaylistItems items = youtube.playlistItems();
-                for (DanceSong danceSong : params[0]) {
-                    List<DanceRecording> recordings = danceSong.listRecordings();
-                    if(recordings.size() > 0){
-                        for(DanceRecording recording : recordings){
-                            if (recording.getYoutubeId() != null) {
+                final YouTube.PlaylistItems items = youtube.playlistItems();
+                final String finalId = id;
+                final List<String> results = new ArrayList<>();
+                api.getManyRecordingsSync(params[0],  Arrays.asList(new String[]{"youtube"}), new Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>>() {
+                    @Override
+                    public void accept(LinkedHashMap<DanceSong, List<DanceRecording>> map) {
+                        if (map.size() == 0) {
+                            results.add("No songs in your playlist have YouTube IDs.");
+                        } else {
+                            LinkedHashMap<DanceSong, String> ids = SongUtils.getYoutubeIdsForSongs(map);
+                            for(Map.Entry<DanceSong, String> entry : ids.entrySet()){
                                 try {
-                                    items.insert("snippet,contentDetails", createPlaylistItem(danceSong.getSongName(), id, recording.getYoutubeId())).execute();
-                                    break;
-                                } catch (IOException e){
-                                    Log.d("playlist async",e.getMessage());
+                                    items.insert("snippet,contentDetails", createPlaylistItem(entry.getKey().getSongName(), finalId, entry.getValue())).execute();
+                                } catch (IOException e) {
+                                    Log.d("playlist async", e.getMessage());
                                     //continue;
                                 }
                             }
                         }
                     }
+                });
+                if(results.size() > 0){
+                    return results.get(0);
                 }
                 return "YouTube playlist was generated.";
             } else {

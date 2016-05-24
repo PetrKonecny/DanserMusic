@@ -1,5 +1,6 @@
 package cz.muni.danser.api;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import cz.muni.danser.functional.Consumer;
@@ -22,6 +23,7 @@ public interface GeneralApi {
     void suggestSongs(String trackName, Consumer<List<DanceSong>> callback);
 
     void getRecordings(DanceSong danceSong, Consumer<List<DanceRecording>> callback);
+    void getManyRecordings(List<DanceSong> danceSongs, List<String> requiredFields, Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>> callback);
 
     List<Playlist> getPlaylists();
     Playlist getPlaylist(long id);

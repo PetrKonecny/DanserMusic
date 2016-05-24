@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceCategory;
@@ -23,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 final public class Api {
     final private static String API_URL = "https://api.dansermusic.com/";
@@ -90,6 +92,9 @@ final public class Api {
 
         @GET("songs_for_dance/{song_for_dance}/recordings")
         Call<List<DanceRecording>> getRecordings(@Path("song_for_dance") int songForDanceId);
+
+        @GET("songs_for_dance/{songs_for_dance}/recordings")
+        Call<Map<Integer, List<DanceRecording>>> getManyRecordings(@Path("songs_for_dance") String danceSongsIds, @QueryMap Map<String, String> requiredFields);
     }
 
     private static final Interceptor DANSER_HEADERS_INTERCEPTOR = new Interceptor() {

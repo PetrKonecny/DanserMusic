@@ -2,7 +2,11 @@ package cz.muni.danser.api;
 
 import com.activeandroid.query.Select;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import cz.muni.danser.functional.Consumer;
 import cz.muni.danser.model.Dance;
@@ -169,6 +173,69 @@ public class ApiImpl implements GeneralApi {
                 exceptionCallback.accept(t);
             }
         });
+    }
+
+    private Map<String, String> prepareRequiredFields(List<String> requiredFields){
+        Map<String, String> map = new HashMap<>();
+        for(String field : requiredFields){
+            map.put("has_"+field.toLowerCase(), "1");
+        }
+        return map;
+    }
+
+    @Override
+    public void getManyRecordings(final List<DanceSong> danceSongs, final List<String> requiredFields, final Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>> callback) {
+        Call<Map<Integer, List<DanceRecording>>> call = Api.getRetrofitApi().getManyRecordings(
+                songListToSongIds(danceSongs),
+                prepareRequiredFields(requiredFields)
+        );
+        call.enqueue(new Callback<Map<Integer, List<DanceRecording>>>() {
+            @Override
+            public void onResponse(Call<Map<Integer, List<DanceRecording>>> call, Response<Map<Integer, List<DanceRecording>>> response) {
+                callback.accept( integerMapToSongMap(danceSongs, response.body()) );
+            }
+
+            @Override
+            public void onFailure(Call<Map<Integer, List<DanceRecording>>> call, Throwable t) {
+                exceptionCallback.accept(t);
+            }
+        });
+    }
+
+    public void getManyRecordingsSync(final List<DanceSong> danceSongs, final List<String> requiredFields, final Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>> callback){
+        try {
+            Call<Map<Integer, List<DanceRecording>>> call = Api.getRetrofitApi().getManyRecordings(songListToSongIds(danceSongs),
+                    prepareRequiredFields(requiredFields));
+            Map<Integer, List<DanceRecording>> map = call.execute().body();
+            callback.accept( integerMapToSongMap(danceSongs, map) );
+        } catch (IOException e) {
+            exceptionCallback.accept(e);
+        }
+    }
+
+    private String songListToSongIds(List<DanceSong> danceSongs){
+        if(danceSongs.size() == 0){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for(DanceSong danceSong : danceSongs){
+            if(first){
+                first = false;
+            } else {
+                sb.append(",");
+            }
+            sb.append(danceSong.getSongForDanceId());
+        }
+        return sb.toString();
+    }
+
+    private LinkedHashMap<DanceSong, List<DanceRecording>> integerMapToSongMap(List<DanceSong> danceSongs, Map<Integer, List<DanceRecording>> integerMap){
+        LinkedHashMap<DanceSong, List<DanceRecording>> map = new LinkedHashMap<>();
+        for(DanceSong song : danceSongs) {
+            map.put(song, integerMap.get(song.getSongForDanceId()));
+        }
+        return map;
     }
 
     public List<Playlist> getPlaylists() {

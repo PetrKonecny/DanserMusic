@@ -3,18 +3,14 @@ package cz.muni.danser.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.activeandroid.Cache;
 import com.activeandroid.Model;
-import com.activeandroid.TableInfo;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Collections;
 import java.util.List;
 
 @Table(name = "Songs")
@@ -188,9 +184,5 @@ public class DanceSong extends Model implements Parcelable, Listable {
 
     public List<DanceRecording> listDanceRecordings() {
         return getMany(DanceRecording.class, "danceSong");
-    }
-
-    public List<DanceRecording> listRecordings(){
-        return Collections.emptyList();
     }
 }
