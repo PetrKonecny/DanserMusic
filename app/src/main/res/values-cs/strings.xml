@@ -18,7 +18,7 @@
     <string name="dance_label">Tanec:</string>
     <string name="hint_search">Hledat skladby…</string>
     <string name="no_network">Síť není dostupná. Data nemusí být přesná a úplná.</string>
-    <string name="not_online">Pro vytvoření YouTube playlistu je potřeba připojení k internetu.</string>
+    <string name="not_online">Je potřeba připojení k internetu.</string>
     <string name="pick_account">Pro vytvoření YouTube playlistu je potřeba zvolit účet.</string>
     <string name="share_into">Rozpoznat tanec Danserem</string>
 </resources>

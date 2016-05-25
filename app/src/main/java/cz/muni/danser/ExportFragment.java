@@ -119,7 +119,7 @@ public class ExportFragment extends Fragment {
 
                 // Auth flow returned an error
                 case ERROR:
-                    Toast.makeText(ExportFragment.this.getActivity(), "Can't connect to Spotify service", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ExportFragment.this.getActivity(), getString(R.string.not_online), Toast.LENGTH_LONG).show();
                     break;
 
                 // Most likely auth flow was cancelled

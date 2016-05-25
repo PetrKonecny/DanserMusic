@@ -4,7 +4,7 @@
     <string name="add_to_favorites">favorite</string>
     <string name="artist">Artist:</string>
     <string name="pick_account">You have to pick an account in order to export YouTube playlist.</string>
-    <string name="not_online">You have to be connected to the internet in order to export YouTube playlist.</string>
+    <string name="not_online">Internet connection is required.</string>
     <string name="google_app_id" translatable="false">672064283419-35crplnl02bmsqogcm5q6vvkch0fnc30.apps.googleusercontent.com</string>
     <string name="youtube" translatable="false">YouTube:</string>
     <string name="dance_category_ballroom">Ballroom (Standard)</string>
@@ -24,7 +24,4 @@
     <string name="release_year">Release year:</string>
     <string name="work_mbid_label">Work MBID:</string>
     <string name="recordings_number">Number of recordings:</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

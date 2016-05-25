@@ -51,8 +51,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         service.setExceptionCallback(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) {
-                throwable.printStackTrace();
-                Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, getString(R.string.not_online), Toast.LENGTH_LONG).show();
             }
         });
         listables = new ArrayList<>();
