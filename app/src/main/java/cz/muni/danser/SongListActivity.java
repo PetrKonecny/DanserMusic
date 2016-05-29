@@ -12,6 +12,7 @@ import java.util.List;
 import cz.muni.danser.api.ApiImpl;
 import cz.muni.danser.api.GeneralApi;
 import cz.muni.danser.functional.Consumer;
+import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceSong;
 import cz.muni.danser.model.Listable;
 
@@ -52,15 +53,16 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         if(savedInstanceState != null){
             songs.addAll((List) savedInstanceState.getParcelableArrayList("SONGS"));
         }
-        if(getIntent().hasExtra("danceId")){
-            int danceId = getIntent().getExtras().getInt("danceId");
-            service.getSongs(danceId, new Consumer<List<DanceSong>>(){
+        if(getIntent().hasExtra("dance")){
+            Dance dance = (Dance) getIntent().getExtras().get("dance");
+            getSupportActionBar().setTitle(Utils.getTranslatedMainText(dance));
+            service.getSongs(dance.getDanceType(), new Consumer<List<DanceSong>>(){
                 @Override
                 public void accept(List<DanceSong> danceSongs) {
                     songs = danceSongs;
                     listFragment.refreshList((List)danceSongs);
                     if(getResources().getBoolean(R.bool.dualPane)){
-                        onListItemClick((DanceSong) danceSongs.get(0));
+                        onListItemClick(danceSongs.get(0));
                     }
                 }
             });

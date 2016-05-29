@@ -97,7 +97,7 @@ public class SongDetailFragment extends Fragment {
             }
         });
         this.danceSong = danceSong;
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(danceSong.getSongName());
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(danceSong.getSongName());
     }
 
 }

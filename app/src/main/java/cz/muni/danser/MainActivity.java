@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         service.setExceptionCallback(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) {
+                throwable.printStackTrace();
                 Toast.makeText(MainActivity.this, getString(R.string.not_online), Toast.LENGTH_LONG).show();
             }
         });
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
 
         if (intent.hasExtra("danceCategory")) {
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
+            getSupportActionBar().setTitle(Utils.getTranslatedMainText(danceCategory));
             service.getDances(danceCategory.getDanceCategory(), new Consumer<List<Dance>>() {
                 @Override
                 public void accept(List<Dance> dances) {
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
                     listFragment.refreshList((List)dances);
                 }
             });
-        } else if (intent.getAction() == LIST_PLAYLIST_ACTION) {
+        } else if (intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
             listables.clear();
             listables.addAll((List) new Select().all().from(Playlist.class).execute());
         } else {
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         Intent intent = getIntent();
         if (intent.hasExtra("danceCategory")) {
             intent = new Intent(MainActivity.this, SongListActivity.class);
-            intent.putExtra("danceId", ((Dance) item).getDanceType());
+            intent.putExtra("dance", (Dance) item);
             startActivity(intent);
         } else if (intent.getAction() == LIST_PLAYLIST_ACTION) {
             intent = new Intent(MainActivity.this, SongListActivity.class);
