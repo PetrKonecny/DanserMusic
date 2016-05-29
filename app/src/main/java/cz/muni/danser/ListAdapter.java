@@ -12,15 +12,12 @@ import java.util.List;
 import cz.muni.danser.model.Listable;
 import cz.muni.danser.model.StringParsable;
 
-/**
- * Created by Petr2 on 3/23/2016.
- */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-
     private List<?> mDataset;
     private OnItemClickListener listener;
     private int mLayout;
-    private static Context c;
+    protected static Context c;
+    protected int selectedItemIndex = 0;
 
     public ListAdapter(List dataset, OnItemClickListener listener, int layout){
         this.listener = listener;
@@ -45,12 +42,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.bind((Listable)(mDataset.get(position)), listener);
     }
 
+    public void setSelectedItemIndex(int pos){
+        selectedItemIndex = pos;
+    }
+
+    public void onItemViewClick(CardView v, CardView oldV){
+    }
+
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mTextView;
         public CardView mCardView;
@@ -72,6 +76,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             mTextView.setText(text);
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
+                    onItemViewClick((CardView) v, null); //TODO: instead of null, pass previous CardView
+                    int position = mDataset.indexOf(item);
+                    setSelectedItemIndex(position);
                     listener.onItemClick(item);
                 }
             });

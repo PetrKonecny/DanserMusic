@@ -60,8 +60,9 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
                 @Override
                 public void accept(List<DanceSong> danceSongs) {
                     songs = danceSongs;
-                    listFragment.refreshList((List)danceSongs);
-                    if(getResources().getBoolean(R.bool.dualPane)){
+                    boolean dual = getResources().getBoolean(R.bool.dualPane);
+                    listFragment.refreshList((List)danceSongs, dual);
+                    if(dual){
                         onListItemClick(danceSongs.get(0));
                     }
                 }

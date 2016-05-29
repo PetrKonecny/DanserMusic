@@ -11,11 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cz.muni.danser.model.DanceSong;
 import cz.muni.danser.model.Listable;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,6 +26,7 @@ public class SongListFragment extends Fragment {
     private RecyclerView recyclerView;
     private ListAdapter mAdapter;
     private OnListFragmentInteractionListener mActivity;
+    private boolean dual;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,6 +58,11 @@ public class SongListFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
     }
 
+    public void refreshList(List<Listable> songs, boolean dual) {
+        this.dual = dual;
+        refreshList(songs);
+    }
+
     public void refreshList(List<Listable> songs) {
         int layout;
         if(recyclerView.getLayoutManager() instanceof GridLayoutManager){
@@ -68,12 +71,22 @@ public class SongListFragment extends Fragment {
             layout = R.layout.list_item_view;
         }
 
-        mAdapter = new ListAdapter(songs, new ListAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(Listable item) {
-                mActivity.onListItemClick(item);
-            }
-        },layout);
+        if(this.dual){
+            mAdapter = new ListAdapterWithSelected(songs, new ListAdapter.OnItemClickListener(){
+                @Override
+                public void onItemClick(Listable item) {
+                    mActivity.onListItemClick(item);
+                }
+            },layout);
+        } else {
+            mAdapter = new ListAdapter(songs, new ListAdapter.OnItemClickListener(){
+                @Override
+                public void onItemClick(Listable item) {
+                    mActivity.onListItemClick(item);
+                }
+            },layout);
+        }
+
         recyclerView.setAdapter(mAdapter);
     }
 
