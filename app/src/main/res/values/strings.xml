@@ -18,7 +18,6 @@
     <string name="regexp_trackid">^I used TrackID™ to find (.*) by (.*)\\..*</string>
     <string name="spotify" translatable="false">Spotify:</string>
     <string name="dance_label">Dance:</string>
-    <string name="no_network">Network is not available. Data might not be accurate and complete.</string>
     <string name="playlists">Playlists</string>
     <string name="release_label">Release:</string>
     <string name="release_year">Release year:</string>
@@ -26,4 +25,16 @@
     <string name="recordings_number">Number of recordings:</string>
     <string name="export_to_spotify">Export to Spotify</string>
     <string name="export_to_youtube">Export to YouTube</string>
+    <string name="generate_playlist">Generate playlist</string>
+    <string name="select_from">Select from:</string>
+    <string name="choose">Choose:</string>
+    <string name="generated_playlist_name">Generated playlist name:</string>
+    <string name="generate_from_playlists">playlists</string>
+    <string name="generate_from_presets">presets</string>
+
+    <string-array name="generate_presets">
+        <item>dancing lesson</item>
+        <item>ballroom &amp; latin</item>
+        <item>salsa, zouk &amp; similar</item>
+    </string-array>
 </resources>

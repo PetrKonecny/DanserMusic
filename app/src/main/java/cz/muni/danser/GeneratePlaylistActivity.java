@@ -16,6 +16,7 @@ public class GeneratePlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate_playlist);
+        getSupportActionBar().setTitle(R.string.generate_playlist);
 
         generateFragment = getFragmentManager().findFragmentById(R.id.generate_frag_container);
         if(generateFragment == null) {

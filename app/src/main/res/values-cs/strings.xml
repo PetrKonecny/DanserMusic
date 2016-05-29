@@ -17,10 +17,21 @@
     <string name="artist">Interpret</string>
     <string name="dance_label">Tanec:</string>
     <string name="hint_search">Hledat skladby…</string>
-    <string name="no_network">Síť není dostupná. Data nemusí být přesná a úplná.</string>
     <string name="not_online">Je potřeba připojení k internetu.</string>
     <string name="pick_account">Pro vytvoření YouTube playlistu je potřeba zvolit účet.</string>
     <string name="share_into">Rozpoznat tanec Danserem</string>
     <string name="export_to_spotify">Exportovat do Spotify</string>
     <string name="export_to_youtube">Exportovat do YouTube</string>
+    <string name="generate_playlist">Generovat playlist</string>
+    <string name="select_from">Vybrat z:</string>
+    <string name="choose">Zvolte:</string>
+    <string name="generated_playlist_name">Název pro vygenerovaný playlist:</string>
+    <string name="generate_from_playlists">playlistů</string>
+    <string name="generate_from_presets">předvoleb</string>
+
+    <string-array name="generate_presets">
+        <item>taneční</item>
+        <item>standard &amp; latina</item>
+        <item>salsa, zouk a podobné</item>
+    </string-array>
 </resources>

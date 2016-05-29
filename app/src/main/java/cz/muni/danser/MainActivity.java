@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
             });
         } else if (intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
             listables.clear();
-            listables.addAll((List) new Select().all().from(Playlist.class).execute());
+            listables.addAll(SongUtils.getAllPlaylists());
         } else {
             service.getCategories(new Consumer<List<DanceCategory>>() {
                 @Override

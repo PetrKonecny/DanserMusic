@@ -25,7 +25,6 @@
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".SongDetailActivity" />
         <activity xmlns:android="http://schemas.android.com/apk/res/android"
             android:name=".HandleURL"
             android:label="@string/share_into">
@@ -171,11 +170,9 @@
             android:name="AA_DB_NAME"
             android:value="Danser.db" />
 
-        <activity android:name=".PlaylistActivity" />
-        <activity android:name=".GeneratePlaylistActivity" />
-        <activity android:name=".ExportActivity" />
+        <activity android:name=".GeneratePlaylistActivity" android:windowSoftInputMode="stateHidden" />
         <activity android:name=".SongListActivity" />
-        <activity android:name=".DetailFragmentWrapperActivity"></activity>
+        <activity android:name=".DetailFragmentWrapperActivity"/>
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 package cz.muni.danser;
 
+import com.activeandroid.query.Select;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Map;
 
 import cz.muni.danser.model.DanceRecording;
 import cz.muni.danser.model.DanceSong;
+import cz.muni.danser.model.Playlist;
 
 public class SongUtils {
     public static LinkedHashMap<DanceSong, String> getYoutubeIdsForSongs(LinkedHashMap<DanceSong, List<DanceRecording>> map){
@@ -33,5 +36,9 @@ public class SongUtils {
             }
         }
         return uris;
+    }
+
+    public static List<Playlist> getAllPlaylists(){
+        return (List) new Select().all().from(Playlist.class).execute();
     }
 }
