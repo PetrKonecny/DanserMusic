@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/export_spotify"
-        android:title="Export to spotify"
+        android:title="@string/export_to_spotify"
         android:onClick="exportToSpotify" />
     <item
         android:id="@+id/export_to_youtube"
-        android:title="Export to youtube"
+        android:title="@string/export_to_youtube"
         android:onClick="exportToYoutube"/>
 </menu>

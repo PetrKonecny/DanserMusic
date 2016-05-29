@@ -21,4 +21,6 @@
     <string name="not_online">Je potřeba připojení k internetu.</string>
     <string name="pick_account">Pro vytvoření YouTube playlistu je potřeba zvolit účet.</string>
     <string name="share_into">Rozpoznat tanec Danserem</string>
+    <string name="export_to_spotify">Exportovat do Spotify</string>
+    <string name="export_to_youtube">Exportovat do YouTube</string>
 </resources>

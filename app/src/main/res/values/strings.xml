@@ -24,4 +24,6 @@
     <string name="release_year">Release year:</string>
     <string name="work_mbid_label">Work MBID:</string>
     <string name="recordings_number">Number of recordings:</string>
+    <string name="export_to_spotify">Export to Spotify</string>
+    <string name="export_to_youtube">Export to YouTube</string>
 </resources>
