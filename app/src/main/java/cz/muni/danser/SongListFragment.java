@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import cz.muni.danser.model.Listable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -86,7 +87,7 @@ public class SongListFragment extends Fragment {
                 }
             },layout);
         }
-
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mAdapter);
     }
 
