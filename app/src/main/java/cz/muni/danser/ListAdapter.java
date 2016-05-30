@@ -17,7 +17,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private OnItemClickListener listener;
     private int mLayout;
     protected static Context c;
-    public int selectedPos = 0;
+    public int selectedPos = -1;
 
     public ListAdapter(List dataset, OnItemClickListener listener, int layout){
         this.listener = listener;

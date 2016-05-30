@@ -1,6 +1,7 @@
 package cz.muni.danser;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,10 +19,11 @@ import cz.muni.danser.api.ApiImpl;
 import cz.muni.danser.functional.Consumer;
 import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceCategory;
+import cz.muni.danser.model.DanceSong;
 import cz.muni.danser.model.Listable;
 import cz.muni.danser.model.Playlist;
 
-public class MainActivity extends AppCompatActivity implements SongListFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements SongListFragment.OnListFragmentInteractionListener, SearchSuggestionFragment.Callbacks {
 
     List<Listable> listables;
     SearchSuggestionFragment searchFragment;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         }
 
         if (intent.hasExtra("danceCategory")) {
+            listFragment.setPending(true);
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
             getSupportActionBar().setTitle(Utils.getTranslatedMainText(danceCategory));
             service.getDances(danceCategory.getDanceCategory(), new Consumer<List<Dance>>() {
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
                 public void accept(List<Dance> dances) {
                     MainActivity.this.listables.clear();
                     MainActivity.this.listables.addAll(dances);
+                    listFragment.setPending(false);
                     listFragment.refreshList((List)dances);
                 }
             });
@@ -76,11 +80,13 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
             listables.clear();
             listables.addAll(SongUtils.getAllPlaylists());
         } else {
+            listFragment.setPending(true);
             service.getCategories(new Consumer<List<DanceCategory>>() {
                 @Override
                 public void accept(List<DanceCategory> danceCategories) {
                     MainActivity.this.listables.clear();
                     MainActivity.this.listables.addAll(danceCategories);
+                    listFragment.setPending(false);
                     listFragment.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
                     listFragment.refreshList((List)danceCategories);
                 }
@@ -125,6 +131,14 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
 
     public void generatePlaylist(MenuItem item) {
         Intent intent = new Intent(this, GeneratePlaylistActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onQuerySubmit(List<DanceSong> songs, String query) {
+        Intent intent = new Intent(this, SongListActivity.class);
+        intent.putParcelableArrayListExtra("songs",(ArrayList<? extends Parcelable>) songs);
+        intent.putExtra("query", query);
         startActivity(intent);
     }
 }

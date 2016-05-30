@@ -31,6 +31,9 @@
     <string name="generated_playlist_name">Generated playlist name:</string>
     <string name="generate_from_playlists">playlists</string>
     <string name="generate_from_presets">presets</string>
+    <string name="no_detail">Click on song to display its details</string>
+    <string name="no_data_available">Sorry, nothing is here</string>
+    <string name="loading_data">Loading data</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>

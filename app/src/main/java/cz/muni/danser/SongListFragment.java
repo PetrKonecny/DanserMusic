@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import cz.muni.danser.model.Listable;
 
@@ -25,9 +26,16 @@ import java.util.List;
 public class SongListFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private TextView emptyView;
+    private TextView loadingView;
     private ListAdapter mAdapter;
     private OnListFragmentInteractionListener mActivity;
     private boolean dual;
+    private boolean pending;
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
+    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -47,11 +55,11 @@ public class SongListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view.findViewById(R.id.list);
+            emptyView = (TextView) view.findViewById(R.id.empty_view);
+            loadingView = (TextView) view.findViewById(R.id.loading_view);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        }
         return view;
     }
 
@@ -88,6 +96,19 @@ public class SongListFragment extends Fragment {
             },layout);
         }
         recyclerView.setHasFixedSize(true);
+        if(songs.isEmpty()){
+            recyclerView.setVisibility(View.GONE);
+            if(pending) {
+                loadingView.setVisibility(View.VISIBLE);
+            }else{
+                emptyView.setVisibility(View.VISIBLE);
+                loadingView.setVisibility(View.GONE);
+            }
+        }else{
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+            loadingView.setVisibility(View.GONE);
+        }
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -106,7 +127,7 @@ public class SongListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        refreshList(mActivity.getSongs());
+        refreshList(mActivity.getSongs(),((Context) mActivity).getResources().getBoolean(R.bool.dualPane));
     }
 
     public interface OnListFragmentInteractionListener {

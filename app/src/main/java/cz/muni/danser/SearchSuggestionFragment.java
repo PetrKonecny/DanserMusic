@@ -40,6 +40,10 @@ public class SearchSuggestionFragment extends Fragment implements SearchView.OnQ
         // Required empty public constructor
     }
 
+    public interface Callbacks {
+        public void onQuerySubmit(List<DanceSong> songs, String query);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,11 +71,11 @@ public class SearchSuggestionFragment extends Fragment implements SearchView.OnQ
 
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
+    public boolean onQueryTextSubmit(final String query) {
         service.searchSongs(query, null, new Consumer<List<DanceSong>>() {
             @Override
             public void accept(List<DanceSong> danceSongs) {
-            //TODO open SongListActivity here
+                ((Callbacks)getActivity()).onQuerySubmit(danceSongs, query);
             }
         });
         return false;

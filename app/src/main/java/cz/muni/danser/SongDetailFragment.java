@@ -71,10 +71,13 @@ public class SongDetailFragment extends Fragment {
                 }
             }
         });
+        view.findViewById(R.id.detail_layout).setVisibility(View.GONE);
         return view;
     }
 
     public void updateDanceSong(@NonNull DanceSong danceSong){
+        getActivity().findViewById(R.id.detail_layout).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.no_detail_layout).setVisibility(View.GONE);
         mTable.removeAllViews();
         if(danceSong.getWorkMbid() != null){
             addRow(R.string.work_mbid_label, textViewFromString(danceSong.getWorkMbid()));
@@ -97,7 +100,6 @@ public class SongDetailFragment extends Fragment {
             }
         });
         this.danceSong = danceSong;
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(danceSong.getSongName());
     }
 
 }
