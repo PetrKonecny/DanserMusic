@@ -46,10 +46,10 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
             detailFragment = new SongDetailFragment();
             getFragmentManager().beginTransaction().add(R.id.detail_frag_duo_container,detailFragment).commit();
         }
-        listFragment = (SongListFragment) getFragmentManager().findFragmentById(R.id.list_frag_container);
+        listFragment = (SongListFragment) getSupportFragmentManager().findFragmentById(R.id.list_frag_container);
         if(listFragment == null){
             listFragment = new SongListFragment();
-            getFragmentManager().beginTransaction().add(R.id.list_frag_container,listFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.list_frag_container,listFragment).commit();
         }
         if(savedInstanceState != null){
             songs.addAll((List) savedInstanceState.getParcelableArrayList("SONGS"));

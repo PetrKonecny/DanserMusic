@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
             searchFragment = new SearchSuggestionFragment();
             getFragmentManager().beginTransaction().add(searchFragment, "SEARCH").commit();
         }
-        listFragment = (SongListFragment) getFragmentManager().findFragmentById(R.id.list_frag_container);
+        listFragment = (SongListFragment) getSupportFragmentManager().findFragmentById(R.id.list_frag_container);
         if (listFragment == null) {
             listFragment = new SongListFragment();
-            getFragmentManager().beginTransaction().add(R.id.list_frag_container,listFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.list_frag_container,listFragment).commit();
         }
         Intent intent = this.getIntent();
         Api.setContext(this);
