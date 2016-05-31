@@ -170,9 +170,12 @@
             android:name="AA_DB_NAME"
             android:value="Danser.db" />
 
-        <activity android:name=".GeneratePlaylistActivity" android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".GeneratePlaylistActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".SongListActivity" />
-        <activity android:name=".DetailFragmentWrapperActivity"/>
+        <activity android:name=".DetailFragmentWrapperActivity" />
+        <activity android:name=".ExportActivity"></activity>
     </application>
 
 </manifest>

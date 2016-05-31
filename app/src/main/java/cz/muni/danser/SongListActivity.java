@@ -1,6 +1,7 @@
 package cz.muni.danser;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -99,15 +100,25 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     }
 
     public void exportToSpotify(MenuItem item){
+        Intent intent = new Intent(this, ExportActivity.class);
+        intent.putParcelableArrayListExtra("songs",(ArrayList<? extends Parcelable>) songs);
+        intent.putExtra("service","spotify");
+        startActivity(intent);
+        /*
         exportFragment.setSongs(songs);
         exportFragment.setPlaylistName("generated in danser");
-        exportFragment.exportToSpotify();
+        exportFragment.exportToSpotify();*/
     }
 
     public void exportToYoutube(MenuItem item){
+        Intent intent = new Intent(this, ExportActivity.class);
+        intent.putParcelableArrayListExtra("songs",(ArrayList<? extends Parcelable>) songs);
+        intent.putExtra("service","youtube");
+        startActivity(intent);
+        /*
         exportFragment.setSongs(songs);
         exportFragment.setPlaylistName("generated in danser");
-        exportFragment.exportToYoutube();
+        exportFragment.exportToYoutube();*/
     }
 
 }

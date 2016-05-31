@@ -39,6 +39,16 @@ public class DanceSong extends Model implements Parcelable, Listable {
     @Column(name = "dance")
     private Dance dance;
 
+    public List<DanceRecording> getRecordings() {
+        return recordings;
+    }
+
+    public void setRecordings(List<DanceRecording> recordings) {
+        this.recordings = recordings;
+    }
+
+    private List<DanceRecording> recordings;
+
     public DanceSong(){
         super();
     }
