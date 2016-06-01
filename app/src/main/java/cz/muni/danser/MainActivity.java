@@ -1,10 +1,17 @@
 package cz.muni.danser;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Handler;
 import android.os.Parcelable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -30,6 +37,11 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     SongListFragment listFragment;
     ApiImpl service;
     private boolean pending;
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle drawerToggle;
+
+
 
     final static String LIST_PLAYLIST_ACTION = "cz.muni.fi.danser.LIST_PLAYLIST_ACTION";
     final static String SAVE_LISTABLES = "LISTABLES";
@@ -38,6 +50,14 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerToggle = setupDrawerToggle();
+        mDrawer.addDrawerListener(drawerToggle);
+        setupDrawerContent((NavigationView) findViewById(R.id.navigation));
+
         searchFragment = (SearchSuggestionFragment) getFragmentManager().findFragmentByTag("SEARCH");
         if (searchFragment == null) {
             searchFragment = new SearchSuggestionFragment();
@@ -77,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
                     listFragment.refreshList((List)dances);
                 }
             });
-        } else if (intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
+        } else if (intent.getAction() != null && intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
             listables.clear();
             listables.addAll(SongUtils.getAllPlaylists());
         } else {
@@ -93,6 +113,69 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
                 }
             });
         }
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        Intent intent = null;
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_browse:
+                intent = new Intent(this,MainActivity.class);
+                break;
+            case R.id.drawer_paylists:
+                intent = new Intent(this,MainActivity.class);
+                intent.setAction(LIST_PLAYLIST_ACTION);
+                break;
+            default:
+        }
+        mDrawer.closeDrawers();
+        final Intent finalIntent = intent;
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                startActivity(finalIntent);
+            }
+        }, 200);
     }
 
     @Override
@@ -112,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
             intent = new Intent(MainActivity.this, SongListActivity.class);
             intent.putExtra("dance", (Dance) item);
             startActivity(intent);
-        } else if (intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
+        } else if (intent.getAction() != null && intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
             intent = new Intent(MainActivity.this, SongListActivity.class);
             intent.putExtra("playlistId", ((Playlist) item).getId());
             startActivity(intent);
@@ -125,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putParcelableArrayList(SAVE_LISTABLES, (ArrayList <? extends Parcelable>) listables);
+        savedInstanceState.putParcelableArrayList(SAVE_LISTABLES, (ArrayList) listables);
         super.onSaveInstanceState(savedInstanceState);
     }
 

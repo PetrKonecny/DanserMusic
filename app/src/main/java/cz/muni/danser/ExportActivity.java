@@ -1,15 +1,22 @@
 package cz.muni.danser;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Handler;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,6 +43,10 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
     private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
     private boolean pending;
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle drawerToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +54,14 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
         validSongs = new ArrayList<>();
         invalidSongs = new ArrayList<>();
         setContentView(R.layout.activity_export);
+
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerToggle = setupDrawerToggle();
+        mDrawer.addDrawerListener(drawerToggle);
+        setupDrawerContent((NavigationView) findViewById(R.id.navigation));
+
         GeneralApi api = new ApiImpl();
         viewPager = (ViewPager) findViewById(R.id.pager);
         setupViewPager(viewPager);
@@ -86,6 +105,58 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
                 }
             });
         }
+    }
+
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        Intent intent = null;
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_browse:
+                intent = new Intent(this,MainActivity.class);
+                break;
+            case R.id.drawer_paylists:
+                intent = new Intent(this,MainActivity.class);
+                intent.setAction(MainActivity.LIST_PLAYLIST_ACTION);
+                break;
+            default:
+        }
+        mDrawer.closeDrawers();
+        final Intent finalIntent = intent;
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                startActivity(finalIntent);
+            }
+        }, 200);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
     }
 
     public void updateInterface() {

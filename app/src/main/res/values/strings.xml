@@ -34,6 +34,9 @@
     <string name="no_detail">Click on song to display its details</string>
     <string name="no_data_available">Sorry, nothing is here</string>
     <string name="loading_data">Loading data</string>
+    <string name="browse">Browse</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>

@@ -1,9 +1,15 @@
 package cz.muni.danser;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Handler;
 import android.os.Parcelable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,6 +31,9 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     private SongListFragment listFragment;
     private SongDetailFragment detailFragment;
     private boolean pending;
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle drawerToggle;
 
 
     public List<Listable> getSongs() {
@@ -42,6 +51,14 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         songs = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_list);
+
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerToggle = setupDrawerToggle();
+        mDrawer.addDrawerListener(drawerToggle);
+        setupDrawerContent((NavigationView) findViewById(R.id.navigation));
+
         exportFragment = (ExportFragment) getFragmentManager().findFragmentByTag("EXPORT_FRAGMENT");
         if(exportFragment == null){
             exportFragment = new ExportFragment();
@@ -83,6 +100,57 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         }
     }
 
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        Intent intent = null;
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_browse:
+                intent = new Intent(this,MainActivity.class);
+                break;
+            case R.id.drawer_paylists:
+                intent = new Intent(this,MainActivity.class);
+                intent.setAction(MainActivity.LIST_PLAYLIST_ACTION);
+                break;
+            default:
+        }
+        mDrawer.closeDrawers();
+        final Intent finalIntent = intent;
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                startActivity(finalIntent);
+            }
+        }, 200);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putParcelableArrayList("SONGS", (ArrayList) songs);
@@ -111,10 +179,6 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         intent.putParcelableArrayListExtra("songs",(ArrayList<? extends Parcelable>) songs);
         intent.putExtra("service","spotify");
         startActivity(intent);
-        /*
-        exportFragment.setSongs(songs);
-        exportFragment.setPlaylistName("generated in danser");
-        exportFragment.exportToSpotify();*/
     }
 
     public void exportToYoutube(MenuItem item){
@@ -122,10 +186,6 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         intent.putParcelableArrayListExtra("songs",(ArrayList<? extends Parcelable>) songs);
         intent.putExtra("service","youtube");
         startActivity(intent);
-        /*
-        exportFragment.setSongs(songs);
-        exportFragment.setPlaylistName("generated in danser");
-        exportFragment.exportToYoutube();*/
     }
 
 }
