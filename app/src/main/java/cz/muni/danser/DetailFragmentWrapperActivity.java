@@ -43,34 +43,10 @@ public class DetailFragmentWrapperActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
+                        MainActivity.selectDrawerItem(menuItem,DetailFragmentWrapperActivity.this,mDrawer);
                         return true;
                     }
                 });
-    }
-
-    public void selectDrawerItem(MenuItem menuItem) {
-        Intent intent = null;
-        switch (menuItem.getItemId()) {
-            case R.id.drawer_browse:
-                intent = new Intent(this,MainActivity.class);
-                break;
-            case R.id.drawer_paylists:
-                intent = new Intent(this,MainActivity.class);
-                intent.setAction(MainActivity.LIST_PLAYLIST_ACTION);
-                break;
-            default:
-        }
-        mDrawer.closeDrawers();
-        final Intent finalIntent = intent;
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                startActivity(finalIntent);
-            }
-        }, 200);
     }
 
     @Override

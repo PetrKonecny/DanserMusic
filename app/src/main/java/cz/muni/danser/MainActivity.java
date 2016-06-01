@@ -1,5 +1,7 @@
 package cz.muni.danser;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Handler;
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
+                        MainActivity.selectDrawerItem(menuItem,MainActivity.this,mDrawer);
                         return true;
                     }
                 });
@@ -154,26 +156,30 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         return super.onOptionsItemSelected(item);
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
+    public static void selectDrawerItem(MenuItem menuItem, final Activity activity, DrawerLayout drawer) {
         Intent intent = null;
         switch (menuItem.getItemId()) {
             case R.id.drawer_browse:
-                intent = new Intent(this,MainActivity.class);
+                intent = new Intent(activity,MainActivity.class);
                 break;
             case R.id.drawer_paylists:
-                intent = new Intent(this,MainActivity.class);
+                intent = new Intent(activity,MainActivity.class);
                 intent.setAction(LIST_PLAYLIST_ACTION);
                 break;
+            case R.id.drawer_generate:
+                intent = new Intent(activity,GeneratePlaylistActivity.class);
+                break;
             default:
+                return;
         }
-        mDrawer.closeDrawers();
+        drawer.closeDrawers();
         final Intent finalIntent = intent;
         new Handler().postDelayed(new Runnable()
         {
             @Override
             public void run()
             {
-                startActivity(finalIntent);
+                activity.startActivity(finalIntent);
             }
         }, 200);
     }

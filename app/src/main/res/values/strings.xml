@@ -37,6 +37,9 @@
     <string name="browse">Browse</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="generate">Create new playlist</string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>
