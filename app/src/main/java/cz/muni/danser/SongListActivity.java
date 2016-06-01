@@ -24,10 +24,16 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     private ExportFragment exportFragment;
     private SongListFragment listFragment;
     private SongDetailFragment detailFragment;
+    private boolean pending;
 
 
     public List<Listable> getSongs() {
         return (List) songs;
+    }
+
+    @Override
+    public boolean getPending() {
+        return pending;
     }
 
     @Override
@@ -53,26 +59,27 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         }
         if(savedInstanceState != null){
             songs.addAll((List) savedInstanceState.getParcelableArrayList("SONGS"));
-        }
-        if(getIntent().hasExtra("dance")){
-            Dance dance = (Dance) getIntent().getExtras().get("dance");
-            listFragment.setPending(true);
-            getSupportActionBar().setTitle(Utils.getTranslatedMainText(dance));
-            service.getSongs(dance.getDanceType(), new Consumer<List<DanceSong>>(){
-                @Override
-                public void accept(List<DanceSong> danceSongs) {
-                    songs = danceSongs;
-                    boolean dual = getResources().getBoolean(R.bool.dualPane);
-                    listFragment.setPending(false);
-                    listFragment.refreshList((List)danceSongs, dual);
-                }
-            });
-        } else if (getIntent().hasExtra("playlistId")) {
-            long playlistId = getIntent().getExtras().getLong("playlistId");
-            songs = service.getPlaylist(playlistId).songs();
-        } else if(getIntent().hasExtra("songs")){
-            songs = getIntent().getParcelableArrayListExtra("songs");
-            getSupportActionBar().setTitle(String.format("%d songs for query '%s'",songs.size(),getIntent().getStringExtra("query")));
+        }else {
+            if (getIntent().hasExtra("dance")) {
+                Dance dance = (Dance) getIntent().getExtras().get("dance");
+                pending = true;
+                getSupportActionBar().setTitle(Utils.getTranslatedMainText(dance));
+                service.getSongs(dance.getDanceType(), new Consumer<List<DanceSong>>() {
+                    @Override
+                    public void accept(List<DanceSong> danceSongs) {
+                        songs = danceSongs;
+                        boolean dual = getResources().getBoolean(R.bool.dualPane);
+                        pending = false;
+                        listFragment.refreshList((List) danceSongs, dual);
+                    }
+                });
+            } else if (getIntent().hasExtra("playlistId")) {
+                long playlistId = getIntent().getExtras().getLong("playlistId");
+                songs = service.getPlaylist(playlistId).songs();
+            } else if (getIntent().hasExtra("songs")) {
+                songs = getIntent().getParcelableArrayListExtra("songs");
+                getSupportActionBar().setTitle(String.format("%d songs for query '%s'", songs.size(), getIntent().getStringExtra("query")));
+            }
         }
     }
 

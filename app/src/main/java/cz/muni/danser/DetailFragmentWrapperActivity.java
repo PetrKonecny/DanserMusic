@@ -12,6 +12,8 @@ public class DetailFragmentWrapperActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_fragment_wrapper);
         SongDetailFragment fragment = (SongDetailFragment) getFragmentManager().findFragmentById(R.id.detail_frag_solo);
-        fragment.updateDanceSong((DanceSong) getIntent().getParcelableExtra("danceSong"));
+        DanceSong song = (DanceSong) getIntent().getParcelableExtra("danceSong");
+        getSupportActionBar().setTitle(song.getSongName());
+        fragment.updateDanceSong(song);
     }
 }

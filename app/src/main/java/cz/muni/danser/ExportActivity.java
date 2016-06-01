@@ -1,6 +1,5 @@
 package cz.muni.danser;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,7 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -37,6 +35,7 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
+    private boolean pending;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,41 +50,50 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
         tabLayout.setupWithViewPager(viewPager);
         adapter = (ViewPagerAdapter) viewPager.getAdapter();
         exportFragment = (ExportFragment) getFragmentManager().findFragmentByTag("EXPORT_FRAGMENT");
-        if(exportFragment == null){
+        if (exportFragment == null) {
             exportFragment = new ExportFragment();
-            getFragmentManager().beginTransaction().add(exportFragment,"EXPORT_FRAGMENT").commit();
+            getFragmentManager().beginTransaction().add(exportFragment, "EXPORT_FRAGMENT").commit();
         }
         List<DanceSong> songs = getIntent().getParcelableArrayListExtra("songs");
         List<String> params = new ArrayList<>();
         String service = getIntent().getStringExtra("service");
         params.add(service);
-        getSupportActionBar().setTitle(String.format("Export to %s",service));
-        ((SongListFragment)adapter.mFragmentList.get(0)).setPending(true);
-        ((SongListFragment)adapter.mFragmentList.get(1)).setPending(true);
-        api.getManyRecordings(songs, params, new Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>>() {
-            @Override
-            public void accept(LinkedHashMap<DanceSong, List<DanceRecording>> map) {
-                for(Map.Entry<DanceSong, List<DanceRecording>> e : map.entrySet()) {
-                    DanceSong song = e.getKey();
-                    song.setRecordings(e.getValue());
-                    if (!song.getRecordings().isEmpty()) {
-                        validSongs.add(song);
-                    }else{
-                        invalidSongs.add(song);
+        getSupportActionBar().setTitle(String.format("Export to %s", service));
+        if (savedInstanceState != null) {
+            validSongs.addAll((List) savedInstanceState.getParcelableArrayList("VALID_SONGS"));
+            invalidSongs.addAll((List) savedInstanceState.getParcelableArrayList("INVALID_SONGS"));
+            updateInterface();
+        } else {
+            pending = true;
+            api.getManyRecordings(songs, params, new Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>>() {
+                @Override
+                public void accept(LinkedHashMap<DanceSong, List<DanceRecording>> map) {
+                    for (Map.Entry<DanceSong, List<DanceRecording>> e : map.entrySet()) {
+                        DanceSong song = e.getKey();
+                        song.setRecordings(e.getValue());
+                        if (!song.getRecordings().isEmpty()) {
+                            validSongs.add(song);
+                        } else {
+                            invalidSongs.add(song);
+                        }
                     }
+                    listFragment = (SongListFragment) adapter.getRegisteredFragment(0);
+                    notAvailableListFragment = (SongListFragment) adapter.getRegisteredFragment(1);
+                    pending = false;
+                    listFragment.refreshList((List) validSongs);
+                    notAvailableListFragment.refreshList((List) invalidSongs);
+                    updateInterface();
                 }
-                listFragment = (SongListFragment) adapter.getRegisteredFragment(0);
-                tabLayout.getTabAt(0).setText(String.format("Available (%d)",validSongs.size()));
-                tabLayout.getTabAt(1).setText(String.format("Not Available (%d)",invalidSongs.size()));
-                notAvailableListFragment = (SongListFragment) adapter.getRegisteredFragment(1);
-                listFragment.setPending(false);
-                listFragment.refreshList( (List) validSongs);
-                notAvailableListFragment.refreshList((List) invalidSongs);
-                if(!validSongs.isEmpty()){
-                    findViewById(R.id.export_button).setVisibility(View.VISIBLE);
-                }
-            }
-        });
+            });
+        }
+    }
+
+    public void updateInterface() {
+        if (!validSongs.isEmpty()) {
+            findViewById(R.id.export_button).setVisibility(View.VISIBLE);
+        }
+        tabLayout.getTabAt(0).setText(String.format("Available (%d)", validSongs.size()));
+        tabLayout.getTabAt(1).setText(String.format("Not Available (%d)", invalidSongs.size()));
     }
 
     @Override
@@ -96,19 +104,31 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelableArrayList("VALID_SONGS", (ArrayList) validSongs);
+        savedInstanceState.putParcelableArrayList("INVALID_SONGS", (ArrayList) invalidSongs);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
     public List<Listable> getSongs() {
         return (List) validSongs;
     }
 
-    public void export(View view){
+    @Override
+    public boolean getPending() {
+        return pending;
+    }
+
+    public void export(View view) {
         exportFragment.setSongs(validSongs);
         exportFragment.setPlaylistName("generated in danser");
-        Log.d("ExportActivity.export",getIntent().getStringExtra("service"));
-        switch(getIntent().getStringExtra("service")){
-            case "spotify" :
+        Log.d("ExportActivity.export", getIntent().getStringExtra("service"));
+        switch (getIntent().getStringExtra("service")) {
+            case "spotify":
                 exportFragment.exportToSpotify();
                 break;
-            case "youtube" :
+            case "youtube":
                 exportFragment.exportToYoutube();
                 break;
             default:
@@ -140,6 +160,7 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
             return fragment;
 
         }
+
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             registeredFragments.remove(position);

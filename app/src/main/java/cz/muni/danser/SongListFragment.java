@@ -31,11 +31,6 @@ public class SongListFragment extends Fragment {
     private ListAdapter mAdapter;
     private OnListFragmentInteractionListener mActivity;
     private boolean dual;
-    private boolean pending;
-
-    public void setPending(boolean pending) {
-        this.pending = pending;
-    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -98,7 +93,7 @@ public class SongListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         if(songs.isEmpty()){
             recyclerView.setVisibility(View.GONE);
-            if(pending) {
+            if(mActivity.getPending()) {
                 loadingView.setVisibility(View.VISIBLE);
             }else{
                 emptyView.setVisibility(View.VISIBLE);
@@ -133,5 +128,6 @@ public class SongListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onListItemClick(Listable item);
         List<Listable> getSongs();
+        boolean getPending();
     }
 }
