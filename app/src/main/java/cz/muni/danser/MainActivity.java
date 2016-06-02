@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         } else if (intent.getAction() != null && intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
             listables.clear();
             listables.addAll(SongUtils.getAllPlaylists());
+            ((FloatingActionButton) findViewById(R.id.floating_button)).show();
         } else {
             pending = true;
             service.getCategories(new Consumer<List<DanceCategory>>() {

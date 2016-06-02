@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +13,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +27,7 @@ import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceSong;
 import cz.muni.danser.model.Listable;
 
-public class SongListActivity extends AppCompatActivity implements SongListFragment.OnListFragmentInteractionListener {
+public class SongListActivity extends AppCompatActivity implements SongListFragment.OnListFragmentInteractionListener, View.OnClickListener {
 
     private GeneralApi service;
     private List<DanceSong> songs;
@@ -34,6 +38,9 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
+    private FloatingActionButton fab,fab1,fab2,fabClose;
+    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private boolean isFabOpen;
 
 
     public List<Listable> getSongs() {
@@ -58,6 +65,17 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         drawerToggle = setupDrawerToggle();
         mDrawer.addDrawerListener(drawerToggle);
         setupDrawerContent((NavigationView) findViewById(R.id.navigation));
+
+        fab = (FloatingActionButton)findViewById(R.id.floating_button);
+        fab1 = (FloatingActionButton)findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton)findViewById(R.id.fab2);
+        fabClose = (FloatingActionButton)findViewById(R.id.floating_button_close);
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        fab.setOnClickListener(this);
+        fab1.setOnClickListener(this);
+        fab2.setOnClickListener(this);
+        fabClose.setOnClickListener(this);
 
         exportFragment = (ExportFragment) getFragmentManager().findFragmentByTag("EXPORT_FRAGMENT");
         if(exportFragment == null){
@@ -100,6 +118,49 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.floating_button:
+                animateFAB();
+                break;
+            case R.id.floating_button_close:
+                animateFAB();
+                break;
+            case R.id.fab1:
+                exportToYoutube(null);
+                break;
+            case R.id.fab2:
+                exportToSpotify(null);
+                break;
+        }
+    }
+
+    public void animateFAB(){
+
+        if(isFabOpen){
+            fabClose.hide();
+            fab.show();
+            fab1.startAnimation(fab_close);
+            fab2.startAnimation(fab_close);
+            fab1.setClickable(false);
+            fab2.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+            fabClose.show();
+            fab.hide();
+            fab1.startAnimation(fab_open);
+            fab2.startAnimation(fab_open);
+            fab1.setClickable(true);
+            fab2.setClickable(true);
+            isFabOpen = true;
+        }
+    }
+
+
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -110,7 +171,12 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
                     }
                 });
     }
-    
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

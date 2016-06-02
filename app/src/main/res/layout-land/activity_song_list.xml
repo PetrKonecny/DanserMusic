@@ -21,11 +21,68 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <FrameLayout
-                android:id="@+id/list_frag_container"
+            <android.support.design.widget.CoordinatorLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1">
+
+                <FrameLayout
+                    android:id="@+id/list_frag_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:layout_marginBottom="160dp"
+                    android:layout_marginLeft="24dp"
+                    android:src="@drawable/ic_spotify"
+                    android:visibility="invisible"
+                    app:elevation="6dp"
+                    app:fabSize="mini"
+                    app:pressedTranslationZ="12dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:layout_marginBottom="98dp"
+                    android:layout_marginLeft="24dp"
+                    android:src="@drawable/ic_youtube"
+                    android:visibility="invisible"
+                    app:elevation="6dp"
+                    app:fabSize="mini"
+                    app:pressedTranslationZ="12dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floating_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|left"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_import_export_white_24dp"
+                    app:elevation="6dp"
+                    app:layout_anchor="@id/list_frag_container"
+                    app:layout_anchorGravity="bottom|left|start"
+                    app:pressedTranslationZ="12dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floating_button_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|left"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_close_white_24dp"
+                    android:visibility="gone"
+                    app:elevation="6dp"
+                    app:layout_anchor="@id/list_frag_container"
+                    app:layout_anchorGravity="bottom|left|start"
+                    app:pressedTranslationZ="12dp" />
+            </android.support.design.widget.CoordinatorLayout>
 
             <FrameLayout
                 android:id="@+id/detail_frag_duo_container"
