@@ -27,17 +27,6 @@ public class GeneratePlaylistAdvancedFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        new ApiImpl().getAllDances(new Consumer<List<Dance>>() {
-            @Override
-            public void accept(List<Dance> dances) {
-                for(Dance dance : dances){
-                    CheckBox checkbox = new CheckBox(getActivity());
-                    checkbox.setText(Utils.getTranslatedMainText(dance));
-                    ((GridLayout)getActivity().findViewById(R.id.include_dances)).addView(checkbox);
-                }
-            }
-        });
     }
 
     @Override
@@ -53,6 +42,17 @@ public class GeneratePlaylistAdvancedFragment extends Fragment {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(GeneratePlaylistAdvancedFragment.this.getActivity(), android.R.layout.simple_spinner_item, options);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+
+        new ApiImpl().getAllDances(new Consumer<List<Dance>>() {
+            @Override
+            public void accept(List<Dance> dances) {
+                for(Dance dance : dances){
+                    CheckBox checkbox = new CheckBox(getActivity());
+                    checkbox.setText(Utils.getTranslatedMainText(dance));
+                    ((GridLayout)getActivity().findViewById(R.id.include_dances)).addView(checkbox);
+                }
+            }
+        });
 
         return view;
     }
