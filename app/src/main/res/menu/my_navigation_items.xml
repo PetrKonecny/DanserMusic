@@ -9,12 +9,8 @@
         android:icon="@drawable/ic_library_music_black_24dp"
     />
     <item android:id="@+id/drawer_generate"
-        android:title="@string/generate"
+        android:title="@string/create_playlist"
         android:icon="@drawable/ic_playlist_add_black_24dp"
-    />
-    <item android:id="@+id/drawer_help"
-        android:title="@string/help"
-        android:icon="@drawable/ic_help_black_24dp"
     />
     <item android:id="@+id/drawer_about"
         android:title="@string/about"

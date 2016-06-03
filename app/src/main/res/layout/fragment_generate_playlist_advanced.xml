@@ -7,44 +7,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView android:layout_height="wrap_content"
-            android:layout_width="match_parent" android:text="(optional) Include songs from playlist:" />
+            android:layout_width="match_parent" android:text="@string/include_songs_from_playlist" />
         <Spinner
             android:id="@+id/playlists"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView android:layout_height="wrap_content"
-            android:layout_width="match_parent" android:text="Include these dances:" />
-        <CheckBox android:id="@+id/dance_1"
-            android:layout_width="match_parent"
+            android:layout_width="match_parent" android:text="@string/include_these_dances" />
+        <GridLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Waltz"
-            />
-        <CheckBox android:id="@+id/dance_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cha cha"
+            android:id="@+id/include_dances"
+            android:columnCount="2"
             />
 
         <TextView android:layout_height="wrap_content"
-            android:layout_width="match_parent" android:text="Dance order:" />
+            android:layout_width="match_parent" android:text="@string/dance_order" />
         <RadioGroup android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/dance_order">
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="alternate slow and fast"/>
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="tempo ascending"/>
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="tempo descending"/>
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="random"/>
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="custom: (specifiy order)" android:enabled="false"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/order_alternate_slow_and_fast"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/order_tempo_ascending"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/order_tempo_descending"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/order_random"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/order_custom" android:enabled="false"/>
         </RadioGroup>
 
         <TextView android:layout_height="wrap_content"
-            android:layout_width="match_parent" android:text="Playlist length:" />
+            android:layout_width="match_parent" android:text="@string/playlist_length" />
         <RadioGroup android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/playlist_length">
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="until dance order can be preserved"/>
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="no limit (all tracks)"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/until_order_preserved"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_limit_all_tracks"/>
         </RadioGroup>
 
         <View
@@ -55,22 +51,22 @@
         <RadioGroup android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/playlist_length_limit">
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="and"/>
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="or"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/and"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/or"/>
         </RadioGroup>
         <TextView android:layout_height="wrap_content"
-            android:layout_width="wrap_content" android:text="maximum (number of tracks) of" />
+            android:layout_width="wrap_content" android:text="@string/maximum_number_of_tracks_of" />
         <EditText android:layout_height="wrap_content"
             android:layout_width="wrap_content" android:inputType="number" />
 
         <TextView android:layout_height="wrap_content"
-            android:layout_width="wrap_content" android:text="Track order:" />
+            android:layout_width="wrap_content" android:text="@string/track_order" />
         <RadioGroup android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/track_order">
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="regular (1 for each dance)"/>
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="group by dance (all for each dance)"/>
-            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="random (dance order ignored)"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/track_order_regular"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/track_order_group"/>
+            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/track_order_random"/>
         </RadioGroup>
 
         <!--<TextView android:layout_height="wrap_content"
@@ -86,5 +82,11 @@
             <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Show track list"/>
             <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Share track list (plain text)"/>
         </RadioGroup>-->
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/create_playlist"/>
     </LinearLayout>
 </ScrollView>

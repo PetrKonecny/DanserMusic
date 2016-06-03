@@ -11,9 +11,6 @@ import java.util.Collection;
 import cz.muni.danser.api.Api;
 import cz.muni.danser.model.Translatable;
 
-/**
- * Created by Petr2 on 4/6/2016.
- */
 public final class Utils {
     public static String getStringFromResourceName(Context c, String resourceName){
         String r;

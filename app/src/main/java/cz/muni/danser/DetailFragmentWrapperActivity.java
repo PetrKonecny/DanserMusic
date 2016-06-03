@@ -1,8 +1,6 @@
 package cz.muni.danser;
 
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,7 +30,7 @@ public class DetailFragmentWrapperActivity extends AppCompatActivity {
         setupDrawerContent((NavigationView) findViewById(R.id.navigation));
 
         SongDetailFragment fragment = (SongDetailFragment) getFragmentManager().findFragmentById(R.id.detail_frag_solo);
-        DanceSong song = (DanceSong) getIntent().getParcelableExtra("danceSong");
+        DanceSong song = getIntent().getParcelableExtra("danceSong");
         getSupportActionBar().setTitle(song.getSongName());
         fragment.updateDanceSong(song);
     }

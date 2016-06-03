@@ -2,7 +2,6 @@ package cz.muni.danser;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -193,7 +192,7 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+        SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
 
         public ViewPagerAdapter(FragmentManager manager) {

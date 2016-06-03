@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import cz.muni.danser.model.Listable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

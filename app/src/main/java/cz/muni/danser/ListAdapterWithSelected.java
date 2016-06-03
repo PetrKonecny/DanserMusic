@@ -1,7 +1,5 @@
 package cz.muni.danser;
 
-import android.support.v7.widget.CardView;
-
 import java.util.List;
 
 

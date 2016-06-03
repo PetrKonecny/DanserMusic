@@ -22,10 +22,10 @@
     <string name="share_into">Rozpoznat tanec Danserem</string>
     <string name="export_to_spotify">Exportovat do Spotify</string>
     <string name="export_to_youtube">Exportovat do YouTube</string>
-    <string name="generate_playlist">Generovat playlist</string>
+    <string name="create_playlist">Vytvořit playlist</string>
     <string name="select_from">Vybrat z:</string>
     <string name="choose">Zvolte:</string>
-    <string name="generated_playlist_name">Název pro vygenerovaný playlist:</string>
+    <string name="playlist_name">Název pro playlist:</string>
     <string name="generate_from_playlists">playlistů</string>
     <string name="generate_from_presets">předvoleb</string>
 
@@ -34,4 +34,34 @@
         <item>standard &amp; latina</item>
         <item>salsa, zouk a podobné</item>
     </string-array>
+    <string name="about">O aplikaci</string>
+    <string name="browse">Procházet</string>
+    <string name="drawer_close">Zavřít vysouvací menu</string>
+    <string name="drawer_open">Otevřít vysouvací menu</string>
+    <string name="loading_data">Probíhá načítání…</string>
+    <string name="no_data_available">Nebyly nalezeny žádné položky</string>
+    <string name="no_detail">Ťukněte na píseň a zobrazí se podrobnosti</string>
+    <string name="recordings_number">Počet nahrávek:</string>
+    <string name="release_label">Album:</string>
+    <string name="release_year">Rok vydání:</string>
+    <string name="work_mbid_label">MBID díla:</string>
+    <string name="and">a</string>
+    <string name="dance_order">Pořadí tanců:</string>
+    <string name="include_songs_from_playlist">Použít písně z playlistu:</string>
+    <string name="include_these_dances">Zahrnout tyto tance:</string>
+    <string name="maximum_number_of_tracks_of">maximální počet skladeb:</string>
+    <string name="no_limit_all_tracks">bez omezení (všechny skladby)</string>
+    <string name="or">nebo</string>
+    <string name="order_alternate_slow_and_fast">střídat pomalé a rychlé</string>
+    <string name="order_custom">vlastní</string>
+    <string name="order_random">náhodné</string>
+    <string name="order_tempo_ascending">podle tempa vzestupně</string>
+    <string name="order_tempo_descending">podle tempa sestupně</string>
+    <string name="playlist_length">Délka playlistu:</string>
+    <string name="switch_to_advanced">Pokročilé</string>
+    <string name="track_order">Pořadí skladeb:</string>
+    <string name="track_order_group">seskupit podle tance (všechny pro daný tanec)</string>
+    <string name="track_order_random">náhodné (pořadí tanců se ignoruje)</string>
+    <string name="track_order_regular">běžné (1 píseň pro každý tanec)</string>
+    <string name="until_order_preserved">dokud je možné dodržet pořadí</string>
 </resources>

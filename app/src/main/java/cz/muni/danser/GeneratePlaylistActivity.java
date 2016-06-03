@@ -3,7 +3,6 @@ package cz.muni.danser;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,8 +11,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import cz.muni.danser.model.DanceSong;
 
 public class GeneratePlaylistActivity extends AppCompatActivity {
     private Fragment generateFragment;
@@ -33,7 +30,7 @@ public class GeneratePlaylistActivity extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
         setupDrawerContent((NavigationView) findViewById(R.id.navigation));
 
-        getSupportActionBar().setTitle(R.string.generate_playlist);
+        getSupportActionBar().setTitle(R.string.create_playlist);
 
         generateFragment = getFragmentManager().findFragmentById(R.id.generate_frag_container);
         if(generateFragment == null) {

@@ -41,7 +41,7 @@
                 android:layout_alignParentBottom="true"
                 android:enabled="true"
                 android:onClick="export"
-                android:text="Export"
+                android:text="@string/export"
                 android:textSize="20sp"
                 android:visibility="gone" />
 

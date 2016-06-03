@@ -1,25 +1,19 @@
 package cz.muni.danser;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +22,6 @@ import cz.muni.danser.api.ApiImpl;
 import cz.muni.danser.api.GeneralApi;
 import cz.muni.danser.functional.Consumer;
 import cz.muni.danser.model.DanceSong;
-import cz.muni.danser.model.Listable;
 
 public class SearchSuggestionFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener{
 
@@ -41,7 +34,7 @@ public class SearchSuggestionFragment extends Fragment implements SearchView.OnQ
     }
 
     public interface Callbacks {
-        public void onQuerySubmit(List<DanceSong> songs, String query);
+        void onQuerySubmit(List<DanceSong> songs, String query);
     }
 
     @Override

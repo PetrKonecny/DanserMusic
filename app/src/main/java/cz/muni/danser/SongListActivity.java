@@ -2,7 +2,6 @@ package cz.muni.danser;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -39,7 +38,7 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
     private FloatingActionButton fab,fab1,fab2,fabClose;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private Animation fab_open,fab_close;
     private boolean isFabOpen;
 
 

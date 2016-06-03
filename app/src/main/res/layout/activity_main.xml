@@ -24,7 +24,7 @@
             <FrameLayout
                 android:id="@+id/list_frag_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></FrameLayout>
+                android:layout_height="match_parent"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"

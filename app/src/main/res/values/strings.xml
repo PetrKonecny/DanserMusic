@@ -7,7 +7,7 @@
     <string name="not_online">Internet connection is required.</string>
     <string name="google_app_id" translatable="false">672064283419-35crplnl02bmsqogcm5q6vvkch0fnc30.apps.googleusercontent.com</string>
     <string name="youtube" translatable="false">YouTube:</string>
-    <string name="dance_category_ballroom">Ballroom (Standard)</string>
+    <string name="dance_category_ballroom">Ballroom</string>
     <string name="dance_category_latin">Latin</string>
     <string name="dance_category_club">Club</string>
     <string name="dance_category_folk">Folk</string>
@@ -25,21 +25,39 @@
     <string name="recordings_number">Number of recordings:</string>
     <string name="export_to_spotify">Export to Spotify</string>
     <string name="export_to_youtube">Export to YouTube</string>
-    <string name="generate_playlist">Generate playlist</string>
+    <string name="create_playlist">Create playlist</string>
     <string name="select_from">Select from:</string>
     <string name="choose">Choose:</string>
-    <string name="generated_playlist_name">Generated playlist name:</string>
+    <string name="playlist_name">Playlist name:</string>
     <string name="generate_from_playlists">playlists</string>
     <string name="generate_from_presets">presets</string>
-    <string name="no_detail">Click on song to display its details</string>
-    <string name="no_data_available">Sorry, nothing is here</string>
-    <string name="loading_data">Loading data</string>
+    <string name="no_detail">Tap song to display its details</string>
+    <string name="no_data_available">No items were found</string>
+    <string name="loading_data">Loading data…</string>
     <string name="browse">Browse</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="generate">Create new playlist</string>
-    <string name="help">Help</string>
     <string name="about">About</string>
+    <string name="export">Export</string>
+    <string name="include_songs_from_playlist">Include songs from playlist:</string>
+    <string name="include_these_dances">Include these dances:</string>
+    <string name="dance_order">Dance order:</string>
+    <string name="order_alternate_slow_and_fast">alternate slow and fast</string>
+    <string name="order_tempo_ascending">tempo ascending</string>
+    <string name="order_tempo_descending">tempo descending</string>
+    <string name="order_random">random</string>
+    <string name="order_custom">custom (specify order)</string>
+    <string name="playlist_length">Playlist length:</string>
+    <string name="until_order_preserved">until dance order can be preserved</string>
+    <string name="no_limit_all_tracks">no limit (all tracks)</string>
+    <string name="and">and</string>
+    <string name="or">or</string>
+    <string name="maximum_number_of_tracks_of">maximum (number of tracks) of</string>
+    <string name="track_order">Track order:</string>
+    <string name="track_order_regular">regular (1 for each dance)</string>
+    <string name="track_order_group">group by dance (all for each dance)</string>
+    <string name="track_order_random">random (dance order ignored)</string>
+    <string name="switch_to_advanced">Switch to advanced</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>

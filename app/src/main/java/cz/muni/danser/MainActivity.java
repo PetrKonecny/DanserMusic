@@ -1,7 +1,6 @@
 package cz.muni.danser;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Handler;
@@ -17,8 +16,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -159,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     }
 
     public static void selectDrawerItem(MenuItem menuItem, final Activity activity, DrawerLayout drawer) {
-        Intent intent = null;
+        Intent intent;
         switch (menuItem.getItemId()) {
             case R.id.drawer_browse:
                 intent = new Intent(activity,MainActivity.class);
