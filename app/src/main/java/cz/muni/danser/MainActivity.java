@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -83,36 +84,54 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         if (savedInstanceState != null) {
             listables.addAll((Collection) savedInstanceState.getParcelableArrayList(SAVE_LISTABLES));
         }
-
         if (intent.hasExtra("danceCategory")) {
-            pending = true;
             DanceCategory danceCategory = intent.getExtras().getParcelable("danceCategory");
             getSupportActionBar().setTitle(Utils.getTranslatedMainText(danceCategory));
-            service.getDances(danceCategory.getDanceCategory(), new Consumer<List<Dance>>() {
-                @Override
-                public void accept(List<Dance> dances) {
-                    MainActivity.this.listables.clear();
-                    MainActivity.this.listables.addAll(dances);
-                    pending = false;
-                    listFragment.refreshList((List)dances);
-                }
-            });
+            if(savedInstanceState == null) {
+                pending = true;
+                service.getDances(danceCategory.getDanceCategory(), new Consumer<List<Dance>>() {
+                    @Override
+                    public void accept(List<Dance> dances) {
+                        MainActivity.this.listables.clear();
+                        MainActivity.this.listables.addAll(dances);
+                        pending = false;
+                        listFragment.refreshList((List) dances);
+                    }
+                });
+            }
         } else if (intent.getAction() != null && intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
-            listables.clear();
-            listables.addAll(SongUtils.getAllPlaylists());
-            ((FloatingActionButton) findViewById(R.id.floating_button)).show();
-        } else {
-            pending = true;
-            service.getCategories(new Consumer<List<DanceCategory>>() {
+            getSupportActionBar().setTitle(R.string.playlists);
+            if(savedInstanceState == null) {
+                listables.clear();
+                listables.addAll(SongUtils.getAllPlaylists());
+            }
+            FloatingActionButton button = (FloatingActionButton) findViewById(R.id.floating_button);
+            button.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void accept(List<DanceCategory> danceCategories) {
-                    MainActivity.this.listables.clear();
-                    MainActivity.this.listables.addAll(danceCategories);
-                    pending = false;
-                    listFragment.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
-                    listFragment.refreshList((List)danceCategories);
+                public void onClick(View v) {
+                    generatePlaylist(null);
                 }
             });
+            button.show();
+        } else {
+            getSupportActionBar().setTitle(R.string.browse);
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                listFragment.setLayoutManager(new GridLayoutManager(MainActivity.this,4));
+            }else {
+                listFragment.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+            }
+            if(savedInstanceState == null) {
+                pending = true;
+                service.getCategories(new Consumer<List<DanceCategory>>() {
+                    @Override
+                    public void accept(List<DanceCategory> danceCategories) {
+                        MainActivity.this.listables.clear();
+                        MainActivity.this.listables.addAll(danceCategories);
+                        pending = false;
+                        listFragment.refreshList((List) danceCategories);
+                    }
+                });
+            }
         }
     }
 
@@ -184,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     }
 
     @Override
-    public List<Listable> getSongs(){
+    public List<Listable> getSongs(int type){
         return listables;
     }
 

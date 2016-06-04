@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,12 @@ public class SongListFragment extends Fragment {
     private ListAdapter mAdapter;
     private OnListFragmentInteractionListener mActivity;
     private boolean dual;
+    private RecyclerView.LayoutManager manager;
+    private int type;
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -41,6 +48,15 @@ public class SongListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            type = savedInstanceState.getInt("TYPE");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("TYPE",type);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -50,15 +66,20 @@ public class SongListFragment extends Fragment {
 
         // Set the adapter
             Context context = view.getContext();
+
+            if(manager == null){
+                manager = new LinearLayoutManager(context);
+            }
+
             recyclerView = (RecyclerView) view.findViewById(R.id.list);
             emptyView = (TextView) view.findViewById(R.id.empty_view);
             loadingView = (TextView) view.findViewById(R.id.loading_view);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setLayoutManager(manager);
         return view;
     }
 
     public void setLayoutManager(RecyclerView.LayoutManager manager){
-        recyclerView.setLayoutManager(manager);
+        this.manager = manager;
     }
 
     public void refreshList(List<Listable> songs, boolean dual) {
@@ -121,12 +142,12 @@ public class SongListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        refreshList(mActivity.getSongs(),((Context) mActivity).getResources().getBoolean(R.bool.dualPane));
+        refreshList(mActivity.getSongs(type),((Context) mActivity).getResources().getBoolean(R.bool.dualPane));
     }
 
     public interface OnListFragmentInteractionListener {
         void onListItemClick(Listable item);
-        List<Listable> getSongs();
+        List<Listable> getSongs(int type);
         boolean getPending();
     }
 }

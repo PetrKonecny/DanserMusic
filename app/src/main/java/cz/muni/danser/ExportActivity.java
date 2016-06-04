@@ -46,6 +46,9 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
 
+    public static int INVALID_SONGS_FRAGMENT = 1;
+    public static int VALID_SONGS_FRAGMENT = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,7 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
                     }
                     listFragment = (SongListFragment) adapter.getRegisteredFragment(0);
                     notAvailableListFragment = (SongListFragment) adapter.getRegisteredFragment(1);
+                    notAvailableListFragment.setType(INVALID_SONGS_FRAGMENT);
                     pending = false;
                     listFragment.refreshList((List) validSongs);
                     notAvailableListFragment.refreshList((List) invalidSongs);
@@ -157,7 +161,10 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
     }
 
     @Override
-    public List<Listable> getSongs() {
+    public List<Listable> getSongs(int type) {
+        if(type == INVALID_SONGS_FRAGMENT){
+            return (List) invalidSongs;
+        }
         return (List) validSongs;
     }
 

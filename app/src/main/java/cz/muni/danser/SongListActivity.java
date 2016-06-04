@@ -25,6 +25,7 @@ import cz.muni.danser.functional.Consumer;
 import cz.muni.danser.model.Dance;
 import cz.muni.danser.model.DanceSong;
 import cz.muni.danser.model.Listable;
+import cz.muni.danser.model.Playlist;
 
 public class SongListActivity extends AppCompatActivity implements SongListFragment.OnListFragmentInteractionListener, View.OnClickListener {
 
@@ -40,9 +41,9 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     private FloatingActionButton fab,fab1,fab2,fabClose;
     private Animation fab_open,fab_close;
     private boolean isFabOpen;
+    private String title;
 
-
-    public List<Listable> getSongs() {
+    public List<Listable> getSongs(int type) {
         return (List) songs;
     }
 
@@ -93,9 +94,10 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         }
         if(savedInstanceState != null){
             songs.addAll((List) savedInstanceState.getParcelableArrayList("SONGS"));
-        }else {
-            if (getIntent().hasExtra("dance")) {
-                Dance dance = (Dance) getIntent().getExtras().get("dance");
+        }
+        if (getIntent().hasExtra("dance")) {
+            Dance dance = (Dance) getIntent().getExtras().get("dance");
+            if(savedInstanceState == null) {
                 pending = true;
                 getSupportActionBar().setTitle(Utils.getTranslatedMainText(dance));
                 service.getSongs(dance.getDanceType(), new Consumer<List<DanceSong>>() {
@@ -107,13 +109,15 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
                         listFragment.refreshList((List) danceSongs, dual);
                     }
                 });
-            } else if (getIntent().hasExtra("playlistId")) {
-                long playlistId = getIntent().getExtras().getLong("playlistId");
-                songs = service.getPlaylist(playlistId).songs();
-            } else if (getIntent().hasExtra("songs")) {
-                songs = getIntent().getParcelableArrayListExtra("songs");
-                getSupportActionBar().setTitle(String.format("%d songs for query '%s'", songs.size(), getIntent().getStringExtra("query")));
             }
+        } else if (getIntent().hasExtra("playlistId")) {
+            long playlistId = getIntent().getExtras().getLong("playlistId");
+            Playlist playlist = service.getPlaylist(playlistId);
+            getSupportActionBar().setTitle(playlist.playlistName);
+            songs = playlist.songs();
+        } else if (getIntent().hasExtra("songs") && getIntent().hasExtra("query")) {
+            songs = getIntent().getParcelableArrayListExtra("songs");
+            getSupportActionBar().setTitle(String.format("%d songs for query '%s'", songs.size(), getIntent().getStringExtra("query")));
         }
     }
 
@@ -196,12 +200,6 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putParcelableArrayList("SONGS", (ArrayList) songs);
         super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_playlist, menu);
-        return true;
     }
 
     @Override
