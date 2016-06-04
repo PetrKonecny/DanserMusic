@@ -36,7 +36,7 @@ public class GeneratePlaylistAdvancedFragment extends Fragment {
 
         Spinner spinner = (Spinner) view.findViewById(R.id.playlists);
         List<String> options = new ArrayList<>();
-        for(Playlist p : new ApiImpl().getPlaylists()){
+        for(Playlist p : SongUtils.getAllPlaylists()){
             options.add(p.getMainText());
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(GeneratePlaylistAdvancedFragment.this.getActivity(), android.R.layout.simple_spinner_item, options);

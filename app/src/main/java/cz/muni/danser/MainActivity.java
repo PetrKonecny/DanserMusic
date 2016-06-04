@@ -101,10 +101,8 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
             }
         } else if (intent.getAction() != null && intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
             getSupportActionBar().setTitle(R.string.playlists);
-            if(savedInstanceState == null) {
-                listables.clear();
-                listables.addAll(SongUtils.getAllPlaylists());
-            }
+            listables.clear();
+            listables.addAll(SongUtils.getAllPlaylists());
             FloatingActionButton button = (FloatingActionButton) findViewById(R.id.floating_button);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -144,6 +142,16 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
                         return true;
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getIntent().getAction() != null && getIntent().getAction().equals(LIST_PLAYLIST_ACTION)) {
+            listables.clear();
+            listables.addAll(SongUtils.getAllPlaylists());
+            listFragment.refreshList(listables);
+        }
     }
 
     @Override

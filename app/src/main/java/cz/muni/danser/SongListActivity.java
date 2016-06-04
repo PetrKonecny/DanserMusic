@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,7 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         }
         if(savedInstanceState != null){
             songs.addAll((List) savedInstanceState.getParcelableArrayList("SONGS"));
+            setDetailViewVisibility();
         }
         if (getIntent().hasExtra("dance")) {
             Dance dance = (Dance) getIntent().getExtras().get("dance");
@@ -106,19 +108,40 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
                         songs = danceSongs;
                         boolean dual = getResources().getBoolean(R.bool.dualPane);
                         pending = false;
+                        setDetailViewVisibility();
                         listFragment.refreshList((List) danceSongs, dual);
                     }
                 });
             }
         } else if (getIntent().hasExtra("playlistId")) {
             long playlistId = getIntent().getExtras().getLong("playlistId");
-            Playlist playlist = service.getPlaylist(playlistId);
-            getSupportActionBar().setTitle(playlist.playlistName);
-            songs = playlist.songs();
+            Playlist playlist = SongUtils.getPlaylist(playlistId);
+            if(playlist != null){
+                getSupportActionBar().setTitle(playlist.playlistName);
+                songs = playlist.songs();
+            }else{
+                Toast.makeText(this,"Playlist not fonud",Toast.LENGTH_SHORT).show();
+            }
+            setDetailViewVisibility();
         } else if (getIntent().hasExtra("songs") && getIntent().hasExtra("query")) {
             songs = getIntent().getParcelableArrayListExtra("songs");
+            setDetailViewVisibility();
             getSupportActionBar().setTitle(String.format("%d songs for query '%s'", songs.size(), getIntent().getStringExtra("query")));
         }
+    }
+
+    public void setDetailViewVisibility(){
+        if(getResources().getBoolean(R.bool.dualPane) && songs.isEmpty()){
+            findViewById(R.id.detail_frag_duo_container).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(getIntent().hasExtra("playlistId")){
+            getMenuInflater().inflate(R.menu.menu_list_playlist,menu);
+        }
+        return true;
     }
 
     @Override
@@ -190,6 +213,20 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public void deletePlaylist(MenuItem item) {
+        SongUtils.deletePlaylist(getIntent().getExtras().getLong("playlistId"));
+        Intent intent = new Intent(this,SongListActivity.class);
+        intent.setAction(MainActivity.LIST_PLAYLIST_ACTION);
+        Toast.makeText(this,"Playlist deleted",Toast.LENGTH_SHORT).show();
+        startActivity(intent);
+        finish();
+    }
+
+    public void deleteSongFromPlaylist() {
+
+
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {

@@ -1,5 +1,6 @@
 package cz.muni.danser.api;
 
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
 import java.io.IOException;
@@ -233,19 +234,4 @@ public class ApiImpl implements GeneralApi {
         }
         return map;
     }
-
-    public List<Playlist> getPlaylists() {
-        return new Select().all().from(Playlist.class).execute();
-    }
-
-    @Override
-    public Playlist getPlaylist(long id) {
-        return new Select().from(Playlist.class).where("Id = ?",id).executeSingle();
-    }
-
-    @Override
-    public Playlist getPlaylistByName(String name) {
-        return new Select().from(Playlist.class).where("playlistName = ?", name).executeSingle();
-    }
-
 }

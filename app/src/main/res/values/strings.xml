@@ -58,6 +58,7 @@
     <string name="track_order_group">group by dance (all for each dance)</string>
     <string name="track_order_random">random (dance order ignored)</string>
     <string name="switch_to_advanced">Switch to advanced</string>
+    <string name="delete_playlist">Delete</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>
