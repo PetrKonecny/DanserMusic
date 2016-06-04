@@ -95,7 +95,6 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         }
         if(savedInstanceState != null){
             songs.addAll((List) savedInstanceState.getParcelableArrayList("SONGS"));
-            setDetailViewVisibility();
         }
         if (getIntent().hasExtra("dance")) {
             Dance dance = (Dance) getIntent().getExtras().get("dance");
@@ -128,11 +127,16 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
             setDetailViewVisibility();
             getSupportActionBar().setTitle(String.format("%d songs for query '%s'", songs.size(), getIntent().getStringExtra("query")));
         }
+        setDetailViewVisibility();
     }
 
     public void setDetailViewVisibility(){
-        if(getResources().getBoolean(R.bool.dualPane) && songs.isEmpty()){
-            findViewById(R.id.detail_frag_duo_container).setVisibility(View.GONE);
+        if(getResources().getBoolean(R.bool.dualPane)){
+            if(songs.isEmpty()) {
+                findViewById(R.id.detail_frag_duo_container).setVisibility(View.GONE);
+            }else{
+                findViewById(R.id.detail_frag_duo_container).setVisibility(View.VISIBLE);
+            }
         }
     }
 

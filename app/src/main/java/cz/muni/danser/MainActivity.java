@@ -59,11 +59,14 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         mDrawer.addDrawerListener(drawerToggle);
         setupDrawerContent((NavigationView) findViewById(R.id.navigation));
 
-        searchFragment = (SearchSuggestionFragment) getFragmentManager().findFragmentByTag("SEARCH");
-        if (searchFragment == null) {
-            searchFragment = new SearchSuggestionFragment();
-            getFragmentManager().beginTransaction().add(searchFragment, "SEARCH").commit();
+        if (getIntent().getAction() == null || !getIntent().getAction().equals(LIST_PLAYLIST_ACTION)) {
+            searchFragment = (SearchSuggestionFragment) getFragmentManager().findFragmentByTag("SEARCH");
+            if (searchFragment == null) {
+                searchFragment = new SearchSuggestionFragment();
+                getFragmentManager().beginTransaction().add(searchFragment, "SEARCH").commit();
+            }
         }
+
         listFragment = (SongListFragment) getSupportFragmentManager().findFragmentById(R.id.list_frag_container);
         if (listFragment == null) {
             listFragment = new SongListFragment();
