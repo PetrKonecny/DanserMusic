@@ -92,7 +92,7 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
                     for (Map.Entry<DanceSong, List<DanceRecording>> e : map.entrySet()) {
                         DanceSong song = e.getKey();
                         song.setRecordings(e.getValue());
-                        if (!song.getRecordings().isEmpty()) {
+                        if (song.getRecordings() != null && !song.getRecordings().isEmpty()) {
                             validSongs.add(song);
                         } else {
                             invalidSongs.add(song);
