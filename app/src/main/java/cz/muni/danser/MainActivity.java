@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
             }
         } else if (intent.getAction() != null && intent.getAction().equals(LIST_PLAYLIST_ACTION)) {
             getSupportActionBar().setTitle(R.string.playlists);
+            listFragment.setType(SongListFragment.TYPE_PLAYLIST_LIST);
             listables.clear();
             listables.addAll(SongUtils.getAllPlaylists());
             FloatingActionButton button = (FloatingActionButton) findViewById(R.id.floating_button);

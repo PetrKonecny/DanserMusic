@@ -4,6 +4,7 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,5 +59,17 @@ public class SongUtils {
     public static  void deletePlaylist(long id) {
         Playlist playlist = Playlist.load(Playlist.class,id);
         playlist.delete();
+    }
+
+    public static void saveSongsToPaylist(long playlistId, List<DanceSong> songs){
+        Playlist playlist = getPlaylist(playlistId);
+        Collection<SongPlaylist> list = new ArrayList<>();
+        for(DanceSong song : songs){
+            SongPlaylist songPlaylist = new SongPlaylist();
+            songPlaylist.playlist = playlist;
+            songPlaylist.danceSong = song;
+            list.add(songPlaylist);
+        }
+        Utils.activeAndroidSaveCollection(list);
     }
 }

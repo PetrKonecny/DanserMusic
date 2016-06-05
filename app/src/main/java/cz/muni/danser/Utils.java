@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.query.Select;
+import com.activeandroid.sqlbrite.BriteDatabase;
+
 import java.util.Collection;
 import cz.muni.danser.api.Api;
 import cz.muni.danser.model.Translatable;
@@ -46,14 +48,14 @@ public final class Utils {
             items.removeAll(saved);
         }
         if(items.size() > 0) {
-            ActiveAndroid.beginTransaction();
+            BriteDatabase.Transaction transaction = ActiveAndroid.beginTransaction();
             try {
                 for (T item : items) {
                     item.save();
                 }
-                ActiveAndroid.setTransactionSuccessful();
+                ActiveAndroid.setTransactionSuccessful(transaction);
             } finally {
-                ActiveAndroid.endTransaction();
+                ActiveAndroid.endTransaction(transaction);
             }
         }
     }

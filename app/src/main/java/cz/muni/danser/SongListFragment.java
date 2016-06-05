@@ -34,6 +34,8 @@ public class SongListFragment extends Fragment {
     private RecyclerView.LayoutManager manager;
     private int type;
 
+    public static final int TYPE_PLAYLIST_LIST = 3;
+
     public void setType(int type) {
         this.type = type;
     }
@@ -89,8 +91,10 @@ public class SongListFragment extends Fragment {
 
     public void refreshList(List<Listable> songs) {
         int layout;
-        if(recyclerView.getLayoutManager() instanceof GridLayoutManager){
+        if(recyclerView.getLayoutManager() instanceof GridLayoutManager) {
             layout = R.layout.square_list_item_view;
+        }else if(type == TYPE_PLAYLIST_LIST){
+            layout = R.layout.playlist_list_item_view;
         }else{
             layout = R.layout.list_item_view;
         }
