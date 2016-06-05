@@ -76,12 +76,14 @@ public class SearchSuggestionFragment extends Fragment implements SearchView.OnQ
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        service.suggestSongs(newText, new Consumer<List<DanceSong>>() {
-            @Override
-            public void accept(List<DanceSong> danceSongs) {
-                mSearchView.getSuggestionsAdapter().swapCursor(createCursor(danceSongs));
-            }
-        });
+        if(newText.length() > 1) {
+            service.suggestSongs(newText, new Consumer<List<DanceSong>>() {
+                @Override
+                public void accept(List<DanceSong> danceSongs) {
+                    mSearchView.getSuggestionsAdapter().swapCursor(createCursor(danceSongs));
+                }
+            });
+        }
         return false;
     }
 
