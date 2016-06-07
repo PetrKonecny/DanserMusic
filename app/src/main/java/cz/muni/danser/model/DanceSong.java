@@ -2,7 +2,10 @@ package cz.muni.danser.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.BoolRes;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -167,8 +170,6 @@ public class DanceSong extends Model implements Parcelable, Listable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
         DanceSong danceSong = (DanceSong) o;
 
         return songForDanceId == danceSong.songForDanceId;
