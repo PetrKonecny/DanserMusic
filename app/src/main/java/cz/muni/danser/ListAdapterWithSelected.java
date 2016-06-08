@@ -14,7 +14,7 @@ public class ListAdapterWithSelected extends ListAdapter {
         holder.mCardView.setSelected(selectedPos == position);
         int color;
         if(holder.mCardView.isSelected()){
-            color = R.color.cardview_dark_background;
+            color = R.color.colorAccent;
         }else{
             color = R.color.solid_white;
         }
