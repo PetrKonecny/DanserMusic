@@ -45,6 +45,7 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
+    private String title;
 
     public static int INVALID_SONGS_FRAGMENT = 1;
     public static int VALID_SONGS_FRAGMENT = 0;
@@ -78,11 +79,18 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
         List<DanceSong> songs = getIntent().getParcelableArrayListExtra("songs");
         List<String> params = new ArrayList<>();
         String service = getIntent().getStringExtra("service");
+        title = getIntent().getStringExtra("title");
         params.add(service);
-        getSupportActionBar().setTitle(String.format("Export to %s", service));
+        if(service.equals("youtube")){
+            getSupportActionBar().setTitle(R.string.export_to_youtube);
+        } else if(service.equals("spotify")) {
+            getSupportActionBar().setTitle(R.string.export_to_spotify);
+        }
+
         if (savedInstanceState != null) {
             validSongs.addAll((List) savedInstanceState.getParcelableArrayList("VALID_SONGS"));
             invalidSongs.addAll((List) savedInstanceState.getParcelableArrayList("INVALID_SONGS"));
+            title = savedInstanceState.getString("TITLE");
             updateInterface();
         } else {
             pending = true;
@@ -142,8 +150,8 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
         if (!validSongs.isEmpty()) {
             findViewById(R.id.export_button).setVisibility(View.VISIBLE);
         }
-        tabLayout.getTabAt(0).setText(String.format("Available (%d)", validSongs.size()));
-        tabLayout.getTabAt(1).setText(String.format("Not Available (%d)", invalidSongs.size()));
+        tabLayout.getTabAt(0).setText(getString(R.string.available)+String.format(" (%d)", validSongs.size()));
+        tabLayout.getTabAt(1).setText(getString(R.string.not_available)+String.format(" (%d)", invalidSongs.size()));
     }
 
     @Override
@@ -157,6 +165,7 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelableArrayList("VALID_SONGS", (ArrayList) validSongs);
         savedInstanceState.putParcelableArrayList("INVALID_SONGS", (ArrayList) invalidSongs);
+        savedInstanceState.putString("TITLE", title);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -175,8 +184,7 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
 
     public void export(View view) {
         exportFragment.setSongs(validSongs);
-        exportFragment.setPlaylistName("generated in danser");
-        Log.d("ExportActivity.export", getIntent().getStringExtra("service"));
+        exportFragment.setPlaylistName(title);
         switch (getIntent().getStringExtra("service")) {
             case "spotify":
                 exportFragment.exportToSpotify();
@@ -190,8 +198,8 @@ public class ExportActivity extends AppCompatActivity implements SongListFragmen
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SongListFragment(), "Available");
-        adapter.addFragment(new SongListFragment(), "Not Available");
+        adapter.addFragment(new SongListFragment(), getString(R.string.available));
+        adapter.addFragment(new SongListFragment(), getString(R.string.not_available));
         viewPager.setAdapter(adapter);
     }
 

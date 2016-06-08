@@ -62,7 +62,7 @@ public class SongDetailFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("Favorite.onClick",danceSong.getSongName());
                 if(danceSong.favoriteSong()) {
-                    Toast.makeText(SongDetailFragment.this.getActivity(), "Song added to favorites", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SongDetailFragment.this.getActivity(), R.string.song_added_to_favorites, Toast.LENGTH_SHORT).show();
                 }
             }
         });

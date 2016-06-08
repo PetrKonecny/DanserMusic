@@ -95,9 +95,10 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
         }
         if(savedInstanceState != null){
             songs.addAll((List) savedInstanceState.getParcelableArrayList("SONGS"));
+            title = savedInstanceState.getString("TITLE");
         }
         if (getIntent().hasExtra("dance")) {
-            Dance dance = (Dance) getIntent().getExtras().get("dance");
+            final Dance dance = (Dance) getIntent().getExtras().get("dance");
             if(savedInstanceState == null) {
                 pending = true;
                 getSupportActionBar().setTitle(Utils.getTranslatedMainText(dance));
@@ -105,6 +106,7 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
                     @Override
                     public void accept(List<DanceSong> danceSongs) {
                         songs = danceSongs;
+                        title = Utils.getTranslatedMainText(dance);
                         boolean dual = getResources().getBoolean(R.bool.dualPane);
                         pending = false;
                         setDetailViewVisibility();
@@ -118,14 +120,16 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
             if(playlist != null){
                 getSupportActionBar().setTitle(playlist.playlistName);
                 songs = playlist.songs();
+                title = playlist.getMainText();
             }else{
                 Toast.makeText(this,"Playlist not fonud",Toast.LENGTH_SHORT).show();
             }
             setDetailViewVisibility();
         } else if (getIntent().hasExtra("songs") && getIntent().hasExtra("query")) {
             songs = getIntent().getParcelableArrayListExtra("songs");
+            title = String.format(getString(R.string.songs_for_query), songs.size(), getIntent().getStringExtra("query"));
             setDetailViewVisibility();
-            getSupportActionBar().setTitle(String.format("%d songs for query '%s'", songs.size(), getIntent().getStringExtra("query")));
+            getSupportActionBar().setTitle(title);
         }
         setDetailViewVisibility();
     }
@@ -240,6 +244,7 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putParcelableArrayList("SONGS", (ArrayList) songs);
+        savedInstanceState.putString("TITLE", title);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -257,6 +262,7 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     public void exportToSpotify(MenuItem item){
         Intent intent = new Intent(this, ExportActivity.class);
         intent.putParcelableArrayListExtra("songs",(ArrayList<? extends Parcelable>) songs);
+        intent.putExtra("title", title);
         intent.putExtra("service","spotify");
         startActivity(intent);
     }
@@ -264,6 +270,7 @@ public class SongListActivity extends AppCompatActivity implements SongListFragm
     public void exportToYoutube(MenuItem item){
         Intent intent = new Intent(this, ExportActivity.class);
         intent.putParcelableArrayListExtra("songs",(ArrayList<? extends Parcelable>) songs);
+        intent.putExtra("title", title);
         intent.putExtra("service","youtube");
         startActivity(intent);
     }

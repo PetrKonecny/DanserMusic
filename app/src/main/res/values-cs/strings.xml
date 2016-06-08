@@ -70,4 +70,11 @@
     <string name="created_during_pv239">Vytvořeno za\u00A0účasti v\u00A0předmětu\u00A0PV239 na\u00A0FI\u00A0MUNI</string>
     <string name="app_about">%s - o aplikaci</string>
     <string name="copyright_images">Obrázky od\u00A0ClkerFreeVectorImages a\u00A0OpenClipartVectors z\u00A0pixabay.com (volné\u00A0dílo)</string>
+    <string name="song_added_to_favorites">Píseň přidána do oblíbených</string>
+    <string name="available">Dostupné</string>
+    <string name="not_available">Nedostupné</string>
+    <string name="songs_for_query">%1$d písní pro hledání \'%2$s\'</string>
+    <string name="no_spotify_ids">No songs in your playlist have Spotify IDs.</string>
+    <string name="unable_to_obtain_token">Nepodařilo se získat token pro vytvoření playlistu.</string>
+    <string name="playlist_generated_by">Playlist vytvořený aplikací %s</string>
 </resources>
