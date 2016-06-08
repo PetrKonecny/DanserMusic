@@ -41,11 +41,11 @@ final public class Api {
     }
 
     public static OkHttpClient getCache(){
-        /*File httpCacheDirectory = new File(context.getCacheDir(), "responses");
+        File httpCacheDirectory = new File(context.getCacheDir(), "responses");
         int cacheSize = 10 * 1024 * 1024; // 10 MiB
-        Cache cache = new Cache(httpCacheDirectory, cacheSize);*/
+        Cache cache = new Cache(httpCacheDirectory, cacheSize);
         return new OkHttpClient.Builder()
-                //.cache(cache)
+                .cache(cache)
                 .addInterceptor(DANSER_HEADERS_INTERCEPTOR)
                 .build();
     }
