@@ -67,4 +67,6 @@
     <string name="playlist_was_created">Byl vytvořen playlist %s.</string>
     <string name="playlist_choose_name">Prosím zvolte název pro playlist.</string>
     <string name="playlist_already_exists">Prosím zvolte jiný název, playlist s tímto názvem už existuje.</string>
+    <string name="created_during_pv239">Vytvořeno za\u00A0účasti v\u00A0předmětu\u00A0PV239 na\u00A0FI\u00A0MUNI</string>
+    <string name="app_about">%s - o aplikaci</string>
 </resources>

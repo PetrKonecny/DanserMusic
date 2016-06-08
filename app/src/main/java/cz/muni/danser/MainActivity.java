@@ -199,6 +199,9 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
             case R.id.drawer_generate:
                 intent = new Intent(activity,GeneratePlaylistActivity.class);
                 break;
+            case R.id.drawer_about:
+                intent = new Intent(activity,AboutActivity.class);
+                break;
             default:
                 return;
         }

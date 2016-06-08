@@ -175,7 +175,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".SongListActivity" />
         <activity android:name=".DetailFragmentWrapperActivity" />
-        <activity android:name=".ExportActivity"></activity>
+        <activity android:name=".ExportActivity" />
+        <activity android:name=".AboutActivity" />
     </application>
 
 </manifest>

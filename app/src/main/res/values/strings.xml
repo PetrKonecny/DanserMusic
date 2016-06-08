@@ -62,6 +62,9 @@
     <string name="playlist_was_created">Playlist %s was created.</string>
     <string name="playlist_choose_name">Please choose a name for playlist.</string>
     <string name="playlist_already_exists">Please choose another name, this playlist already exists.</string>
+    <string name="created_during_pv239">Created during\u00A0PV239 @\u00A0FI\u00A0MUNI</string>
+    <string name="copyright" translatable="false">©2016 Pavel\u00A0Břoušek, Petr\u00A0Konečný</string>
+    <string name="app_about">%s - about</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>
