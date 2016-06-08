@@ -1,5 +1,6 @@
 package cz.muni.danser;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.app.Fragment;
@@ -39,7 +40,9 @@ public class SongDetailFragment extends Fragment {
 
     private void addRow(int label_resource_id, String s, String url){
         TableRow row = new TableRow(this.getActivity());
-        row.addView(textViewFromString(getString(label_resource_id)));
+        TextView label = textViewFromString(getString(label_resource_id));
+        label.setTypeface(null, Typeface.BOLD);
+        row.addView(label);
         TextView text = textViewFromString(s);
         if(url != null){
             text.setText(Html.fromHtml(String.format("<a href=\"%1$s\">%2$s</a>", url, s)));
