@@ -13,6 +13,8 @@ import com.activeandroid.sqlbrite.BriteDatabase;
 import java.util.Collection;
 
 import cz.muni.danser.api.Api;
+import cz.muni.danser.model.Dance;
+import cz.muni.danser.model.DanceSong;
 import cz.muni.danser.model.Translatable;
 
 public final class Utils {
@@ -57,6 +59,14 @@ public final class Utils {
             BriteDatabase.Transaction transaction = ActiveAndroid.beginTransaction();
             try {
                 for (T item : itemsToBeSaved) {
+                    if(item instanceof DanceSong){
+                        DanceSong song = (DanceSong)item;
+                        if(song.getDance().getIsUnique()) {
+                            song.getDance().save();
+                        }else{
+                            song.setDance((Dance) new Select().from(Dance.class).where("DanceType = ?",song.getDance().getDanceType()).executeSingle());
+                        }
+                    }
                     item.save();
                 }
                 ActiveAndroid.setTransactionSuccessful(transaction);
