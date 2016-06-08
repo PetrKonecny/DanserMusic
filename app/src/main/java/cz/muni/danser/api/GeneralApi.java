@@ -24,4 +24,6 @@ public interface GeneralApi {
 
     void getRecordings(DanceSong danceSong, Consumer<List<DanceRecording>> callback);
     void getManyRecordings(List<DanceSong> danceSongs, List<String> requiredFields, Consumer<LinkedHashMap<DanceSong, List<DanceRecording>>> callback);
+
+    void generatePlaylistFromPreset(int preset, Consumer<List<DanceSong>> callback);
 }

@@ -95,6 +95,10 @@ final public class Api {
 
         @GET("songs_for_dance/{songs_for_dance}/recordings")
         Call<Map<Integer, List<DanceRecording>>> getManyRecordings(@Path("songs_for_dance") String danceSongsIds, @QueryMap Map<String, String> requiredFields);
+
+        @GET("generate/preset/{preset}")
+        Call<List<DanceSong>> generatePlaylistFromPreset(@Path("preset") int preset);
+
     }
 
     private static final Interceptor DANSER_HEADERS_INTERCEPTOR = new Interceptor() {

@@ -27,7 +27,7 @@
     <string name="export_to_youtube">Export to YouTube</string>
     <string name="create_playlist">Create playlist</string>
     <string name="select_from">Select from:</string>
-    <string name="choose">Choose:</string>
+    <string name="choose_preset">Choose preset:</string>
     <string name="playlist_name">Playlist name:</string>
     <string name="generate_from_playlists">playlists</string>
     <string name="generate_from_presets">presets</string>
@@ -59,6 +59,9 @@
     <string name="track_order_random">random (dance order ignored)</string>
     <string name="switch_to_advanced">Switch to advanced</string>
     <string name="delete_playlist">Delete</string>
+    <string name="playlist_was_created">Playlist %s was created.</string>
+    <string name="playlist_choose_name">Please choose a name for playlist.</string>
+    <string name="playlist_already_exists">Please choose another name, this playlist already exists.</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>

@@ -234,4 +234,20 @@ public class ApiImpl implements GeneralApi {
         }
         return map;
     }
+
+    @Override
+    public void generatePlaylistFromPreset(final int preset, final Consumer<List<DanceSong>> callback) {
+        Call<List<DanceSong>> call = Api.getRetrofitApi().generatePlaylistFromPreset(preset);
+        call.enqueue(new Callback<List<DanceSong>>() {
+            @Override
+            public void onResponse(Call<List<DanceSong>> call, Response<List<DanceSong>> response) {
+                callback.accept(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<DanceSong>> call, Throwable t) {
+                exceptionCallback.accept(t);
+            }
+        });
+    }
 }

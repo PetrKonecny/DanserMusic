@@ -7,34 +7,12 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_from"
-        android:id="@+id/select_from_label" />
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/playlists_or_presets">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radio_playlists"
-            android:text="@string/generate_from_playlists"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radio_presets"
-            android:text="@string/generate_from_presets"/>
-    </RadioGroup>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/choose"
+        android:text="@string/choose_preset"
         android:id="@+id/label_for_generate_spinner" />
-
     <Spinner
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:entries="@array/generate_presets"
         android:id="@+id/generate_spinner" />
 
     <TextView
@@ -55,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:onClick="generateSimplePlaylist"
         android:text="@string/create_playlist"/>
 
 </LinearLayout>

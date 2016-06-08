@@ -11,6 +11,17 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
+
+import cz.muni.danser.api.ApiImpl;
+import cz.muni.danser.functional.Consumer;
+import cz.muni.danser.model.DanceSong;
+import cz.muni.danser.model.Playlist;
 
 public class GeneratePlaylistActivity extends AppCompatActivity {
     private Fragment generateFragment;
@@ -86,5 +97,29 @@ public class GeneratePlaylistActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GeneratePlaylistActivity.class);
         intent.putExtra("generateAdvanced", true);
         startActivity(intent);
+    }
+
+    public void generateSimplePlaylist(View v){
+        assert findViewById(R.id.generated_playlist_name) != null;
+        final String playlistName = String.valueOf(((TextView)findViewById(R.id.generated_playlist_name)).getText());
+        if(playlistName.equals("")){
+            Toast.makeText(GeneratePlaylistActivity.this, R.string.playlist_choose_name, Toast.LENGTH_SHORT).show();
+        } else if(SongUtils.getPlaylistByName(playlistName) != null){
+            Toast.makeText(GeneratePlaylistActivity.this, R.string.playlist_already_exists, Toast.LENGTH_SHORT).show();
+        } else {
+            assert findViewById(R.id.generate_spinner) != null;
+            final int preset = ((Spinner) findViewById(R.id.generate_spinner)).getSelectedItemPosition();
+            (new ApiImpl()).generatePlaylistFromPreset(preset, new Consumer<List<DanceSong>>() {
+                @Override
+                public void accept(List<DanceSong> danceSongs) {
+                    Playlist playlist = new Playlist();
+                    playlist.playlistName = playlistName;
+                    playlist.save();
+                    Utils.activeAndroidSaveCollection(danceSongs);
+                    SongUtils.saveSongsToPaylist(playlist.getId(), danceSongs);
+                    Toast.makeText(GeneratePlaylistActivity.this, String.format(getString(R.string.playlist_was_created), playlistName), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

@@ -24,7 +24,7 @@
     <string name="export_to_youtube">Exportovat do YouTube</string>
     <string name="create_playlist">Vytvořit playlist</string>
     <string name="select_from">Vybrat z:</string>
-    <string name="choose">Zvolte:</string>
+    <string name="choose_preset">Zvolte předvolbu:</string>
     <string name="playlist_name">Název pro playlist:</string>
     <string name="generate_from_playlists">playlistů</string>
     <string name="generate_from_presets">předvoleb</string>
@@ -64,4 +64,7 @@
     <string name="track_order_random">náhodné (pořadí tanců se ignoruje)</string>
     <string name="track_order_regular">běžné (1 píseň pro každý tanec)</string>
     <string name="until_order_preserved">dokud je možné dodržet pořadí</string>
+    <string name="playlist_was_created">Byl vytvořen playlist %s.</string>
+    <string name="playlist_choose_name">Prosím zvolte název pro playlist.</string>
+    <string name="playlist_already_exists">Prosím zvolte jiný název, playlist s tímto názvem už existuje.</string>
 </resources>
