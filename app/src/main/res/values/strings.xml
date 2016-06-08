@@ -78,6 +78,9 @@
     <string name="yes">yes</string>
     <string name="no">no</string>
     <string name="XminutesYseconds">%1$d m %2$d s</string>
+    <string name="work_mbid_url" translatable="false">http://musicbrainz.org/otherlookup/mbid?other-lookup.mbid=%s</string>
+    <string name="youtube_url" translatable="false">https://www.youtube.com/watch?v=%s</string>
+    <string name="spotify_url" translatable="false">https://open.spotify.com/track/%s</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>

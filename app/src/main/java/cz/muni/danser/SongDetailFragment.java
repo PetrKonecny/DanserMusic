@@ -3,6 +3,8 @@ package cz.muni.danser;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,11 +37,20 @@ public class SongDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void addRow(int label_resource_id, String s){
+    private void addRow(int label_resource_id, String s, String url){
         TableRow row = new TableRow(this.getActivity());
         row.addView(textViewFromString(getString(label_resource_id)));
-        row.addView(textViewFromString(s));
+        TextView text = textViewFromString(s);
+        if(url != null){
+            text.setText(Html.fromHtml(String.format("<a href=\"%1$s\">%2$s</a>", url, s)));
+            text.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        row.addView(text);
         mTable.addView(row);
+    }
+
+    private void addRow(int label_resource_id, String s){
+        addRow(label_resource_id, s, null);
     }
 
     private TextView textViewFromString(String string){
@@ -70,7 +81,12 @@ public class SongDetailFragment extends Fragment {
         getActivity().findViewById(R.id.detail_layout).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.no_detail_layout).setVisibility(View.GONE);
         mTable.removeAllViews();
-        addRow(R.string.work_mbid_label, getString(Utils.yesOrNo(danceSong.getWorkMbid() != null)));
+
+        String workMbidLink = null;
+        if(danceSong.getWorkMbid() != null){
+            workMbidLink = String.format(getString(R.string.work_mbid_url), danceSong.getWorkMbid());
+        }
+        addRow(R.string.work_mbid_label, getString(Utils.yesOrNo(danceSong.getWorkMbid() != null)), workMbidLink);
         addRow(R.string.dance_label, Utils.getTranslatedMainText(danceSong.getDance()));
 
         ApiImpl api = new ApiImpl();
@@ -120,8 +136,19 @@ public class SongDetailFragment extends Fragment {
                 }
 
                 addRow(R.string.artist, artists.toString().substring(1, artists.toString().length()-1));
-                addRow(R.string.youtube, getString(Utils.yesOrNo(youtube != null)));
-                addRow(R.string.spotify, getString(Utils.yesOrNo(spotify != null)));
+
+                String youtubeLink = null;
+                if(youtube != null){
+                    youtubeLink = String.format(getString(R.string.youtube_url), youtube);
+                }
+                addRow(R.string.youtube, getString(Utils.yesOrNo(youtube != null)), youtubeLink);
+
+                String spotifyLink = null;
+                if(spotify != null){
+                    spotifyLink = String.format(getString(R.string.spotify_url), spotify);
+                }
+                addRow(R.string.spotify, getString(Utils.yesOrNo(spotify != null)), spotifyLink);
+
                 if(lengthMin != Integer.MAX_VALUE) {
                     lengthMin /= 1000;
                     lengthMax /= 1000;
