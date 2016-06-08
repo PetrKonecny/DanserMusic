@@ -65,6 +65,7 @@
     <string name="created_during_pv239">Created during\u00A0PV239 @\u00A0FI\u00A0MUNI</string>
     <string name="copyright" translatable="false">©2016 Pavel\u00A0Břoušek, Petr\u00A0Konečný</string>
     <string name="app_about">%s - about</string>
+    <string name="copyright_images">Images by\u00A0ClkerFreeVectorImages and\u00A0OpenClipartVectors from\u00A0pixabay.com (public\u00A0domain)</string>
 
     <string-array name="generate_presets">
         <item>dancing lesson</item>
