@@ -14,7 +14,7 @@
     <string name="regexp_trackid">^Pomocí aplikace TrackID™ se mi podařilo najít skladbu (.*) od (.*)\\..*</string>
     <string name="playlists">Playlisty</string>
     <string name="add_to_favorites">do oblíbených</string>
-    <string name="artist">Interpret</string>
+    <string name="artist">Interpret:</string>
     <string name="dance_label">Tanec:</string>
     <string name="hint_search">Hledat skladby…</string>
     <string name="not_online">Je potřeba připojení k internetu.</string>
@@ -42,7 +42,7 @@
     <string name="no_data_available">Nebyly nalezeny žádné položky</string>
     <string name="no_detail">Ťukněte na píseň a zobrazí se podrobnosti</string>
     <string name="recordings_number">Počet nahrávek:</string>
-    <string name="release_label">Album:</string>
+    <string name="releases_label">Počet alb:</string>
     <string name="release_year">Rok vydání:</string>
     <string name="work_mbid_label">MBID díla:</string>
     <string name="and">a</string>
@@ -77,4 +77,7 @@
     <string name="no_spotify_ids">No songs in your playlist have Spotify IDs.</string>
     <string name="unable_to_obtain_token">Nepodařilo se získat token pro vytvoření playlistu.</string>
     <string name="playlist_generated_by">Playlist vytvořený aplikací %s</string>
+    <string name="length_label">Délka:</string>
+    <string name="yes">ano</string>
+    <string name="no">ne</string>
 </resources>

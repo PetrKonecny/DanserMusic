@@ -12,7 +12,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cz.muni.danser.api.ApiImpl;
 import cz.muni.danser.functional.Consumer;
@@ -33,22 +35,16 @@ public class SongDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void addRow(int label_resource_id, View view){
+    private void addRow(int label_resource_id, String s){
         TableRow row = new TableRow(this.getActivity());
         row.addView(textViewFromString(getString(label_resource_id)));
-        row.addView(view);
+        row.addView(textViewFromString(s));
         mTable.addView(row);
     }
 
     private TextView textViewFromString(String string){
         TextView textView = new TextView(this.getActivity());
         textView.setText(string);
-        return textView;
-    }
-
-    private TextView textViewFromString(String string, int id){
-        TextView textView = textViewFromString(string);
-        textView.setId(id);
         return textView;
     }
 
@@ -74,11 +70,8 @@ public class SongDetailFragment extends Fragment {
         getActivity().findViewById(R.id.detail_layout).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.no_detail_layout).setVisibility(View.GONE);
         mTable.removeAllViews();
-        if(danceSong.getWorkMbid() != null){
-            addRow(R.string.work_mbid_label, textViewFromString(danceSong.getWorkMbid()));
-        }
-
-        addRow(R.string.dance_label, textViewFromString(danceSong.getDance().getMainText()));
+        addRow(R.string.work_mbid_label, getString(Utils.yesOrNo(danceSong.getWorkMbid() != null)));
+        addRow(R.string.dance_label, Utils.getTranslatedMainText(danceSong.getDance()));
 
         ApiImpl api = new ApiImpl();
         api.setExceptionCallback(new Consumer<Throwable>() {
@@ -90,8 +83,70 @@ public class SongDetailFragment extends Fragment {
         api.getRecordings(danceSong, new Consumer<List<DanceRecording>>() {
             @Override
             public void accept(List<DanceRecording> danceRecordings) {
-                addRow(R.string.recordings_number, textViewFromString(String.valueOf(danceRecordings.size())));
+                addRow(R.string.recordings_number, String.valueOf(danceRecordings.size()));
 
+                Set<String> artists = new HashSet<>(), releases = new HashSet<>();
+                String youtube = null, spotify = null;
+                int lengthMin = Integer.MAX_VALUE, lengthMax = Integer.MIN_VALUE,
+                        releaseYearMin = Integer.MAX_VALUE, releaseYearMax = Integer.MIN_VALUE;
+                float bpmMin = Float.MAX_VALUE, bpmMax = Float.MIN_VALUE;
+                for(DanceRecording recording : danceRecordings){
+                    artists.add(recording.getArtistName());
+                    releases.add(recording.getReleaseName());
+                    if(recording.getYoutubeId() != null){
+                        youtube = recording.getYoutubeId();
+                    }
+                    if(recording.getSpotifyId() != null){
+                        spotify = recording.getSpotifyId();
+                    }
+                    if(recording.getLength() != 0 && recording.getLength() < lengthMin){
+                        lengthMin = recording.getLength();
+                    }
+                    if(recording.getLength() != 0 && recording.getLength() > lengthMax){
+                        lengthMax = recording.getLength();
+                    }
+                    if(recording.getReleaseYear() != 0 && recording.getReleaseYear() < releaseYearMin){
+                        releaseYearMin = recording.getReleaseYear();
+                    }
+                    if(recording.getReleaseYear() != 0 && recording.getReleaseYear() > releaseYearMax){
+                        releaseYearMax = recording.getReleaseYear();
+                    }
+                    if(Float.compare(recording.getBpm(),0) != 0 && recording.getBpm() < bpmMin){
+                        bpmMin = recording.getBpm();
+                    }
+                    if(Float.compare(recording.getBpm(),0) != 0 && recording.getBpm() > bpmMax){
+                        bpmMax = recording.getBpm();
+                    }
+                }
+
+                addRow(R.string.artist, artists.toString().substring(1, artists.toString().length()-1));
+                addRow(R.string.youtube, getString(Utils.yesOrNo(youtube != null)));
+                addRow(R.string.spotify, getString(Utils.yesOrNo(spotify != null)));
+                if(lengthMin != Integer.MAX_VALUE) {
+                    lengthMin /= 1000;
+                    lengthMax /= 1000;
+                    String length = String.format(getString(R.string.XminutesYseconds), lengthMin / 60, lengthMin % 60);
+                    if (lengthMin != lengthMax) {
+                        length += " - " + String.format(getString(R.string.XminutesYseconds), lengthMax / 60, lengthMax % 60);
+                    }
+                    addRow(R.string.length_label, length);
+                }
+                if(releaseYearMin != Integer.MAX_VALUE) {
+                    String releaseYear = String.valueOf(releaseYearMin);
+                    if (releaseYearMin != releaseYearMax) {
+                        releaseYear += " - " + String.valueOf(releaseYearMax);
+                    }
+                    addRow(R.string.release_year, releaseYear);
+                }
+                if(Float.compare(bpmMin, Float.MAX_VALUE) != 0) {
+                    String bpm = String.format("%.2f", bpmMin);
+                    if (Float.compare(bpmMin, bpmMax) != 0) {
+                        bpm += " - " + String.format("%.2f", bpmMax);
+                    }
+                    bpm += " bpm";
+                    addRow(R.string.tempo_label, bpm);
+                }
+                addRow(R.string.releases_label, String.valueOf(releases.size()));
             }
         });
         this.danceSong = danceSong;

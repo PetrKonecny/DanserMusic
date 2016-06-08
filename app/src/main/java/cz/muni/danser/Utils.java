@@ -68,4 +68,12 @@ public final class Utils {
             itemsToBeSaved.addAll(itemsAlreadySaved);
         }
     }
+
+    public static int yesOrNo(boolean yesNo){
+        if(yesNo){
+            return R.string.yes;
+        } else {
+            return R.string.no;
+        }
+    }
 }
