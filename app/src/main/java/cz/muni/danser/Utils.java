@@ -43,9 +43,11 @@ public final class Utils {
         }
 
     public static <T extends Model> void activeAndroidSaveCollection(Collection<T> items){
-        Collection<T> saved = new Select().from(items.iterator().next().getClass()).execute();
-        if(saved != null) {
-            items.removeAll(saved);
+        if(!items.isEmpty()) {
+            Collection<T> saved = new Select().from(items.iterator().next().getClass()).execute();
+            if (saved != null) {
+                items.removeAll(saved);
+            }
         }
         if(items.size() > 0) {
             BriteDatabase.Transaction transaction = ActiveAndroid.beginTransaction();
