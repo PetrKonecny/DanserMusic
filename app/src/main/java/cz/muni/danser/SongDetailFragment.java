@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -36,6 +37,13 @@ public class SongDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    private void setButtonLink(int button_res_id, String url){
+        Button button = (Button) getActivity().findViewById(button_res_id);
+        button.setText(Html.fromHtml(String.format("<a href=\"%1$s\">%2$s</a>", url, button.getText())));
+        button.setMovementMethod(LinkMovementMethod.getInstance());
+        button.setEnabled(true);
     }
 
     private void addRow(int label_resource_id, String s, String url){
@@ -85,12 +93,11 @@ public class SongDetailFragment extends Fragment {
         getActivity().findViewById(R.id.no_detail_layout).setVisibility(View.GONE);
         mTable.removeAllViews();
 
-        String workMbidLink = null;
-        if(danceSong.getWorkMbid() != null){
-            workMbidLink = String.format(getString(R.string.work_mbid_url), danceSong.getWorkMbid());
-        }
-        addRow(R.string.work_mbid_label, getString(Utils.yesOrNo(danceSong.getWorkMbid() != null)), workMbidLink);
         addRow(R.string.dance_label, Utils.getTranslatedMainText(danceSong.getDance()));
+        if(danceSong.getWorkMbid() != null){
+            String workMbidLink = String.format(getString(R.string.work_mbid_url), danceSong.getWorkMbid());
+            setButtonLink(R.id.detail_mbid_button, workMbidLink);
+        }
 
         ApiImpl api = new ApiImpl();
         api.setExceptionCallback(new Consumer<Throwable>() {
@@ -140,17 +147,15 @@ public class SongDetailFragment extends Fragment {
 
                 addRow(R.string.artist, artists.toString().substring(1, artists.toString().length()-1));
 
-                String youtubeLink = null;
                 if(youtube != null){
-                    youtubeLink = String.format(getString(R.string.youtube_url), youtube);
+                    String youtubeLink = String.format(getString(R.string.youtube_url), youtube);
+                    setButtonLink(R.id.detail_youtube_button, youtubeLink);
                 }
-                addRow(R.string.youtube, getString(Utils.yesOrNo(youtube != null)), youtubeLink);
 
-                String spotifyLink = null;
                 if(spotify != null){
-                    spotifyLink = String.format(getString(R.string.spotify_url), spotify);
+                    String spotifyLink = String.format(getString(R.string.spotify_url), spotify);
+                    setButtonLink(R.id.detail_spotify_button, spotifyLink);
                 }
-                addRow(R.string.spotify, getString(Utils.yesOrNo(spotify != null)), spotifyLink);
 
                 if(lengthMin != Integer.MAX_VALUE) {
                     lengthMin /= 1000;

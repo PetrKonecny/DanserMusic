@@ -18,12 +18,12 @@
             android:text="@string/no_detail"
         />
     </RelativeLayout>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/detail_layout"
         android:padding="@dimen/activity_vertical_margin"
-    >
+        android:orientation="vertical">
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -37,7 +37,27 @@
             android:id="@+id/detail_favorite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/track_detail_table"
         />
-    </RelativeLayout>
+        <Button
+            android:text="@string/youtube"
+            android:id="@+id/detail_youtube_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            />
+        <Button
+            android:text="@string/spotify"
+            android:id="@+id/detail_spotify_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            />
+        <Button
+            android:text="@string/work_mbid_label"
+            android:id="@+id/detail_mbid_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            />
+    </LinearLayout>
 </RelativeLayout>

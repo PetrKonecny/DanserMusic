@@ -44,7 +44,7 @@
     <string name="recordings_number">Počet nahrávek:</string>
     <string name="releases_label">Počet alb:</string>
     <string name="release_year">Rok vydání:</string>
-    <string name="work_mbid_label">MBID díla:</string>
+    <string name="work_mbid_label">MBID díla</string>
     <string name="and">a</string>
     <string name="dance_order">Pořadí tanců:</string>
     <string name="include_songs_from_playlist">Použít písně z playlistu:</string>

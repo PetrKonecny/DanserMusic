@@ -6,7 +6,7 @@
     <string name="pick_account">You have to pick an account in order to export YouTube playlist.</string>
     <string name="not_online">Internet connection is required.</string>
     <string name="google_app_id" translatable="false">672064283419-35crplnl02bmsqogcm5q6vvkch0fnc30.apps.googleusercontent.com</string>
-    <string name="youtube" translatable="false">YouTube:</string>
+    <string name="youtube" translatable="false">YouTube</string>
     <string name="dance_category_ballroom">Ballroom</string>
     <string name="dance_category_latin">Latin</string>
     <string name="dance_category_club">Club</string>
@@ -16,12 +16,12 @@
     <string name="share_into">Recognize in Danser</string>
     <string name="regexp_soundhound">^I just used SoundHound to find (.*) by (.*)$</string>
     <string name="regexp_trackid">^I used TrackID™ to find (.*) by (.*)\\..*</string>
-    <string name="spotify" translatable="false">Spotify:</string>
+    <string name="spotify" translatable="false">Spotify</string>
     <string name="dance_label">Dance:</string>
     <string name="playlists">Playlists</string>
     <string name="releases_label">Release count:</string>
     <string name="release_year">Release year:</string>
-    <string name="work_mbid_label">Work MBID:</string>
+    <string name="work_mbid_label">Work MBID</string>
     <string name="recordings_number">Number of recordings:</string>
     <string name="export_to_spotify">Export to Spotify</string>
     <string name="export_to_youtube">Export to YouTube</string>
