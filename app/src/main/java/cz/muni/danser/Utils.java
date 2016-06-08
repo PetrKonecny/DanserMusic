@@ -4,12 +4,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
+
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.query.Select;
 import com.activeandroid.sqlbrite.BriteDatabase;
 
 import java.util.Collection;
+
 import cz.muni.danser.api.Api;
 import cz.muni.danser.model.Translatable;
 
@@ -42,23 +44,28 @@ public final class Utils {
         return (networkInfo != null && networkInfo.isConnected());
         }
 
-    public static <T extends Model> void activeAndroidSaveCollection(Collection<T> items){
-        if(!items.isEmpty()) {
-            Collection<T> saved = new Select().from(items.iterator().next().getClass()).execute();
-            if (saved != null) {
-                items.removeAll(saved);
+    public static <T extends Model> void activeAndroidSaveCollection(final Collection<T> itemsToBeSaved){
+        Collection<T> itemsAlreadySaved = null;
+        if(!itemsToBeSaved.isEmpty()) {
+            itemsAlreadySaved = new Select().from(itemsToBeSaved.iterator().next().getClass()).execute();
+            if (itemsAlreadySaved != null) {
+                itemsToBeSaved.removeAll(itemsAlreadySaved);
             }
         }
-        if(items.size() > 0) {
+
+        if(itemsToBeSaved.size() > 0) {
             BriteDatabase.Transaction transaction = ActiveAndroid.beginTransaction();
             try {
-                for (T item : items) {
+                for (T item : itemsToBeSaved) {
                     item.save();
                 }
                 ActiveAndroid.setTransactionSuccessful(transaction);
             } finally {
                 ActiveAndroid.endTransaction(transaction);
             }
+        }
+        if(itemsAlreadySaved != null){
+            itemsToBeSaved.addAll(itemsAlreadySaved);
         }
     }
 }
