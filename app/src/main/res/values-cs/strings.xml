@@ -41,9 +41,9 @@
     <string name="loading_data">Probíhá načítání…</string>
     <string name="no_data_available">Nebyly nalezeny žádné položky</string>
     <string name="no_detail">Ťukněte na píseň a zobrazí se podrobnosti</string>
-    <string name="recordings_number">Počet nahrávek:</string>
-    <string name="releases_label">Počet alb:</string>
-    <string name="release_year">Rok vydání:</string>
+    <string name="recordings_number">Počet\u00A0nahrávek:</string>
+    <string name="releases_label">Počet\u00A0alb:</string>
+    <string name="release_year">Rok\u00A0vydání:</string>
     <string name="work_mbid_label">MBID</string>
     <string name="and">a</string>
     <string name="dance_order">Pořadí tanců:</string>

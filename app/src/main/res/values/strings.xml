@@ -19,10 +19,10 @@
     <string name="spotify" translatable="false">Spotify</string>
     <string name="dance_label">Dance:</string>
     <string name="playlists">Playlists</string>
-    <string name="releases_label">Release count:</string>
-    <string name="release_year">Release year:</string>
+    <string name="releases_label">Release\u00A0count:</string>
+    <string name="release_year">Release\u00A0year:</string>
     <string name="work_mbid_label">MBID</string>
-    <string name="recordings_number">Number of recordings:</string>
+    <string name="recordings_number">Number\u00A0of\u00A0recordings:</string>
     <string name="export_to_spotify">Export to Spotify</string>
     <string name="export_to_youtube">Export to YouTube</string>
     <string name="create_playlist">Create playlist</string>
