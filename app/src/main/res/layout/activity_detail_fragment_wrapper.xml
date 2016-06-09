@@ -10,21 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <include
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+        <include layout="@layout/toolbar"/>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
             tools:context="cz.muni.danser.DetailFragmentWrapperActivity">
-
             <fragment
                 android:id="@+id/detail_frag_solo"
                 class="cz.muni.danser.SongDetailFragment"
@@ -32,7 +22,6 @@
                 android:layout_height="match_parent" />
         </FrameLayout>
     </LinearLayout>
-
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation"
         android:layout_width="wrap_content"

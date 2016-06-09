@@ -4,7 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_column="1"
-    android:padding="@dimen/activity_vertical_margin"
     tools:context=".SongDetailFragment">
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -31,38 +30,6 @@
             android:id="@+id/track_detail_table"
             >
         </TableLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="@string/buttonOrientation"
-            >
-            <Button
-                android:text="@string/add_to_favorites"
-                android:id="@+id/detail_favorite_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-            />
-            <Button
-                android:text="@string/youtube"
-                android:id="@+id/detail_youtube_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                />
-            <Button
-                android:text="@string/spotify"
-                android:id="@+id/detail_spotify_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                />
-            <Button
-                android:text="@string/work_mbid_label"
-                android:id="@+id/detail_mbid_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                />
-        </LinearLayout>
     </LinearLayout>
+    <include layout="@layout/bottom_toolbar" />
 </RelativeLayout>

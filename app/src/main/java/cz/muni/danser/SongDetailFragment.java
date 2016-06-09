@@ -1,6 +1,8 @@
 package cz.muni.danser;
 
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -39,11 +42,18 @@ public class SongDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void setButtonLink(int button_res_id, String url){
-        Button button = (Button) getActivity().findViewById(button_res_id);
-        button.setText(Html.fromHtml(String.format("<a href=\"%1$s\">%2$s</a>", url, button.getText())));
-        button.setMovementMethod(LinkMovementMethod.getInstance());
-        button.setEnabled(true);
+    private void setButtonLink(int button_res_id, final String url){
+        final View button = getActivity().findViewById(button_res_id);
+            button.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View arg0)
+                {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.valueOf(Html.fromHtml(url))));
+                    startActivity(browserIntent);
+
+                }
+            });
+        button.setVisibility(View.VISIBLE);
     }
 
     private void addRow(int label_resource_id, String s, String url){
@@ -86,16 +96,18 @@ public class SongDetailFragment extends Fragment {
             }
         });
         view.findViewById(R.id.detail_layout).setVisibility(View.GONE);
+        view.findViewById(R.id.actionbarT).setVisibility(View.GONE);
 
         return view;
     }
 
     public void updateDanceSong(@NonNull DanceSong danceSong){
+        getActivity().findViewById(R.id.actionbarT).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.detail_layout).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.no_detail_layout).setVisibility(View.GONE);
-        getActivity().findViewById(R.id.detail_mbid_button).setEnabled(false);
-        getActivity().findViewById(R.id.detail_spotify_button).setEnabled(false);
-        getActivity().findViewById(R.id.detail_youtube_button).setEnabled(false);
+        getActivity().findViewById(R.id.detail_mbid_button).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.detail_spotify_button).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.detail_youtube_button).setVisibility(View.GONE);
         mTable.removeAllViews();
 
         addRow(R.string.dance_label, Utils.getTranslatedMainText(danceSong.getDance()));

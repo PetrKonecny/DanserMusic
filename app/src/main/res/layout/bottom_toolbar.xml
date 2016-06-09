@@ -1,0 +1,54 @@
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/actionbarT"
+    android:layout_width="fill_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_alignParentBottom="true"
+    android:background="@color/colorPrimaryDark"
+    android:minHeight="?attr/actionBarSize">
+
+    <LinearLayout
+        android:id="@+id/toolbarmenucontainer"
+        android:layout_width="fill_parent"
+        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:id="@+id/detail_favorite_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_weight = "1"
+            android:src="@drawable/ic_favorite_white_24dp" />
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_youtube_button"
+            android:clickable="true"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_weight = "1"
+            android:visibility="gone"
+            android:src="@drawable/ic_youtube"  />
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_spotify_button"
+            android:clickable="true"
+            android:layout_weight = "1"
+            android:visibility="gone"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:src="@drawable/ic_spotify" />
+        <Button
+            android:text="@string/work_mbid_label"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_mbid_button"
+            android:clickable="true"
+            android:textColor="@color/solid_white"
+            android:visibility="gone"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_weight = "1" />
+    </LinearLayout>
+
+</RelativeLayout>
