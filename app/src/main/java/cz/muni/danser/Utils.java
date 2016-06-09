@@ -51,6 +51,7 @@ public final class Utils {
         if(!itemsToBeSaved.isEmpty()) {
             itemsAlreadySaved = new Select().from(itemsToBeSaved.iterator().next().getClass()).execute();
             if (itemsAlreadySaved != null) {
+                itemsAlreadySaved.retainAll(itemsToBeSaved);
                 itemsToBeSaved.removeAll(itemsAlreadySaved);
             }
         }
