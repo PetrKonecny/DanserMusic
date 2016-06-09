@@ -27,37 +27,43 @@
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="0"
-            android:shrinkColumns="1"
+            android:stretchColumns="1"
+            android:shrinkColumns="0"
             android:id="@+id/track_detail_table"
             >
         </TableLayout>
-        <Button
-            android:text="@string/add_to_favorites"
-            android:id="@+id/detail_favorite_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        />
-        <Button
-            android:text="@string/youtube"
-            android:id="@+id/detail_youtube_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
+            android:orientation="@string/buttonOrientation"
+            >
+            <Button
+                android:text="@string/add_to_favorites"
+                android:id="@+id/detail_favorite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
             />
-        <Button
-            android:text="@string/spotify"
-            android:id="@+id/detail_spotify_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            />
-        <Button
-            android:text="@string/work_mbid_label"
-            android:id="@+id/detail_mbid_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            />
+            <Button
+                android:text="@string/youtube"
+                android:id="@+id/detail_youtube_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                />
+            <Button
+                android:text="@string/spotify"
+                android:id="@+id/detail_spotify_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                />
+            <Button
+                android:text="@string/work_mbid_label"
+                android:id="@+id/detail_mbid_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

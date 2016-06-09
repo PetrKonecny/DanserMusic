@@ -50,6 +50,7 @@ public class SongDetailFragment extends Fragment {
         TableRow row = new TableRow(this.getActivity());
         TextView label = textViewFromString(getString(label_resource_id));
         label.setTypeface(null, Typeface.BOLD);
+        label.setPadding(0, 0, (int) (getActivity().getResources().getDisplayMetrics().density * 4), 0);
         row.addView(label);
         TextView text = textViewFromString(s);
         if(url != null){
@@ -85,12 +86,16 @@ public class SongDetailFragment extends Fragment {
             }
         });
         view.findViewById(R.id.detail_layout).setVisibility(View.GONE);
+
         return view;
     }
 
     public void updateDanceSong(@NonNull DanceSong danceSong){
         getActivity().findViewById(R.id.detail_layout).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.no_detail_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.detail_mbid_button).setEnabled(false);
+        getActivity().findViewById(R.id.detail_spotify_button).setEnabled(false);
+        getActivity().findViewById(R.id.detail_youtube_button).setEnabled(false);
         mTable.removeAllViews();
 
         addRow(R.string.dance_label, Utils.getTranslatedMainText(danceSong.getDance()));
