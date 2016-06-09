@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import cz.muni.danser.api.Api;
 import cz.muni.danser.api.ApiImpl;
 import cz.muni.danser.functional.Consumer;
 import cz.muni.danser.model.DanceRecording;
@@ -101,7 +102,7 @@ public class SongDetailFragment extends Fragment {
         return view;
     }
 
-    public void updateDanceSong(@NonNull DanceSong danceSong){
+    public void updateDanceSong(@NonNull DanceSong danceSong) {
         getActivity().findViewById(R.id.actionbarT).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.detail_layout).setVisibility(View.VISIBLE);
         getActivity().findViewById(R.id.no_detail_layout).setVisibility(View.GONE);
@@ -109,13 +110,13 @@ public class SongDetailFragment extends Fragment {
         getActivity().findViewById(R.id.detail_spotify_button).setVisibility(View.GONE);
         getActivity().findViewById(R.id.detail_youtube_button).setVisibility(View.GONE);
         mTable.removeAllViews();
-
-        addRow(R.string.dance_label, Utils.getTranslatedMainText(danceSong.getDance()));
+        if (danceSong.getDance() != null) {
+            addRow(R.string.dance_label, Utils.getTranslatedMainText(danceSong.getDance()));
+        }
         if(danceSong.getWorkMbid() != null){
             String workMbidLink = String.format(getString(R.string.work_mbid_url), danceSong.getWorkMbid());
             setButtonLink(R.id.detail_mbid_button, workMbidLink);
         }
-
         ApiImpl api = new ApiImpl();
         api.setExceptionCallback(new Consumer<Throwable>() {
             @Override
